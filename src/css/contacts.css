@@ -1,0 +1,62 @@
+.contacts-blok {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.contacts-blok__section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contacts-blok__section form input {
+    width: 300px;
+    font-size: 105%;
+    padding: 5px 15px;
+    border-color: var(--orange-color);
+}
+
+.contacts-blok__section form textarea {
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 100px;
+    max-height: 250px;
+    font-size: 105%;
+    padding: 5px 15px;
+    border-color: var(--orange-color);
+}
+
+.contacts-blok__section form button {
+    padding: 5px 0;
+    cursor: pointer;
+    transition: .3s;
+    color: #000;
+    border-color: var(--orange-color);
+    font-weight: bold;
+}
+
+.contacts-blok__section form button:hover {
+    background-color: var(--orange-color);
+}
+
+.google-map {
+    width: 500px;
+    height: 320px;
+    border: none;
+    border-radius: 5px;
+}
+
+@media (max-width: 820px) {
+    .google-map {
+        width: 400px;
+    }
+}
+
+@media (max-width: 460px) {
+    .google-map {
+        width: 100%;
+    }
+}

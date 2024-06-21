@@ -1,0 +1,8 @@
+.select {
+    font-size: 110%;
+    background-color: var(--orange-color);
+    color: #fff;
+    padding: 0 5px;
+    cursor: pointer;
+    transition: .3s;
+}

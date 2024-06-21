@@ -1,0 +1,40 @@
+.services {
+    min-height: 90vh;
+}
+
+.services-blok {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.services-blok__section {
+    width: 350px;
+}
+
+.services-blok__section a {
+    display: flex;
+    flex-direction: column;
+    color: #000;
+    text-decoration: none;
+}
+
+.service__img {
+    width: 100%;
+}
+
+.service__title {
+    font-size: 120%;
+}
+
+.service__subtitle {
+    font-size: 90%;
+}
+
+.title-tire {
+    width: 150px;
+    height: 4px;
+    border-radius: 20px;
+    background-color: var(--orange-color);
+}
