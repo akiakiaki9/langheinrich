@@ -15,8 +15,9 @@
 .contacts-blok__section form input {
     width: 300px;
     font-size: 105%;
-    padding: 5px 15px;
-    border-color: var(--orange-color);
+    padding: 10px 25px;
+    border: none;
+    background-color: #f3f3f3;
 }
 
 .contacts-blok__section form textarea {
@@ -25,16 +26,18 @@
     min-height: 100px;
     max-height: 250px;
     font-size: 105%;
-    padding: 5px 15px;
-    border-color: var(--orange-color);
+    padding: 10px 25px;
+    border: none;
+    background-color: #f3f3f3;
 }
 
 .contacts-blok__section form button {
-    padding: 5px 0;
+    padding: 10px 25px;
     cursor: pointer;
     transition: .3s;
     color: #000;
-    border-color: var(--orange-color);
+    border: none;
+    background-color: #f3f3f3;
     font-weight: bold;
 }
 

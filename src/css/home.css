@@ -32,12 +32,11 @@
     transition: .3s;
     border-color: var(--orange-color);
     background: none;
-    color: var(--orange-color);
+    color: #fff;
 }
 
 .home-blok__section button:hover {
     background-color: var(--orange-color);
-    color: #fff;
 }
 
 @media (max-width: 920px) {

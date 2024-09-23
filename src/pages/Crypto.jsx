@@ -7,7 +7,7 @@ import ScrollTop from '../components/ScrollTop';
 
 const CryptoList = () => {
 
-    const { t } = useTranslation()
+    const { t } = useTranslation();
     const [cryptoData, setCryptoData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredCryptoData, setFilteredCryptoData] = useState([]);
@@ -15,18 +15,16 @@ const CryptoList = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // При загрузке компонента, пытаемся загрузить данные из localStorage
         const savedCryptoData = localStorage.getItem('cryptoData');
         if (savedCryptoData) {
             setCryptoData(JSON.parse(savedCryptoData));
-            setFilteredCryptoData(JSON.parse(savedCryptoData)); // Также устанавливаем фильтрованные данные
+            setFilteredCryptoData(JSON.parse(savedCryptoData));
         }
 
-        fetchData(); // Загрузка актуальных данных
+        fetchData();
     }, []);
 
     useEffect(() => {
-        // При обновлении cryptoData, сохраняем данные в localStorage
         localStorage.setItem('cryptoData', JSON.stringify(cryptoData));
     }, [cryptoData]);
 
@@ -120,19 +118,33 @@ const CryptoList = () => {
                             />
                         </div>
                         <div className="crypto-blok__section">
-                            <button onClick={() => handleFilterOption('all')} className='crypto__btn crypto__alls-btn'>
+                            <button
+                                onClick={() => handleFilterOption('all')}
+                                className='crypto__btn crypto__alls-btn'
+                                style={{ opacity: filterOption === 'all' ? 1 : 0.5 }}
+                            >
                                 {t('crypto-alls')}
                             </button>
-                            <button onClick={() => handleFilterOption('gainers')} className='crypto__btn crypto__top-btn'>
+                            <button
+                                onClick={() => handleFilterOption('gainers')}
+                                className='crypto__btn crypto__top-btn'
+                                style={{ opacity: filterOption === 'gainers' ? 1 : 0.5 }}
+                            >
                                 {t('crypto-top')}
                             </button>
-                            <button onClick={() => handleFilterOption('losers')} className='crypto__btn crypto__btm-btn'>
+                            <button
+                                onClick={() => handleFilterOption('losers')}
+                                className='crypto__btn crypto__btm-btn'
+                                style={{ opacity: filterOption === 'losers' ? 1 : 0.5 }}
+                            >
                                 {t('crypto-bottom')}
                             </button>
                         </div>
                     </div>
                     {loading ? (
-                        <p>{t('loading')}</p>
+                        <h2>{t('Loading')}</h2>
+                    ) : filteredCryptoData.length === 0 ? (
+                        <h2>{t('Not found')}</h2>
                     ) : (
                         <table className='crypto__table' style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
                             <thead>

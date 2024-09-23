@@ -28,11 +28,11 @@ export default function Contacts() {
           <div className="contacts-blok">
             <div className="contacts-blok__section">
               <form>
-                <input type="text" placeholder={t('contacts-name')} required />
-                <input type="text" placeholder={t('contacts-lastname')} required />
+                <input type="text" placeholder={t('contacts-name')} required minLength={3} maxLength={15}/>
+                <input type="text" placeholder={t('contacts-lastname')} required minLength={3} maxLength={15}/>
                 <input type="email" placeholder={t('contacts-email')} required />
                 <input type="tel" placeholder={t('contacts-phone')} required />
-                <textarea placeholder={t('contacts-message')} required></textarea>
+                <textarea placeholder={t('contacts-message')} required minLength={10} maxLength={300}></textarea>
                 <button type='submit'>{t('contacts-button')}</button>
               </form>
             </div>

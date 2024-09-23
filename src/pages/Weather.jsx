@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 const API_KEY = 'dd9d85f5a00a871bcd47afb83a773695';
 const popularCities = ['Москва', 'Нью-Йорк', 'Париж', 'Лондон', 'Токио'];
 
-const fetchWeatherData = async (cityName, apiKey) => {
+const fetchWeatherData = async (cityName, apiKey, language) => {
     try {
         const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric&lang=ru`
+            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric&lang=${language}`
         );
         return response.data;
     } catch (error) {
@@ -19,25 +19,25 @@ const fetchWeatherData = async (cityName, apiKey) => {
 };
 
 const WeatherSearch = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [city, setCity] = useState('');
     const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
     const [popularWeather, setPopularWeather] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchWeather = async (cityName) => {
+    const fetchWeather = async (cityName, language) => {
         setLoading(true);
         setError(null);
 
         try {
-            const data = await fetchWeatherData(cityName, API_KEY);
+            const data = await fetchWeatherData(cityName, API_KEY, language);
             setWeatherData(data);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setError('Город не найден. Пожалуйста, проверьте название города.');
+                setError(t('city-not-found'));
             } else {
-                setError('Ошибка при получении данных. Пожалуйста, проверьте подключение к интернету.');
+                setError(t('fetch-error'));
             }
             setWeatherData(null);
         } finally {
@@ -47,13 +47,13 @@ const WeatherSearch = () => {
 
     const fetchPopularWeather = useCallback(async () => {
         try {
-            const weatherPromises = popularCities.map((city) => fetchWeatherData(city, API_KEY));
+            const weatherPromises = popularCities.map((city) => fetchWeatherData(city, API_KEY, i18n.language));
             const weatherResponses = await Promise.all(weatherPromises);
             setPopularWeather(weatherResponses);
         } catch (error) {
             console.error('Ошибка при получении данных для популярных городов:', error);
         }
-    }, []);
+    }, [i18n.language]);
 
     useEffect(() => {
         fetchPopularWeather(); // Fetch initially
@@ -67,10 +67,15 @@ const WeatherSearch = () => {
         const cityName = e.target.value;
         setCity(cityName);
         if (cityName) {
-            fetchWeather(cityName);
+            fetchWeather(cityName, i18n.language); // Передаем текущий язык
         } else {
             setWeatherData(null);
         }
+    };
+
+    const handleLanguageChange = (e) => {
+        const newLanguage = e.target.value;
+        i18n.changeLanguage(newLanguage);
     };
 
     return (
@@ -92,6 +97,12 @@ const WeatherSearch = () => {
                     <br />
                     <div className="weather-blok">
                         <div className='weather-blok__section'>
+                            {/* Добавляем переключатель языка */}
+                            <select onChange={handleLanguageChange} value={i18n.language}>
+                                <option value="en">English</option>
+                                <option value="ru">Русский</option>
+                            </select>
+
                             <input
                                 type="text"
                                 placeholder={t('weather-search')}
@@ -106,7 +117,7 @@ const WeatherSearch = () => {
                                 }}
                             />
                             {loading ? (
-                                <p>Загрузка...</p>
+                                <p>{t('Loading...')}</p>
                             ) : error ? (
                                 <p style={{ color: 'red', fontSize: "70%" }}>{error}</p>
                             ) : (

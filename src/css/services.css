@@ -11,6 +11,11 @@
 
 .services-blok__section {
     width: 350px;
+    transition: .3s;
+}
+
+.services-blok__section:hover {
+    opacity: .7;
 }
 
 .services-blok__section a {
