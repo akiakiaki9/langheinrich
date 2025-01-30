@@ -1,52 +1,39 @@
 import React from 'react'
-import Menu from '../components/Menu'
-import Navbar from '../components/Navbar'
-import GoogleMap from '../components/GoogleMap'
-import { useTranslation } from 'react-i18next'
+import { FaHome } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import Contacts1 from '../components/contacts/Contacts1';
+import Contacts2 from '../components/contacts/Contacts2';
+import Footer from '../components/footer/Footer';
 
 export default function Contacts() {
-
-  const { t } = useTranslation()
-
-  return (
-    <div className='container'>
-      <div className="container-menu">
-        <Menu />
-      </div>
-      <div className="container-navbar">
-        <Navbar />
-      </div>
-      <div className="container-section">
-        <div className="contacts">
-          <div className="contacts-sar">
-            <h1>{t('contacts-sar')}</h1>
-            <div className='title-tire'></div>
-          </div>
-          <br />
-          <br />
-          <br />
-          <div className="contacts-blok">
-            <div className="contacts-blok__section">
-              <form>
-                <input type="text" placeholder={t('contacts-name')} required minLength={3} maxLength={15}/>
-                <input type="text" placeholder={t('contacts-lastname')} required minLength={3} maxLength={15}/>
-                <input type="email" placeholder={t('contacts-email')} required />
-                <input type="tel" placeholder={t('contacts-phone')} required />
-                <textarea placeholder={t('contacts-message')} required minLength={10} maxLength={300}></textarea>
-                <button type='submit'>{t('contacts-button')}</button>
-              </form>
+    return (
+        <div>
+            <div className="contacts">
+                <div className="contacts-blok">
+                    <div className="contacts-blok__section">
+                        <Link to='/'><img src="/images/logo.jpg" alt="" /></Link>
+                    </div>
+                    <div className="contacts-blok__section">
+                        <div className="contacts-blok__section__container">
+                            <div className="contacts-blok__section__container-part">
+                                <Link to='/'>
+                                    <FaHome className='contacts-blok__section__container-part__icon' />
+                                    <p className='contatcs-blok__section__container-part__p1'>HOME</p>
+                                </Link>
+                            </div>
+                            <div className="contacts-blok__section__container-part">
+                                <p className='contatcs-blok__section__container-part__p1'>/</p>
+                            </div>
+                            <div className="contacts-blok__section__container-part">
+                                <p className='contatcs-blok__section__container-part__p2'>CONTACT US</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="contacts-blok__section">
-              <GoogleMap
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d644.885473999052!2d64.41684986482738!3d39.748420075919924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2s!4v1718945119571!5m2!1sru!2s"
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </div>
+            <Contacts1 />
+            <Contacts2 />
+            <Footer />
         </div>
-      </div>
-    </div>
-  )
-}
+    )
+};

@@ -1,6 +1,0 @@
-=== npm install react-router-dom
-=== npm install axios
-=== npm install flag-icons
-=== npm install @ffmpeg/ffmpeg
-=== npm install @ffmpeg/ffmpeg @ffmpeg/core
-=== npm install i18next react-i18next
