@@ -12,7 +12,7 @@ export default function ProductsComp() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/products/');
+                const response = await axios.get('https://macalistervadim.site/api/products/');
                 setProducts(response.data);
             } catch (err) {
                 console.error(err);
@@ -21,7 +21,7 @@ export default function ProductsComp() {
 
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/categories/');
+                const response = await axios.get('https://macalistervadim.site/api/categories/');
                 setCategories(response.data);
             } catch (err) {
                 console.error(err);

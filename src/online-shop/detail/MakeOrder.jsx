@@ -37,7 +37,7 @@ export default function MakeOrder({ data }) {
             }
     
             try {
-                const refreshResponse = await axios.post('http://127.0.0.1:8000/api/refresh/', {
+                const refreshResponse = await axios.post('https://macalistervadim.site/api/refresh/', {
                     refresh: refreshToken
                 }, {
                     headers: {
@@ -66,7 +66,7 @@ export default function MakeOrder({ data }) {
             console.log('Текущий accessToken:', accessToken);
     
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/orders/',
+                'https://macalistervadim.site/api/orders/',
                 {
                     product_id: data.id,
                     quantity: quantity,

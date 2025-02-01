@@ -12,7 +12,7 @@ export default function AddToCart({ data }) {
     const handleAddToCart = async () => {
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/cart/`,
+                `https://macalistervadim.site/api/cart/`,
                 {
                     product_id: data
                 },
