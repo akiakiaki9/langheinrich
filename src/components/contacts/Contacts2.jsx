@@ -25,7 +25,7 @@ export default function Contacts2() {
         console.log(formData);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/feedbacks/', formData, {
+            await axios.post('http://127.0.0.1:8000/api/feedbacks/', formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
