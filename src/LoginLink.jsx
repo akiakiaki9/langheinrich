@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function LoginLink() {
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -28,7 +30,8 @@ export default function LoginLink() {
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/login/',
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/token/',
                 {
                     username: login,
                     password: password
@@ -40,16 +43,16 @@ export default function LoginLink() {
                 }
             );
 
-            const csrfToken = response.data.csrf_token;
-            sessionStorage.setItem('csrfToken', csrfToken);
-            console.log('Login successful, CSRF Token saved:', csrfToken);
-            console.log(response.data);
-            navigate('/online-shop');
-            if (response.data.success) {
+            if (response.status === 200) {
+                console.log("Ответ от сервера:", response.data);
+                Cookies.set('access', response.data.access, { path: '/' });
+                Cookies.set('refresh', response.data.refresh, { path: '/' });
+                navigate('/online-shop');
                 handleCloseModal();
             } else {
                 setError('Неверный логин или пароль.');
-            };
+            }
+
         } catch (error) {
             setError('Произошла ошибка при отправке данных.');
         }
@@ -57,7 +60,7 @@ export default function LoginLink() {
 
     return (
         <div>
-            <a href="#login" onClick={handleOpenModal}>Login</a>
+            <p className="footer-blok__container__a" onClick={handleOpenModal}>Login</p>
 
             {isModalOpen && (
                 <div className="modal">

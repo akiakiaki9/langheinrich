@@ -4,6 +4,7 @@ import { NAME } from '../../utils/name'
 import { PiShoppingCartBold } from "react-icons/pi";
 import { FaHistory } from 'react-icons/fa';
 import { IoExitOutline } from "react-icons/io5";
+import Cookies from 'js-cookie';
 
 export default function NavbarComp() {
 
@@ -16,9 +17,8 @@ export default function NavbarComp() {
     }, [location]);
 
     const handleLogOut = () => {
-        // Удаляем csrfToken из куков (если он был установлен)
-        document.cookie = 'csrftoken=; Max-Age=0; path=/;';
-        localStorage.removeItem("csrfToken"); // если сохранял в localStorage
+        Cookies.remove('access');
+        Cookies.remove('refresh');
         navigate('/');
     };
 

@@ -1,6 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function Contacts2() {
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        message: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        console.log(formData);
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/feedbacks/', formData, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            alert('Thanks for your feedback!');
+            setFormData({
+                name: '',
+                phone: '',
+                email: '',
+                message: ''
+            });
+        } catch (error) {
+            alert('Error submitting feedback!');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <div className='contacts2'>
             <div className="contacts2-blok">
@@ -20,21 +63,51 @@ export default function Contacts2() {
                     <p>LET’S CONNECT</p>
                     <h1>SEND YOUR MESSAGE</h1>
                     <br />
-                    <form className='contacts2-blok__section__form'>
+                    <form className='contacts2-blok__section__form' onSubmit={handleSubmit}>
                         <div className="contacts2-blok__section__form-part">
-                            <input type="text" placeholder='Your Name*' required />
-                            <input type="tel" placeholder='Phone Number*' required />
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                placeholder='Your Name*'
+                                required
+                            />
+                            <input
+                                type="tel"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                                placeholder='Phone Number*'
+                                required
+                            />
                         </div>
                         <div className="contacts2-blok__section__form-part">
-                            <input type="email" placeholder='Your Email*' required />
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder='Your Email*'
+                                required
+                            />
                         </div>
                         <div className="contacts2-blok__section__form-part">
-                            <textarea name="message" id="message" placeholder='Message' required></textarea>
+                            <textarea
+                                name="message"
+                                id="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                placeholder='Message'
+                                required
+                            ></textarea>
                         </div>
-                        <button type='submit'>SUBMIT</button>
+                        <button type='submit' disabled={isSubmitting}>
+                            {isSubmitting ? 'Submitting...' : 'SUBMIT'}
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-    )
+    );
 };

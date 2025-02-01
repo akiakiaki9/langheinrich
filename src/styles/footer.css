@@ -39,13 +39,14 @@
     align-items: center;
 }
 
-.footer-blok__container a {
+.footer-blok__container__a {
     text-decoration: none;
     color: var(--landing-color);
     transition: .5s;
+    cursor: pointer;
 }
 
-.footer-blok__container a:hover {
+.footer-blok__container__a:hover {
     color: #fff;
 }
 

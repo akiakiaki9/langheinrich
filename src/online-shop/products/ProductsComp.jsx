@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { IoIosPricetag, IoMdResize } from 'react-icons/io';
-import { PiListNumbersDuotone } from 'react-icons/pi';
-import { Link, useParams } from 'react-router-dom';
+import { IoIosPricetag } from 'react-icons/io';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function ProductsComp() {
     const { id } = useParams();
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -19,11 +19,24 @@ export default function ProductsComp() {
             }
         };
 
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/categories/');
+                setCategories(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
         fetchProducts();
+        fetchCategories();
     }, []);
 
     // Фильтрация продуктов по ID категории
     const filteredProducts = products.filter((product) => product.category === Number(id));
+
+    // Находим категорию по ID
+    const categoryName = categories.find((category) => category.id === Number(id))?.name;
 
     return (
         <div>
@@ -31,7 +44,7 @@ export default function ProductsComp() {
                 <div className="navigator-blok">
                     <Link to="/online-shop">Main</Link>
                     <MdOutlineKeyboardArrowRight className="navigator__slesh" />
-                    <p className="navigator__p">Products</p>
+                    <p className="navigator__p">{categoryName || 'Category not found'}</p>
                 </div>
             </div>
             <div className="producs">

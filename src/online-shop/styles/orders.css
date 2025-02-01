@@ -34,6 +34,18 @@
     gap: 7px;
 }
 
+.orders-blok__section-part__product a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.orders-blok__section-part__product a:hover {
+    opacity: .7;
+}
+
 .orders-blok__section-part__product img {
     width: 100px;
     height: 60px;
@@ -44,7 +56,8 @@
 
 }
 
-.orders-blok__section-part__price {
+.orders-blok__section-part__status {
+    text-transform: capitalize;
     width: 100px;
 }
 
@@ -53,7 +66,19 @@
 }
 
 .orders-blok__section-part__end {
-    width: 20px;
+    width: 50px;
+}
+
+.orders-blok__section-part__end-p {
+    font-size: 80%;
+}
+
+.orders-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {

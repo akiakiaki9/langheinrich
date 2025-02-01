@@ -6,12 +6,13 @@ import CartComp from "./online-shop/cart/CartComp";
 import DetailMain from "./online-shop/detail/detailmain";
 import Orders from "./online-shop/orders/orders";
 import Contacts from "./pages/Contacts";
+import ScrolledPage from "./ScrolledPage";
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrolledPage />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/online-shop' element={<OnlineShop />} />

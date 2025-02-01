@@ -72,6 +72,13 @@
     display: none;
 }
 
+.cart-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 @media (max-width: 650px) {
 
     .cart-blok__section__header {
