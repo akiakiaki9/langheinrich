@@ -31,7 +31,7 @@ export default function LoginComp() {
 
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/token/',
+                'https://macalistervadim.site/api/token/',
                 {
                     username: login,
                     password: password
