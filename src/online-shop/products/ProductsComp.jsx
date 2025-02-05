@@ -54,8 +54,7 @@ export default function ProductsComp() {
                             <div className="products-blok__section" key={item.id}>
                                 <div className="products-blok__section__image">
                                     <Link to={`/online-shop/product/${item.id}`}>
-                                        <img src="/images/category.jpg" alt="" />
-                                        {/* <img src={item.image ? item.image : "/images/category.jpg"} alt="" /> */}
+                                        <img src={item.image ? item.image : "/images/category.jpg"} alt="" />
                                     </Link>
                                 </div>
                                 <Link to={`/online-shop/product/${item.id}`}>

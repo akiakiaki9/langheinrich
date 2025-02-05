@@ -44,7 +44,6 @@ export default function LoginLink() {
             );
 
             if (response.status === 200) {
-                console.log("Ответ от сервера:", response.data);
                 Cookies.set('access', response.data.access, { path: '/' });
                 Cookies.set('refresh', response.data.refresh, { path: '/' });
                 navigate('/online-shop');
