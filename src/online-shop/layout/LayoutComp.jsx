@@ -39,7 +39,7 @@ export default function LayoutComp() {
                         <div className="layout__container">
                             <div className="layout-blok__section__image">
                                 <Link to={`/online-shop/category/${item.id}`}>
-                                    <img src={item.image} alt={`Category: ${item.name}`} />
+                                    <img src={item.image ? item.image : "/images/category.jpg"} alt="" />
                                 </Link>
                             </div>
                             <div className="layout__container__info">
