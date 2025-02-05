@@ -1,5 +1,5 @@
 import React from 'react'
-import { SECTION } from '../../utils/section'
+import SECTION from '../../utils/section';
 
 export default function Section() {
     return (
