@@ -20,4 +20,6 @@ const SECTION = [
         subtitle: 'Fabiflex is a leading export textile service globally.',
         number: '03'
     },
-]
+];
+
+export default SECTION;
