@@ -62,7 +62,8 @@ export default function DetailComp() {
                         <div className="detail-blok">
                             <div className="detail-blok__section-1">
                                 <div className="detail-blok__section-1__image">
-                                    <img src={product.image ? product.image : "/images/category.jpg"} alt="" />
+                                    <img src="/images/category.jpg" alt="" />
+                                    {/* <img src={product.image ? product.image : "/images/category.jpg"} alt="" /> */}
                                 </div>
                             </div>
                             <div className="detail-blok__section-2">
