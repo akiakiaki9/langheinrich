@@ -44,16 +44,16 @@ export default function LoginComp() {
             );
 
             if (response.status === 200) {
-                Cookies.set('access', response.data.access, { path: '/' });
-                Cookies.set('refresh', response.data.refresh, { path: '/' });
+                Cookies.set('access', response.data.access, { path: '/', expires: 7 });
+                Cookies.set('refresh', response.data.refresh, { path: '/', expires: 30 });
                 navigate('/online-shop');
                 handleCloseModal();
             } else {
-                setError('Неверный логин или пароль.');
+                setError('Incorrect login or password.');
             }
 
         } catch (error) {
-            setError('Произошла ошибка при отправке данных.');
+            setError('There was an error sending data.');
         }
     };
 
