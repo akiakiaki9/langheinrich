@@ -8,28 +8,25 @@ export default function ProductsComp() {
     const { id } = useParams();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get('https://macalistervadim.site/api/products/');
-                setProducts(response.data);
+                const [productsRes, categoriesRes] = await Promise.all([
+                    axios.get('https://macalistervadim.site/api/products/'),
+                    axios.get('https://macalistervadim.site/api/categories/')
+                ]);
+                setProducts(productsRes.data);
+                setCategories(categoriesRes.data);
             } catch (err) {
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         };
 
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get('https://macalistervadim.site/api/categories/');
-                setCategories(response.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        fetchProducts();
-        fetchCategories();
+        fetchData();
     }, []);
 
     // Фильтрация продуктов по ID категории
@@ -37,6 +34,10 @@ export default function ProductsComp() {
 
     // Находим категорию по ID
     const categoryName = categories.find((category) => category.id === Number(id))?.name;
+
+    if (loading) {
+        return <div className='loading'><div className='loader'></div></div>;
+    }
 
     return (
         <div>

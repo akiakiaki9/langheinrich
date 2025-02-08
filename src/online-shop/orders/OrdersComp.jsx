@@ -10,6 +10,7 @@ export default function OrdersComp() {
     const [products, setProducts] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10); // Количество заказов на странице
+    const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
 
     const accessToken = Cookies.get("access");
 
@@ -29,15 +30,13 @@ export default function OrdersComp() {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                // Сортируем заказы по id в убывающем порядке (самые новые в начале)
                 const sortedOrders = response.data.sort((a, b) => b.id - a.id);
                 setOrders(sortedOrders);
 
-                // Получаем данные о каждом продукте по product_id
                 const productIds = sortedOrders.map(order => order.product);
                 const uniqueProductIds = [...new Set(productIds)];
 
-                uniqueProductIds.forEach(async (productId) => {
+                await Promise.all(uniqueProductIds.map(async (productId) => {
                     try {
                         const productResponse = await axios.get(`https://macalistervadim.site/api/products/${productId}`, {
                             headers: {
@@ -52,21 +51,16 @@ export default function OrdersComp() {
                     } catch (error) {
                         console.error(`Ошибка при получении продукта ${productId}: `, error);
                     }
-                });
+                }));
+
+                setLoading(false); // Данные загружены, скрываем лоадер
             } catch (error) {
                 console.error(error);
+                setLoading(false);
             }
         };
         fetchAllOrders();
     }, [accessToken]);
-
-    // Логика для пагинации
-    const indexOfLastOrder = currentPage * ordersPerPage;
-    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-    // Обработчик перехода между страницами
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     if (!accessToken) {
         return (
@@ -75,6 +69,23 @@ export default function OrdersComp() {
             </div>
         );
     }
+
+    // Показываем лоадер во время загрузки
+    if (loading) {
+        return (
+            <div className='loading'>
+                <div className='loader'></div>
+            </div>
+        );
+    }
+
+    // Логика для пагинации
+    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+    // Обработчик перехода между страницами
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div>
@@ -102,7 +113,7 @@ export default function OrdersComp() {
                         </div>
                     ) : (
                         currentOrders.map(item => {
-                            const product = products[item.product]; // Получаем данные о продукте по product_id
+                            const product = products[item.product]; 
                             return (
                                 <div className='orders-blok__section orders-blok__section-2' key={item.id}>
                                     <div className="orders-blok__section-part__main">
@@ -149,4 +160,4 @@ export default function OrdersComp() {
             )}
         </div>
     );
-};
+}

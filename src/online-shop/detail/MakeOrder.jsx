@@ -46,9 +46,9 @@ export default function MakeOrder({ data }) {
                 });
     
                 Cookies.set('access', refreshResponse.data.access, { path: '/' });
-                accessToken = refreshResponse.data.access; // Обновляем accessToken
+                accessToken = refreshResponse.data.access;
     
-                return handleSubmit(e); // Повторный вызов с новым токеном
+                return handleSubmit(e);
             } catch (refreshError) {
                 console.error('Error refreshing token:', refreshError.response?.data || refreshError.message);
                 setError('Failed to refresh access token.');
@@ -59,11 +59,9 @@ export default function MakeOrder({ data }) {
     
         try {
             if (!quantity || !date) {
-                setError('Заполните все поля.');
+                setError('Please fill in all fields.');
                 return;
             }
-    
-            console.log('Текущий accessToken:', accessToken);
     
             const response = await axios.post(
                 'https://macalistervadim.site/api/orders/',
@@ -88,8 +86,8 @@ export default function MakeOrder({ data }) {
                 setTimeout(() => setSuccessMessage(false), 5000);
             }
         } catch (err) {
-            console.error("Ошибка запроса:", err.response || err);
-            setError('Ошибка при заказе');
+            console.error("Request error:", err.response || err);
+            setError('Request error:');
             setErrorMessage(true);
             setTimeout(() => setErrorMessage(false), 5000);
         }
@@ -99,13 +97,13 @@ export default function MakeOrder({ data }) {
         <div>
             {successMessage && (
                 <div className="notification">
-                    <p>Заказ успешно оформлен!</p>
+                    <p>Order successfully placed!</p>
                     <div className="notification-bar"></div>
                 </div>
             )}
             {errorMessage && (
                 <div className="notification">
-                    <p style={{ color: 'red' }}>Не удалось заказать!</p>
+                    <p style={{ color: 'red' }}>Failed to order!</p>
                     <div style={{ backgroundColor: 'red' }} className="notification-bar"></div>
                 </div>
             )}

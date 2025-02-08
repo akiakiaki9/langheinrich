@@ -26,9 +26,11 @@
 .layout-blok__section__image img {
     width: 100%;
     max-width: 400px;
+    min-width: 200px;
     height: 450px;
     border-radius: 8px;
     cursor: pointer;
+    object-fit: cover;
 }
 
 .layout__container__info {

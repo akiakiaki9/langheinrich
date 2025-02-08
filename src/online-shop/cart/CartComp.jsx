@@ -11,10 +11,14 @@ import { BsCartX } from "react-icons/bs";
 export default function CartComp() {
     const [cart, setCart] = useState([]);
     const [productDetails, setProductDetails] = useState([]);
+    const [loading, setLoading] = useState(true);
     const accessToken = Cookies.get("access");
 
     useEffect(() => {
-        if (!accessToken) return; // Если нет токена, не делаем запрос
+        if (!accessToken) {
+            setLoading(false);
+            return;
+        }
 
         const fetchCart = async () => {
             try {
@@ -25,7 +29,7 @@ export default function CartComp() {
                     }
                 });
                 setCart(response.data);
-                // Делаем запрос для получения полных данных о каждом товаре в корзине
+
                 const productRequests = response.data.map(item =>
                     axios.get(`https://macalistervadim.site/api/products/${item.product_id}/`, {
                         headers: {
@@ -34,11 +38,13 @@ export default function CartComp() {
                         }
                     })
                 );
-                // Получаем все данные о продуктах
+
                 const products = await Promise.all(productRequests);
                 setProductDetails(products.map(product => product.data));
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchCart();
@@ -72,56 +78,63 @@ export default function CartComp() {
                         <p className='navigator__p'>Cart</p>
                     </div>
                 </div>
-                <div className='cart'>
-                    <div className="cart-blok">
-                        {!accessToken ? (
-                            <div className="cart-message">
-                                <p>Вам нужно сначала <Link to="/login">войти</Link>.</p>
-                            </div>
-                        ) : sortedCart.length === 0 ? (
-                            <div className="cart-message">
-                                <BsCartX />
-                                <p>Ваша корзина пуста.</p>
-                            </div>
-                        ) : (
-                            <>
-                                <div className="cart-blok__section cart-blok__section__header">
-                                    <div className="cart-blok__section-part" style={{ color: 'var(--main-color)' }}>PRODUCT</div>
-                                    <div className="cart-blok__section-part" style={{ color: 'var(--main-color)' }}>PRICE</div>
-                                    <div className="cart-blok__section-part__end"></div>
+
+                {loading ? (
+                    <div className='loading'>
+                        <div className='loader'></div>
+                    </div>
+                ) : (
+                    <div className='cart'>
+                        <div className="cart-blok">
+                            {!accessToken ? (
+                                <div className="cart-message">
+                                    <p>Вам нужно сначала <Link to="/login">войти</Link>.</p>
                                 </div>
-                                <br />
-                                <hr />
-                                <br />
-                                {sortedCart.map(item => {
-                                    const product = productDetails.find(p => p.id === item.product_id);
-                                    return (
-                                        <div className='cart-blok__section cart-blok__section-2' key={item.id}>
-                                            <div className="cart-blok__section-part">
-                                                <div className="cart-blok__section-part__footer">
-                                                    <div className="cart-blok__section-part__footer__image">
+                            ) : sortedCart.length === 0 ? (
+                                <div className="cart-message">
+                                    <BsCartX />
+                                    <p>Ваша корзина пуста.</p>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="cart-blok__section cart-blok__section__header">
+                                        <div className="cart-blok__section-part" style={{ color: 'var(--main-color)' }}>PRODUCT</div>
+                                        <div className="cart-blok__section-part" style={{ color: 'var(--main-color)' }}>PRICE</div>
+                                        <div className="cart-blok__section-part__end"></div>
+                                    </div>
+                                    <br />
+                                    <hr />
+                                    <br />
+                                    {sortedCart.map(item => {
+                                        const product = productDetails.find(p => p.id === item.product_id);
+                                        return (
+                                            <div className='cart-blok__section cart-blok__section-2' key={item.id}>
+                                                <div className="cart-blok__section-part">
+                                                    <div className="cart-blok__section-part__footer">
+                                                        <div className="cart-blok__section-part__footer__image">
+                                                            <Link to={`/online-shop/product/${product?.id}`}>
+                                                                <img src={product?.image} alt="" />
+                                                            </Link>
+                                                        </div>
                                                         <Link to={`/online-shop/product/${product?.id}`}>
-                                                            <img src={product?.image} alt="" />
+                                                            <h3>{product?.name}</h3>
                                                         </Link>
                                                     </div>
-                                                    <Link to={`/online-shop/product/${product?.id}`}>
-                                                        <h3>{product?.name}</h3>
-                                                    </Link>
+                                                </div>
+                                                <div className="cart-blok__section-part">
+                                                    <p>{Number(product?.price).toLocaleString('ru-RU')} UZS</p>
+                                                </div>
+                                                <div className="cart-blok__section-part__end">
+                                                    <RiCloseLargeFill onClick={() => handleDeleteCart(item.id)} className="cart-blok__section-part__end__icon" />
                                                 </div>
                                             </div>
-                                            <div className="cart-blok__section-part">
-                                                <p>{Number(product?.price).toLocaleString('ru-RU')} UZS</p>
-                                            </div>
-                                            <div className="cart-blok__section-part__end">
-                                                <RiCloseLargeFill onClick={() => handleDeleteCart(item.id)} className="cart-blok__section-part__end__icon" />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </>
-                        )}
+                                        );
+                                    })}
+                                </>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
             <Footer />
         </div>

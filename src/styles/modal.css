@@ -70,6 +70,14 @@
     outline: none;
 }
 
+.form-group input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: center;
+    height: 40px;
+    background-color: #fff;
+}
+
 .form-footer {
     display: flex;
     justify-content: center;

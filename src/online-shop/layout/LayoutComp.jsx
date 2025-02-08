@@ -24,7 +24,7 @@ export default function LayoutComp() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className='loading'><div className='loader'></div></div>;
     }
 
     if (error) {

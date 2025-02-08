@@ -10,6 +10,7 @@ export default function DetailComp() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -18,6 +19,8 @@ export default function DetailComp() {
                 setProduct(response.data);
             } catch (err) {
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -37,11 +40,14 @@ export default function DetailComp() {
         fetchCategories();
     }, []);
 
-    // Поиск названия категории по её ID
     const getCategoryName = (categoryId) => {
         const category = categories.find((cat) => cat.id === categoryId);
         return category ? category.name : 'Unknown Category';
     };
+
+    if (loading) {
+        return <div className='loading'><div className='loader'></div></div>;
+    }
 
     return (
         <div>
@@ -62,7 +68,7 @@ export default function DetailComp() {
                         <div className="detail-blok">
                             <div className="detail-blok__section-1">
                                 <div className="detail-blok__section-1__image">
-                                    <img src={product.image ? product.image : "/images/category.jpg"} alt="" />
+                                    <img src={product.image ? product.image : "/images/category.jpg"} alt={product.name} />
                                 </div>
                             </div>
                             <div className="detail-blok__section-2">
@@ -88,7 +94,7 @@ export default function DetailComp() {
                     </div>
                 </div>
             ) : (
-                <div>no data</div>
+                <div>No data</div>
             )}
         </div>
     );

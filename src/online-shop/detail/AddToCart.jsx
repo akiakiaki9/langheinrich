@@ -36,7 +36,7 @@ export default function AddToCart({ data }) {
                 }, 5000);
             }
         } catch (error) {
-            console.error("Ошибка при добавлении в корзину:", error.message);
+            console.error("Error adding to cart:", error.message);
 
             setErrorMessage(true);
             setTimeout(() => {
