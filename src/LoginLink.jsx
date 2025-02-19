@@ -31,7 +31,7 @@ export default function LoginLink() {
 
         try {
             const response = await axios.post(
-                'https://macalistervadim.site/api/token/',
+                'http://127.0.0.1:8000/api/token/',
                 {
                     username: login,
                     password: password
