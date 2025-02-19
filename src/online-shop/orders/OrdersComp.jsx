@@ -24,7 +24,7 @@ export default function OrdersComp() {
 
         const fetchAllOrders = async () => {
             try {
-                const response = await axios.get('https://macalistervadim.site/api/orders', {
+                const response = await axios.get('http://127.0.0.1:8000/api/orders', {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${accessToken}`
@@ -38,7 +38,7 @@ export default function OrdersComp() {
 
                 await Promise.all(uniqueProductIds.map(async (productId) => {
                     try {
-                        const productResponse = await axios.get(`https://macalistervadim.site/api/products/${productId}`, {
+                        const productResponse = await axios.get(`http://127.0.0.1:8000/api/products/${productId}`, {
                             headers: {
                                 "Content-Type": "application/json",
                                 Authorization: `Bearer ${accessToken}`

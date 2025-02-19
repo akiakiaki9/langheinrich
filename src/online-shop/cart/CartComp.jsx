@@ -22,7 +22,7 @@ export default function CartComp() {
 
         const fetchCart = async () => {
             try {
-                const response = await axios.get('https://macalistervadim.site/api/cart/', {
+                const response = await axios.get('http://127.0.0.1:8000/api/cart/', {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${accessToken}`
@@ -31,7 +31,7 @@ export default function CartComp() {
                 setCart(response.data);
 
                 const productRequests = response.data.map(item =>
-                    axios.get(`https://macalistervadim.site/api/products/${item.product_id}/`, {
+                    axios.get(`http://127.0.0.1:8000/api/products/${item.product_id}/`, {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${accessToken}`
@@ -52,7 +52,7 @@ export default function CartComp() {
 
     const handleDeleteCart = async (itemId) => {
         try {
-            await axios.delete(`https://macalistervadim.site/api/cart/${itemId}/`, {
+            await axios.delete(`http://127.0.0.1:8000/api/cart/${itemId}/`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`

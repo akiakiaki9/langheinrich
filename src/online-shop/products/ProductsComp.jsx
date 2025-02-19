@@ -14,8 +14,8 @@ export default function ProductsComp() {
         const fetchData = async () => {
             try {
                 const [productsRes, categoriesRes] = await Promise.all([
-                    axios.get('https://macalistervadim.site/api/products/'),
-                    axios.get('https://macalistervadim.site/api/categories/')
+                    axios.get('http://127.0.0.1:8000/api/products/'),
+                    axios.get('http://127.0.0.1:8000/api/categories/')
                 ]);
                 setProducts(productsRes.data);
                 setCategories(categoriesRes.data);

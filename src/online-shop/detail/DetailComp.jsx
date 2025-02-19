@@ -15,7 +15,7 @@ export default function DetailComp() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://macalistervadim.site/api/products/${id}`);
+                const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}`);
                 setProduct(response.data);
             } catch (err) {
                 console.error(err);
@@ -30,7 +30,7 @@ export default function DetailComp() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('https://macalistervadim.site/api/categories');
+                const response = await axios.get('http://127.0.0.1:8000/api/categories');
                 setCategories(response.data);
             } catch (err) {
                 console.error(err);
