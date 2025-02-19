@@ -81,6 +81,18 @@
     margin-top: 20px;
 }
 
+.pagination {
+    margin-top: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+}
+
 @media (max-width: 768px) {
     .orders-blok {
         font-size: 80%;
