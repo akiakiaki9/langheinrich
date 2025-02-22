@@ -1,5 +1,5 @@
 .footer {
-    background-image: url('/public/images/footer-bg.png');
+    background-image: url('/public/images/footer/footer-bg.png');
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,6 +19,8 @@
 .footer-blok p span {
     color: #fff;
     font-weight: bold;
+    font-family: var(--indian-font);
+    font-size: 110%;
 }
 
 .footer-blok p a {
@@ -26,6 +28,9 @@
     transition: .5s;
     cursor: pointer;
     color: #fff;
+    font-family: var(--indian-font);
+    font-size: 110%;
+    font-weight: 600;
 }
 
 .footer-blok p a:hover {
@@ -57,5 +62,12 @@
 
     .footer-blok {
         gap: 20px;
+    }
+    .footer-blok__container {
+        display: none;
+    }
+    .footer-blok p {
+        text-align: center;
+        font-size: 90%;
     }
 }

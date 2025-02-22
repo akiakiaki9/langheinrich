@@ -36,7 +36,7 @@
 .about-blok__section-1__container__p1 {
     font-size: 350%;
     font-weight: bold;
-    color: var(--main-color);
+    color: var(--orange-color);
 }
 
 .about-blok__section-1__container__p2 {
@@ -51,15 +51,18 @@
 }
 
 .about-blok__section-2 h1 {
-    font-size: 250%;
-    max-width: 550px;
+    font-size: 300%;
+    max-width: 500px;
     margin-bottom: 30px;
     color: var(--blue-color);
+    font-family: var(--indian-font);
 }
 
 .about-blok__section-2__p1 {
     margin-bottom: 10px;
-    color: var(--main-color);
+    color: var(--orange-color);
+    font-family: var(--indian-font);
+    font-weight: 700;
 }
 
 .about-blok__section-2__p2 {
@@ -80,6 +83,7 @@
 .about-blok__section-2__header img {
     width: 60px;
     height: 60px;
+    filter: brightness(0) saturate(100%) invert(34%) sepia(32%) saturate(6346%) hue-rotate(344deg) brightness(98%) contrast(87%);
 }
 
 .about-blok__section-2__header p {
@@ -90,7 +94,7 @@
 
 .about-blok__section-2__header p span {
     text-decoration: underline;
-    text-decoration-color: var(--main-color);
+    text-decoration-color: var(--orange-color);
 }
 
 .about-blok__section-2__container {
@@ -114,6 +118,12 @@
     font-weight: bold;
 }
 
+@media (max-width: 1300px) {
+    .about {
+        padding: 50px;
+    }
+}
+
 @media (max-width: 1050px) {
     .about-blok {
         flex-direction: column;
@@ -123,7 +133,7 @@
 
 @media (max-width: 768px) {
     .about {
-        padding: 20px 10px;
+        padding: 30px 20px;
     }
     
     .about-blok__section-1 {
@@ -151,6 +161,23 @@
     }
 
     .about-blok__section-2 h1 {
-        font-size: 180%;
+        font-size: 200%;
+    }
+    .about-blok__section-1__container__p1 {
+        font-size: 250%;
+    }
+    .about-blok__section-1__container__p2 {
+        font-size: 100%;
+    }
+    .about-blok__section-2__header p {
+        font-size: 100%;
+    }
+    .about-blok__section-2__p2 {
+        letter-spacing: 0.2px;
+        line-height: 1.3;
+        font-size: 90%;
+    }
+    .about-blok__section-2__container-part {
+        font-size: 90%;
     }
 }

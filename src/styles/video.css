@@ -10,6 +10,8 @@
 
 .video-blok p {
     color: var(--landing-color);
+    font-family: var(--indian-font);
+    font-weight: 700;
 }
 
 .video-blok h1 {
@@ -17,12 +19,13 @@
     color: #fff;
     text-transform: uppercase;
     max-width: 580px;
+    font-family: var(--indian-font);
 }
 
 .video-blok__player {
     width: 70px;
     height: 70px;
-    background-color: var(--main-color);
+    background-color: var(--orange-color);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -65,7 +68,6 @@
 .video-modal video {
     width: 100%;
     height: auto;
-    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -82,11 +84,14 @@
 }
 
 .video-modal__close:hover {
-    color: #f00;
+    color: var(--orange-color);
 }
 
 
 @media (max-width: 768px) {
+    .video {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.745), rgba(0, 0, 0, 0.745)), url('/public/images/video-bg.jpg');
+    }
     .video-blok h1 {
         font-size: 180%;
         color: #fff;
@@ -97,7 +102,6 @@
     .video-blok__player {
         width: 50px;
         height: 50px;
-        background-color: var(--main-color);
         border-radius: 50%;
         display: flex;
         justify-content: center;

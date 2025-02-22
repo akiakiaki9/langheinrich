@@ -15,7 +15,10 @@ export default function LandingPage() {
             <div className="landing-blok">
                 <h1>Langheinrich In Uzbekistan</h1>
                 <p>Unsere Internetseite befindet sich derzeit im Umbau</p>
-                <Link to='/online-shop'><button>Store</button></Link>
+                <div className="landing-blok__container">
+                    <Link to='/online-shop'><button className='landing-blok__container-button-1'>Store</button></Link>
+                    <Link to='/contacts'><button className='landing-blok__container-button-2'>Contacts</button></Link>
+                </div>
             </div>
             <div className="landing-footer">
                 <div className="landing-footer__container">

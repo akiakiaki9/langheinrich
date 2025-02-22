@@ -27,13 +27,14 @@
 }
 
 .contacts2-blok__section-2 p {
-    font-size: 90%;
-    color: var(--main-color);
+    color: var(--orange-color);
     font-weight: bold;
+    font-family: var(--indian-font);
 }
 
 .contacts2-blok__section-2 h1 {
     color: var(--blue-color);
+    font-family: var(--indian-font);
 }
 
 .contacts2-blok__section__form-part {
@@ -62,6 +63,7 @@
     min-height: 20vh;
     max-height: 20vh;
     border-radius: 5px;
+    resize: none;
 }
 
 .contacts2-blok__section__form button {
@@ -92,5 +94,16 @@
 
     .contacts2-blok__section-2 h1 {
         font-size: 180%;
+    }
+    .contacts2-blok__section-2 p {
+        font-size: 90%;
+    }
+    .contacts2-blok__section__form button {
+        font-size: 90%;
+        padding: 10px 15px;
+    }
+    .contacts2-blok__section__form-part input,
+    .contacts2-blok__section__form-part textarea {
+        font-size: 90%;
     }
 }

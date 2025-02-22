@@ -45,20 +45,34 @@
     background-size: cover;
 }
 
-.landing a {
+.landing-blok__container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
+
+.landing-blok__container a {
     text-decoration: none;
 }
 
-.landing-blok button {
+.landing-blok__container button {
     width: 200px;
     padding: 10px 20px;
-    background-color: var(--blue-color);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: .5s;
     font-size: 110%;
+}
+
+.landing-blok__container-button-1 {
+    background-color: var(--blue-color);
+}
+
+.landing-blok__container-button-2 {
+    background-color: var(--blue-color);
 }
 
 .landing-blok h1 {
@@ -131,6 +145,11 @@
 
     .landing-footer__container {
         padding: 0 20px;
+    }
+
+    .landing-blok__container button {
+        font-size: 90%;
+        width: 150px;
     }
 
     .landing-blok {

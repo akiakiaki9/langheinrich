@@ -8,6 +8,7 @@
     color: var(--blue-color);
     text-align: center;
     margin-bottom: 50px;
+    font-family: var(--indian-font);
 }
 
 .contacts1-blok {
@@ -38,14 +39,14 @@
 .contacts1-blok__section__p1 {
     font-weight: bold;
     margin-bottom: 20px;
-    color: var(--main-color);
+    color: var(--orange-color);
 }
 .contacts1-blok__section__p2 {
     color: var(--text-color);
     margin-bottom: 5px;
 }
 .contacts1-blok__section__p3 {
-    color: var(--main-color);
+    color: var(--orange-color);
     margin-bottom: 20px;
 }
 .contacts1-blok__section__p4 {
