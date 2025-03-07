@@ -10,7 +10,7 @@ const SECTION = [
         id: 2,
         image: '/images/section/section-2.png',
         title: 'Create Your Design Only for the Fabric Production and Natural Fabrics',
-        subtitle: 'With its rapid growth over the last four decades, since 1970',
+        subtitle: 'With its rapid growth over the last four decades, since 1832',
         number: '02'
     },
     {

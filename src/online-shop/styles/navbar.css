@@ -1,23 +1,20 @@
 .navbar {
-
+    border-bottom: 1px solid var(--text-color);
 }
 
 .navbar-blok {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .navbar-blok__section {
     display: flex;
     justify-content: start;
-    align-items: center;
     gap: 20px;
 }
 
 .navbar-blok__section a img {
-    width: 150px;
-    height: 85px;
+    width: 120px;
 }
 
 .navbar-blok__section__container {
@@ -95,8 +92,11 @@
     }
     
     .navbar-blok__section__container__icon {
-        width: 20px;
-        height: 20px;
+        display: none;
+    }
+    .navbar-blok__section__container__icon__exit {
+        margin-top: 3px;
+        margin-right: 10px;
     }
 }
 

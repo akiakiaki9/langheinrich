@@ -15,6 +15,11 @@ import './styles/contacts.css'
 import './styles/contacts1.css'
 import './styles/contacts2.css'
 import './styles/footer.css'
+import './styles/adminpanel.css'
+import './styles/navbar1.css'
+import './styles/pagename.css'
+import './styles/login.css'
+import './styles/videobg.css'
 
 import './online-shop/styles/navbar.css'
 import './online-shop/styles/layout.css'
@@ -24,6 +29,7 @@ import './online-shop/styles/cart.css'
 import './online-shop/styles/detail.css'
 import './online-shop/styles/orders.css'
 import './online-shop/styles/notification.css'
+import './online-shop/styles/chat.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

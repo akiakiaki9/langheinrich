@@ -1,0 +1,109 @@
+.video-bg {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.video-bg video {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+}
+
+.effects {
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.video-bg__content {
+    z-index: 2;
+    color: #ffffff;
+    text-align: center;
+}
+
+.video-bg__content img {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    width: 120px;
+}
+
+.video__title {
+    font-weight: bold;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.video__body {
+    width: 500px;
+}
+
+.video__button {
+    margin-top: 20px;
+    font-size: 120%;
+    padding: 5px 20px;
+    background-color: var(--red-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 15px var(--main-color);
+    border: 1px solid var(--main-color);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.video__button a {
+    color: var(--bg-color);
+    text-decoration: none;
+}
+
+.video__button:hover {
+    box-shadow: 0 0 35px var(--main-color);
+}
+
+.video-button-def {
+    color: #fff;
+    background: none;
+    border: none;
+    transition: .3s;
+}
+
+.video-button-def:hover {
+    color: var(--bg-color);
+}
+
+@media (max-width: 700px) {
+    .video-bg {
+        justify-content: center;
+    }
+
+    .video-bg__content {
+        padding: 0 5px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 521px) {
+    .video__title {
+        font-weight: bold;
+        font-size: 280%;
+        width: 300px;
+    }
+
+    .video__body {
+        width: 300px;
+    }
+}

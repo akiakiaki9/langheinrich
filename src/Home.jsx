@@ -6,10 +6,12 @@ import Video from './components/video/Video'
 import Footer from './components/footer/Footer'
 import Section2 from './components/section/Section2'
 import Section3 from './components/section/Section3'
+import Navbar from './Navbar'
 
 export default function Home() {
     return (
         <div className='home'>
+            <Navbar />
             <LandingPage />
             <Section />
             <About />

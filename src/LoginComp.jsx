@@ -46,7 +46,7 @@ export default function LoginComp() {
             if (response.status === 200) {
                 Cookies.set('access', response.data.access, { path: '/', expires: 7 });
                 Cookies.set('refresh', response.data.refresh, { path: '/', expires: 30 });
-                navigate('/online-shop');
+                navigate('/store');
                 handleCloseModal();
             } else {
                 setError('Incorrect login or password.');

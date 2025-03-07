@@ -5,6 +5,7 @@ import { PiShoppingCartBold } from "react-icons/pi";
 import { FaHistory } from 'react-icons/fa';
 import { IoExitOutline } from "react-icons/io5";
 import Cookies from 'js-cookie';
+import Chat from './Chat';
 
 export default function NavbarComp() {
 
@@ -31,20 +32,25 @@ export default function NavbarComp() {
                 <div className="navbar-blok__section">
                     <div className="navbar-blok__section__container">
                         <div onClick={handleLogOut}><IoExitOutline className='navbar-blok__section__container__icon__exit' /></div>
-                        <Link to='/online-shop/cart' className='navbar-blok__section__container__part' style={{ backgroundColor: activePage === '/online-shop/cart' ? 'var(--main-color)' : '' }}>
-                            <p style={{ color: activePage === '/online-shop/cart' ? '#fff' : '' }}>Cart</p>
+                    </div>
+                    <div className="navbar-blok__section__container">
+                        <Chat />
+                    </div>
+                    <div className="navbar-blok__section__container">
+                        <Link to='/store/cart' className='navbar-blok__section__container__part' style={{ backgroundColor: activePage === '/store/cart' ? 'var(--main-color)' : '' }}>
+                            <p style={{ color: activePage === '/store/cart' ? '#fff' : '' }}>Cart</p>
                             <PiShoppingCartBold
                                 className='navbar-blok__section__container__icon'
-                                style={{ color: activePage === '/online-shop/cart' ? '#fff' : '' }}
+                                style={{ color: activePage === '/store/cart' ? '#fff' : '' }}
                             />
                         </Link>
                     </div>
                     <div className="navbar-blok__section__container">
-                        <Link to='/online-shop/orders' className='navbar-blok__section__container__part' style={{ backgroundColor: activePage === '/online-shop/orders' ? 'var(--main-color)' : '' }}>
-                            <p style={{ color: activePage === '/online-shop/orders' ? '#fff' : '' }}>Orders</p>
+                        <Link to='/store/orders' className='navbar-blok__section__container__part' style={{ backgroundColor: activePage === '/store/orders' ? 'var(--main-color)' : '' }}>
+                            <p style={{ color: activePage === '/store/orders' ? '#fff' : '' }}>Orders</p>
                             <FaHistory
                                 className='navbar-blok__section__container__icon'
-                                style={{ color: activePage === '/online-shop/orders' ? '#fff' : '' }}
+                                style={{ color: activePage === '/store/orders' ? '#fff' : '' }}
                             />
                         </Link>
                     </div>

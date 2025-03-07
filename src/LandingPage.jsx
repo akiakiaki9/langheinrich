@@ -1,23 +1,37 @@
-import React from 'react'
-import { NAME } from './utils/name'
-import LoginComp from './LoginComp'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > window.innerHeight * 0.15) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
         <div className='landing'>
-            <div className="landing-header">
+            <div className={`landing-header ${scrolled ? "scrolled" : ""}`}>
                 <div>
-                    <img src="/images/logo.jpg" alt={`${NAME} Logo`} />
+                    <Link to='/'>
+                        <img src="/images/logo.jpg" alt="Langheinrich Logo" />
+                    </Link>
                 </div>
-                <LoginComp />
+                <Link to='/login' className="landing-header__login">Login</Link>
             </div>
             <div className="landing-blok">
                 <h1>Langheinrich In Uzbekistan</h1>
-                <p>Unsere Internetseite befindet sich derzeit im Umbau</p>
+                <p>Langheinrich – is an experienced manufacturer and supplier of table linen from Germany.</p>
                 <div className="landing-blok__container">
-                    <Link to='/online-shop'><button className='landing-blok__container-button-1'>Store</button></Link>
-                    <Link to='/contacts'><button className='landing-blok__container-button-2'>Contacts</button></Link>
+                    <Link to='/store'><button className='landing-blok__container-button-1'>Store</button></Link>
                 </div>
             </div>
             <div className="landing-footer">
@@ -31,5 +45,5 @@ export default function LandingPage() {
                 </div>
             </div>
         </div>
-    )
+    );
 };

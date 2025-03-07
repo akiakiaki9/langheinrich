@@ -40,11 +40,6 @@ export default function DetailComp() {
         fetchCategories();
     }, []);
 
-    const getCategoryName = (categoryId) => {
-        const category = categories.find((cat) => cat.id === categoryId);
-        return category ? category.name : 'Unknown Category';
-    };
-
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
     }
@@ -55,11 +50,7 @@ export default function DetailComp() {
                 <div>
                     <div className="navigator">
                         <div className="navigator-blok">
-                            <Link to='/online-shop'>Main</Link>
-                            <MdOutlineKeyboardArrowRight className='navigator__slesh' />
-                            <Link to={`/online-shop/category/${product.category}`}>
-                                {getCategoryName(product.category)}
-                            </Link>
+                            <Link to='/store'>Main</Link>
                             <MdOutlineKeyboardArrowRight className='navigator__slesh' />
                             <p className='navigator__p'>{product.name}</p>
                         </div>
