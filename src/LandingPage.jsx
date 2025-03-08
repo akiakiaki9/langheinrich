@@ -1,32 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 export default function LandingPage() {
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > window.innerHeight * 0.15) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
     return (
         <div className='landing'>
-            <div className={`landing-header ${scrolled ? "scrolled" : ""}`}>
-                <div>
-                    <Link to='/'>
-                        <img src="/images/logo.jpg" alt="Langheinrich Logo" />
-                    </Link>
-                </div>
-                <Link to='/login' className="landing-header__login">Login</Link>
-            </div>
+            <Navbar />
             <div className="landing-blok">
                 <h1>Langheinrich In Uzbekistan</h1>
                 <p>Langheinrich – is an experienced manufacturer and supplier of table linen from Germany.</p>

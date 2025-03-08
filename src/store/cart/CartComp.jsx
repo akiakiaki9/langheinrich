@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../navbar/navbar';
+import Navbar from '../../Navbar'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { RiCloseLargeFill } from 'react-icons/ri';

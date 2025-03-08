@@ -1,16 +1,16 @@
 import React from 'react'
-import Navbar from '../navbar/navbar'
-import DetailComp from './DetailComp'
+import OrdersComp from './OrdersComp'
 import Footer from '../../components/footer/Footer'
+import Navbar from '../../Navbar'
 
-export default function DetailMain() {
+export default function Orders() {
     return (
         <div>
             <div className='layout'>
                 <Navbar />
-                <DetailComp />
+                <OrdersComp />
             </div>
             <Footer />
         </div>
     )
-}
+};

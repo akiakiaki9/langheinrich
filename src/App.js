@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./Home";
-import OnlineShop from "./online-shop/OnlineShop";
-import CartComp from "./online-shop/cart/CartComp";
-import DetailMain from "./online-shop/detail/detailmain";
-import Orders from "./online-shop/orders/orders";
+import OnlineShop from "./store/OnlineShop";
+import CartComp from "./store/cart/CartComp";
+import DetailMain from "./store/detail/detailmain";
+import Orders from "./store/orders/orders";
 import Contacts from "./pages/Contacts";
 import ScrolledPage from "./ScrolledPage";
 import AdminPanel from "./pages/AdminPanel";

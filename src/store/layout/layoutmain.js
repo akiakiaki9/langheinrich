@@ -1,16 +1,12 @@
 import React from 'react'
-import { FaHome } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import Contacts1 from '../components/contacts/Contacts1';
-import Contacts2 from '../components/contacts/Contacts2';
-import Footer from '../components/footer/Footer';
-import Navbar from '../Navbar';
-import { GoDotFill } from 'react-icons/go';
+import LayoutComp from './LayoutComp'
+import { Link } from 'react-router-dom'
+import { GoDotFill } from 'react-icons/go'
 
-export default function Contacts() {
+export default function LayoutMain() {
+
     return (
         <div>
-            <Navbar />
             <div className='pagename'>
                 <div className="pagename-blok">
                     <div>
@@ -23,9 +19,7 @@ export default function Contacts() {
                     </div>
                 </div>
             </div>
-            <Contacts1 />
-            <Contacts2 />
-            <Footer />
+            <LayoutComp />
         </div>
     )
 };

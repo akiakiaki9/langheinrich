@@ -1,6 +1,7 @@
 .landing {
     height: 100vh;
     color: #426978;
+    margin-top: 100px;
 }
 
 .landing button:hover {
@@ -167,5 +168,11 @@
     .landing-blok p {
         text-align: center;
         font-size: 80%;
+    }
+}
+
+@media (max-width: 510px) {
+    .landing {
+        margin-top: 85px;
     }
 }

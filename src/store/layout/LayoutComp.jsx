@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { GoDotFill } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import { GrCatalog } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
@@ -43,23 +42,11 @@ export default function Store() {
     }
 
     if (error) {
-        return <div className='error-message'>{error}</div>
+        return <div className='error-message'><p>{error}</p></div>
     }
 
     return (
         <div>
-            <div className='pagename'>
-                <div className="pagename-blok">
-                    <div>
-                        <h1>Store</h1>
-                    </div>
-                    <div>
-                        <Link to='/'><p className='pagename-blok__p-1'>Home</p></Link>
-                        <GoDotFill className='pagename-icon' />
-                        <p className='pagename-blok__p-2'>Store</p>
-                    </div>
-                </div>
-            </div>
             <div className='store'>
                 <div className="store-header">
                     <div>
@@ -112,7 +99,7 @@ export default function Store() {
                                     </div>
                                 ))
                             ) : (
-                                <div>Нет доступных товаров</div>
+                                <div className='store__no-data'><p>There are no matching products</p></div>
                             )}
                         </div>
                     </div>
