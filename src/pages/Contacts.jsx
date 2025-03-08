@@ -1,5 +1,4 @@
 import React from 'react'
-import { FaHome } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Contacts1 from '../components/contacts/Contacts1';
 import Contacts2 from '../components/contacts/Contacts2';
