@@ -20,8 +20,8 @@ export default function Footer() {
                     </div>
                     <div className="footer-blok__section-2-part">
                         <div className="footer-blok__section-2-part__p-1">Partners</div>
-                        <a href=""><p className='footer-blok__section-2-part__p-2'>Zarhan</p></a>
-                        <a href=""><p className='footer-blok__section-2-part__p-2'>Oqtepa</p></a>
+                        <a href="https://akbarsoft.uz"><p className='footer-blok__section-2-part__p-2'>Zarhan</p></a>
+                        <a href="https://akbarsoft.uz"><p className='footer-blok__section-2-part__p-2'>Oqtepa</p></a>
                     </div>
                 </div>
                 <div className="footer-blok__section-3">
@@ -33,7 +33,7 @@ export default function Footer() {
                             <p>CONTACT US</p>
                         </div>
                         <a href='mailto:service@langheinrich.de' className='footer-blok__section-3-part__a-1'>service@langheinrich.de</a>
-                        <a href="+49 6642 / 87-0" className='footer-blok__section-3-part__a-2'>+49 6642 / 87-0</a>
+                        <a href="tel:+49 6642 / 87-0" className='footer-blok__section-3-part__a-2'>+49 6642 / 87-0</a>
                     </div>
                     <div className="footer-blok__section-3-part">
                         <div className="footer-blok__section-3-part__header">

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { BsSendFill } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
-import { FiMoreVertical } from "react-icons/fi";
+// import { FiMoreVertical } from "react-icons/fi";
 
 export default function AdminPanel() {
     const [messages, setMessages] = useState([

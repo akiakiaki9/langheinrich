@@ -9,7 +9,7 @@ import { IoIosPricetags } from "react-icons/io";
 export default function DetailComp() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const [categories, setCategories] = useState([]);
+    const [setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

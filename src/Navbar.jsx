@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoginComp from './LoginComp'; // Импорт компонента
 
 export default function Navbar() {
     const [visible, setVisible] = useState(false);
