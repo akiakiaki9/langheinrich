@@ -9,7 +9,6 @@ import { IoIosPricetags } from "react-icons/io";
 export default function DetailComp() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const [setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -26,19 +25,6 @@ export default function DetailComp() {
 
         fetchProduct();
     }, [id]);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/categories');
-                setCategories(response.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        fetchCategories();
-    }, []);
 
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
