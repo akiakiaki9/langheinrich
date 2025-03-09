@@ -32,7 +32,7 @@ export default function AddToCart({ data }) {
             } else if (response.data.message === "Product already in cart") {
                 setAlreadyMessage(true);
                 setTimeout(() => {
-                    setAlreadyMessage(false); // Таймер для уже добавленного товара
+                    setAlreadyMessage(false);
                 }, 5000);
             }
         } catch (error) {

@@ -6,11 +6,9 @@ import Footer from '../../components/footer/Footer'
 export default function DetailMain() {
     return (
         <div>
-            <div className='layout'>
-                <Navbar />
-                <DetailComp />
-            </div>
+            <Navbar />
+            <DetailComp />
             <Footer />
         </div>
     )
-}
+};

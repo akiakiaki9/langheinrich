@@ -1,5 +1,6 @@
 .navigator {
-    margin-top: 30px;
+    margin-top: 130px;
+    padding: 0 100px;
 }
 
 .navigator-blok {
@@ -7,6 +8,7 @@
     justify-content: start;
     align-items: center;
     gap: 5px;
+    text-transform: uppercase;
 }
 
 .navigator-blok a {
@@ -14,7 +16,8 @@
     color: var(--text-color);
     transition: .5s;
     cursor: pointer;
-    font-weight: 500;
+    font-family: var(--indian-font);
+    font-weight: 700;
 }
 
 .navigator-blok a:hover {
@@ -23,6 +26,8 @@
 
 .navigator__p {
     color: var(--main-color);
+    font-family: var(--indian-font);
+    font-weight: 700;
 }
 
 .navigator__slesh {

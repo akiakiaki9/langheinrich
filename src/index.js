@@ -27,6 +27,7 @@ import './styles/detail.css'
 import './styles/orders.css'
 import './styles/notification.css'
 import './styles/chat.css'
+import './styles/similar.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
