@@ -157,6 +157,7 @@
     .landing-blok {
         padding: 0 20px;
         align-items: center;
+        background-attachment:local;
     }
 
     .landing-blok h1 {
