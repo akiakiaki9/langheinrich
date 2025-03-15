@@ -39,6 +39,10 @@
     flex-direction: column;
 }
 
+.footer-blok__section-2-part a {
+    margin-bottom: 5px;
+}
+
 .footer-blok__section-2-part__p-1 {
     font-size: 120%;
     color: #fff;
@@ -199,5 +203,12 @@
     }
     .footer-footer p {
         font-size: 75%;
+    }
+}
+
+@media (max-width: 425px) {
+    .footer-blok__section-2 {
+        flex-wrap: wrap;
+        gap: 50px;
     }
 }

@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function LandingPage() {
+    const {t} = useTranslation();
     return (
         <div className='landing'>
             <Navbar />
             <div className="landing-blok">
                 <h1>Langheinrich In Uzbekistan</h1>
+                <p>{t("welcome")}</p>
+                <LanguageSwitcher />
                 <p>Langheinrich – is an experienced manufacturer and supplier of table linen from Germany.</p>
                 <div className="landing-blok__container">
                     <Link to='/store'><button className='landing-blok__container-button-1'>Store</button></Link>

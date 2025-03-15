@@ -14,7 +14,6 @@ export default function VideoBg() {
             </video>
             <div className="effects"></div>
             <div className="video-bg__content">
-                <Link to='/'><img src="/images/logo.jpg" alt="Langheinrich Logo" /></Link>
                 <h1 className="video__title">Langheinrich – is an experienced manufacturer and supplier of table linen from Germany.</h1>
             </div>
         </div>

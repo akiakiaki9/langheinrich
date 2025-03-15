@@ -8,6 +8,8 @@ import Contacts from "./pages/Contacts";
 import ScrolledPage from "./ScrolledPage";
 import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
+import News from "./pages/News";
+import NewsDetail from "./pages/NewsDetail";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path='/contacts' element={<Contacts />} />
           <Route path='/adminpanel' element={<AdminPanel />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/news' element={<News />} />
+          <Route path='/news/:id' element={<NewsDetail />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </BrowserRouter>

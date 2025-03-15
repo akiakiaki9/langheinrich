@@ -86,7 +86,7 @@
     font-family: var(--indian-font);
     font-weight: 700;
     text-decoration: none;
-    color: var(--title-color);
+    color: var(--blue-color);
     transition: .5s;
     cursor: pointer;
 }
@@ -137,7 +137,7 @@
     font-family: var(--indian-font);
     font-weight: 700;
     text-decoration: none;
-    color: var(--title-color);
+    color: var(--blue-color);
     transition: .5s;
     cursor: pointer;
 }

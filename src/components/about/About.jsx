@@ -8,8 +8,8 @@ export default function About() {
                 <div className="about-blok__section-1">
                     <img src="/images/about.jpg" alt="" />
                     <div className="about-blok__section-1__container">
-                        <p className='about-blok__section-1__container__p1'>25+</p>
-                        <p className='about-blok__section-1__container__p2'>Year experience in Fabiflex</p>
+                        <p className='about-blok__section-1__container__p1'>125+</p>
+                        <p className='about-blok__section-1__container__p2'>Year experience in Textile</p>
                     </div>
                 </div>
                 <div className="about-blok__section-2">

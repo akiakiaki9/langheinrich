@@ -19,9 +19,14 @@ export default function Footer() {
                         <Link to='/login'><p className='footer-blok__section-2-part__p-2'>Login</p></Link>
                     </div>
                     <div className="footer-blok__section-2-part">
+                        <p className='footer-blok__section-2-part__p-1'>News</p>
+                        <Link to='/store'><p className='footer-blok__section-2-part__p-2'>News</p></Link>
+                        <Link to='/contacts'><p className='footer-blok__section-2-part__p-2'>Faires</p></Link>
+                    </div>
+                    <div className="footer-blok__section-2-part">
                         <div className="footer-blok__section-2-part__p-1">Partners</div>
                         <a href="https://akbarsoft.uz"><p className='footer-blok__section-2-part__p-2'>Zarhan</p></a>
-                        <a href="https://akbarsoft.uz"><p className='footer-blok__section-2-part__p-2'>Oqtepa</p></a>
+                        <a href="https://akbarsoft.uz"><p className='footer-blok__section-2-part__p-2'>Curt Bauer</p></a>
                     </div>
                 </div>
                 <div className="footer-blok__section-3">

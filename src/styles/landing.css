@@ -42,7 +42,8 @@
     justify-content: center;
     height: 70.6vh;
     padding: 0 100px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.423), rgba(0, 0, 0, 0.423)), url('/public/images/blok.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.423), rgba(0, 0, 0, 0.423)), url('/public/images/landing.png');
+    background-attachment: fixed;
     background-size: cover;
 }
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Contacts1 from '../components/contacts/Contacts1';
 import Contacts2 from '../components/contacts/Contacts2';
 import Footer from '../components/footer/Footer';
-import Navbar from '../Navbar';
 import { GoDotFill } from 'react-icons/go';
+import Navbar from '../Navbar';
 
 export default function Contacts() {
     return (
