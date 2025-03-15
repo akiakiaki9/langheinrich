@@ -20,8 +20,8 @@ export default function Footer() {
                     </div>
                     <div className="footer-blok__section-2-part">
                         <p className='footer-blok__section-2-part__p-1'>News</p>
-                        <Link to='/store'><p className='footer-blok__section-2-part__p-2'>News</p></Link>
-                        <Link to='/contacts'><p className='footer-blok__section-2-part__p-2'>Faires</p></Link>
+                        <Link to='/news'><p className='footer-blok__section-2-part__p-2'>News</p></Link>
+                        <Link to='/faires'><p className='footer-blok__section-2-part__p-2'>Faires</p></Link>
                     </div>
                     <div className="footer-blok__section-2-part">
                         <div className="footer-blok__section-2-part__p-1">Partners</div>
