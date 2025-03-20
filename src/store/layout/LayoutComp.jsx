@@ -16,8 +16,8 @@ export default function Store() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const categoryRes = await axios.get('http://127.0.0.1:8000/api/categories');
-                const productRes = await axios.get('http://127.0.0.1:8000/api/products');
+                const categoryRes = await axios.get('https://macalistervadim.site/api/categories');
+                const productRes = await axios.get('https://macalistervadim.site/api/products');
                 setCategories(categoryRes.data);
                 setProducts(productRes.data);
             } catch (error) {
