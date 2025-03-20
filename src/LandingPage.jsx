@@ -21,7 +21,7 @@ export default function LandingPage() {
             <Swiper
                 effect={'fade'}
                 modules={[EffectFade, Autoplay, Pagination]}
-                autoplay={{ delay: 5000, disableOnInteraction: false }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
                 pagination={{ clickable: true }}
                 className='landing-swiper'
             >

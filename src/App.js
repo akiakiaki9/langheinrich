@@ -7,12 +7,14 @@ import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
+import LanguageChoose from "./components/LanguageChoose";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <ScrolledPage />
+        <LanguageChoose />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/store' element={<OnlineShop />} />
