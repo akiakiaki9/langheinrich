@@ -14,10 +14,10 @@ export default function DetailComp() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://macalistervadim.site//api/products/${id}`);
+                const response = await axios.get(`https://macalistervadim.site/api/products/${id}`);
                 setProduct(response.data);
 
-                const allProducts = await axios.get('https://macalistervadim.site//api/products');
+                const allProducts = await axios.get('https://macalistervadim.site/api/products');
                 const filteredProducts = allProducts.data
                     .filter(item => item.category === response.data.category && item.id !== response.data.id);
 
