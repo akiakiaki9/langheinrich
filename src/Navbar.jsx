@@ -1,87 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FiPhoneCall, FiMenu, FiX } from 'react-icons/fi';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FiPhoneCall, FiMenu, FiX } from "react-icons/fi";
 
 export default function Navbar() {
     const location = useLocation();
     const activePage = location.pathname;
     const [visible, setVisible] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [newsDropdownOpen, setNewsDropdownOpen] = useState(false);
-    const [partnersDropdownOpen, setPartnersDropdownOpen] = useState(false);
-    const [isMobile] = useState(window.innerWidth <= 768);
+    const [dropdownOpen, setDropdownOpen] = useState(null);
+    const isMobile = window.innerWidth <= 768;
+
+    const navRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => {
             setVisible(window.scrollY > 200);
         };
 
-        window.addEventListener('scroll', handleScroll);
-
+        window.addEventListener("scroll", handleScroll);
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setDropdownOpen(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const toggleDropdown = (menu) => {
+        setDropdownOpen((prev) => (prev === menu ? null : menu));
+    };
+
     return (
-        <nav className={`navbar ${visible ? 'visible' : 'hidden'}`}>
+        <nav className={`navbar ${visible ? "visible" : "hidden"}`} ref={navRef}>
             <div className="navbar-blok">
                 <div className="navbar-blok__section-1">
-                    <Link to='/'>
+                    <Link to="/">
                         <img src="/images/logo.jpg" alt="Logo" />
                     </Link>
-                    <div className='navbar-blok__section-1__line'></div>
+                    <div className="navbar-blok__section-1__line"></div>
                     <button className="burger" onClick={() => setMenuOpen(!menuOpen)}>
                         {menuOpen ? <FiX size={30} /> : <FiMenu size={30} />}
                     </button>
-                    <div className={`navbar-menu ${menuOpen ? 'open' : ''}`}>
-                        <Link
-                            style={{ color: activePage === "/store" ? "var(--orange-color)" : "" }}
-                            className='navbar-menu__a'
-                            to='/store'
-                            onClick={() => setMenuOpen(false)}>
-                            Store
+                    <div className={`navbar-menu ${menuOpen ? "open" : ""}`}>
+                        {[
+                            { name: "news", label: "News", links: ["/news", "/faires"] },
+                            { name: "company", label: "Company", links: ["/history", "/team", "/future", "/quality"] },
+                            { name: "products", label: "Products", links: ["/tabellinen", "/bedlinen", "/towels"] },
+                            { name: "customers", label: "Customers", links: ["/laundries", "/hotels", "/airliner", "/cruiseliner", "/railway"] },
+                            { name: "services", label: "Services", links: ["/customer-hotline", "/after-sale-service"] },
+                            { name: "sustainability", label: "Sustainability", links: ["/certifications", "/future-plans", "/csr"] },
+                        ].map(({ name, label, links }) => (
+                            <div
+                                key={name}
+                                className="dropdown"
+                                onMouseEnter={() => !isMobile && setDropdownOpen(name)}
+                                onMouseLeave={() => !isMobile && setTimeout(() => setDropdownOpen(null), 200)}
+                                onClick={() => isMobile && toggleDropdown(name)}
+                            >
+                                <span style={{ color: activePage.includes(name) ? "var(--orange-color)" : "" }}>{label}</span>
+                                <ul className={`dropdown-menu ${dropdownOpen === name ? "show" : ""}`}>
+                                    {links.map((link, index) => (
+                                        <li key={index}>
+                                            <Link
+                                                to={link}
+                                                style={{ color: activePage === link ? "var(--orange-color)" : "" }}
+                                                onClick={() => setMenuOpen(false)}
+                                            >
+                                                {link.split("/")[1].charAt(0).toUpperCase() + link.split("/")[1].slice(1)}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                        <Link className="navbar-menu__a" to="/login" onClick={() => setMenuOpen(false)}>
+                            Login
                         </Link>
-                        <Link
-                            style={{ color: activePage === "/contacts" ? "var(--orange-color)" : "" }}
-                            className='navbar-menu__a'
-                            to='/contacts'
-                            onClick={() => setMenuOpen(false)}>
-                            Contacts
-                        </Link>
-                        <Link className='navbar-menu__a' to='/login' onClick={() => setMenuOpen(false)}>Login</Link>
-
-                        {/* Выпадающее меню News */}
-                        <div
-                            className="dropdown"
-                            onMouseEnter={() => !isMobile && setNewsDropdownOpen(true)}
-                            onMouseLeave={() => !isMobile && setNewsDropdownOpen(false)}
-                            onClick={() => isMobile && setNewsDropdownOpen(!newsDropdownOpen)}
-                        >
-                            <span style={{ color: activePage === "/news" ? "var(--orange-color)" : ""}}>News</span>
-                            <ul className={`dropdown-menu ${newsDropdownOpen ? 'show' : ''}`}>
-                                <li><Link to='/news' style={{ color: activePage === "/news" ? "var(--orange-color)" : ""}}>News</Link></li>
-                                <li><Link to='/faires' style={{ color: activePage === "/faires" ? "var(--orange-color)" : ""}}>Faires</Link></li>
-                            </ul>
-                        </div>
-
-                        {/* Выпадающее меню Partners */}
-                        <div
-                            className="dropdown"
-                            onMouseEnter={() => !isMobile && setPartnersDropdownOpen(true)}
-                            onMouseLeave={() => !isMobile && setPartnersDropdownOpen(false)}
-                            onClick={() => isMobile && setPartnersDropdownOpen(!partnersDropdownOpen)}
-                        >
-                            <span>Partners</span>
-                            <ul className={`dropdown-menu ${partnersDropdownOpen ? 'show' : ''}`}>
-                                <li><a href="https://akbarsoft.uz">Zarhal</a></li>
-                                <li><a href="https://akbarsoft.uz">Curt Bauer</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div className="navbar-blok__section-2">
-                    <FiPhoneCall className='navbar-blok__section__icon' />
+                    <FiPhoneCall className="navbar-blok__section__icon" />
                     <div>
                         <p>Call Us Now!</p>
                         <a href="tel:+18-2222-3555">+18 - 2222 - 3555</a>

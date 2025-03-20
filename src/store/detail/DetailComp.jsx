@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
-import MakeOrder from './MakeOrder';
-import AddToCart from './AddToCart';
 import axios from 'axios';
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { IoIosPricetags } from "react-icons/io";
+import { FaHeart } from 'react-icons/fa';
 
 export default function DetailComp() {
     const { id } = useParams();
@@ -71,8 +70,16 @@ export default function DetailComp() {
                                         </p>
                                     </div>
                                     <div className="detail-blok__section-2__header">
-                                        <MakeOrder data={product} />
-                                        <AddToCart data={product.id} />
+                                        <button
+                                            className="detail-blok__section-2__header__button-1"
+                                        >
+                                            Order
+                                        </button>
+                                        <button
+                                            className="detail-blok__section-2__header__button-2"
+                                        >
+                                            <FaHeart className='detail-blok__section-2__header__button-2__icon' />
+                                        </button>
                                     </div>
                                     <p className='detail__description'>{product.description}</p>
                                 </div>
