@@ -7,22 +7,26 @@ import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
-import LanguageChoose from "./components/LanguageChoose";
+// import LanguageChoose from "./components/LanguageChoose";
+import Profile from "./pages/Profile";
+import Glava from "./Glava";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <ScrolledPage />
-        <LanguageChoose />
+        {/* <LanguageChoose /> */}
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Glava />} />
+          <Route path='/home' element={<Home />} />
           <Route path='/store' element={<OnlineShop />} />
           <Route path='/store/product/:id' element={<DetailMain />} />
           <Route path='/adminpanel' element={<AdminPanel />} />
           <Route path='/login' element={<Login />} />
           <Route path='/news' element={<News />} />
           <Route path='/news/:id' element={<NewsDetail />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </BrowserRouter>

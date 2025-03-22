@@ -1,0 +1,17 @@
+.favorites {
+
+}
+
+.favorites-blok {
+
+}
+
+.favorites-blok__section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorites-blok__section a img {
+    width: 200px;
+}

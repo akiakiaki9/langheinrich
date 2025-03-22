@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { IoIosPricetags } from "react-icons/io";
 import { FaHeart } from 'react-icons/fa';
@@ -10,6 +11,7 @@ export default function DetailComp() {
     const [product, setProduct] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -21,10 +23,10 @@ export default function DetailComp() {
                 const filteredProducts = allProducts.data
                     .filter(item => item.category === response.data.category && item.id !== response.data.id);
 
-                // Перемешиваем и берем 3 случайных товара
                 const shuffled = filteredProducts.sort(() => 0.5 - Math.random()).slice(0, 3);
-
                 setSimilarProducts(shuffled);
+
+                await checkFavorite(response.data.id);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -34,6 +36,43 @@ export default function DetailComp() {
 
         fetchProduct();
     }, [id]);
+
+    const checkFavorite = async (productId) => {
+        try {
+            const token = Cookies.get('access');
+            if (!token) return;
+
+            const response = await axios.get('https://macalistervadim.site/api/favorites/', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const favorites = response.data;
+            setIsFavorite(favorites.some(item => item.id === productId));
+        } catch (error) {
+            console.error('Ошибка при проверке избранного:', error);
+        }
+    };
+
+    const handleFavorite = async () => {
+        const token = Cookies.get('access');
+
+        if (!token) {
+            alert('Вы не авторизованы');
+            return;
+        }
+
+        try {
+            await axios.post(
+                'https://macalistervadim.site/api/favorites/',
+                { product: product.id },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            setIsFavorite(true);
+        } catch (error) {
+            console.error('Ошибка при добавлении в избранное:', error);
+        }
+    };
 
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
@@ -70,13 +109,12 @@ export default function DetailComp() {
                                         </p>
                                     </div>
                                     <div className="detail-blok__section-2__header">
-                                        <button
-                                            className="detail-blok__section-2__header__button-1"
-                                        >
+                                        <button className="detail-blok__section-2__header__button-1">
                                             Order
                                         </button>
                                         <button
-                                            className="detail-blok__section-2__header__button-2"
+                                            className={`detail-blok__section-2__header__button-2 ${isFavorite ? 'favorite' : ''}`}
+                                            onClick={handleFavorite}
                                         >
                                             <FaHeart className='detail-blok__section-2__header__button-2__icon' />
                                         </button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FiPhoneCall, FiMenu, FiX } from "react-icons/fi";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
     const location = useLocation();
@@ -8,9 +9,14 @@ export default function Navbar() {
     const [visible, setVisible] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const isMobile = window.innerWidth <= 768;
 
     const navRef = useRef(null);
+
+    useEffect(() => {
+        setIsAuthenticated(!!Cookies.get("access"));
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -44,7 +50,7 @@ export default function Navbar() {
         <nav className={`navbar ${visible ? "visible" : "hidden"}`} ref={navRef}>
             <div className="navbar-blok">
                 <div className="navbar-blok__section-1">
-                    <Link to="/">
+                    <Link to="/home">
                         <img src="/images/logo.jpg" alt="Logo" />
                     </Link>
                     <div className="navbar-blok__section-1__line"></div>
@@ -83,8 +89,12 @@ export default function Navbar() {
                                 </ul>
                             </div>
                         ))}
-                        <Link className="navbar-menu__a" to="/login" onClick={() => setMenuOpen(false)}>
-                            Login
+                        <Link
+                            className="navbar-menu__a"
+                            to={isAuthenticated ? "/profile" : "/login"}
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            {isAuthenticated ? "Profile" : "Login"}
                         </Link>
                     </div>
                 </div>

@@ -10,8 +10,7 @@ import Navbar from './Navbar';
 const images = [
     '/images/landing/landing1.jpg',
     '/images/landing/landing2.jpg',
-    '/images/landing/landing3.jpg',
-    '/images/landing/landing4.jpg',
+    '/images/about.jpg'
 ];
 
 export default function LandingPage() {

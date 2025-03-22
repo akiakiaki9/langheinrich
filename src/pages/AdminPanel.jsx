@@ -1,42 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { BsSendFill } from "react-icons/bs";
-import { AiOutlinePlus } from "react-icons/ai";
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function AdminPanel() {
-    const [messages, setMessages] = useState([
-        { id: 1, text: 'The message from client!', sender: 'client' },
-        { id: 2, text: 'The message from myself!', sender: 'admin' },
-    ]);
+    const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
     const [unreadMessages, setUnreadMessages] = useState({});
     const messagesEndRef = useRef(null);
+    const ws = useRef(null);
+
+    useEffect(() => {
+        if (selectedChat) {
+            const token = Cookies.get('access');
+            ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
+
+            ws.current.onopen = () => console.log("WebSocket connected");
+            ws.current.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                setMessages(prev => [...prev, data]);
+            };
+            ws.current.onerror = (error) => console.error("WebSocket Error: ", error);
+            ws.current.onclose = () => console.log("WebSocket disconnected");
+        }
+
+        return () => ws.current?.close();
+    }, [selectedChat]);
 
     const sendMessage = () => {
-        if (input.trim()) {
-            setMessages(prev => [...prev, { id: prev.length + 1, text: input, sender: 'admin' }]);
+        if (input.trim() && ws.current) {
+            const message = { text: input, sender: 'admin', chatId: selectedChat };
+            ws.current.send(JSON.stringify(message));
+            setMessages(prev => [...prev, message]);
             setInput('');
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    };
-
-    const selectChat = (chatId) => {
-        setSelectedChat(chatId);
-        setUnreadMessages((prev) => ({ ...prev, [chatId]: 0 }));
-    };
-
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const fileURL = URL.createObjectURL(file);
-            setMessages(prev => [...prev, { id: prev.length + 1, file: fileURL, fileName: file.name, sender: 'admin' }]);
         }
     };
 
@@ -46,7 +44,7 @@ export default function AdminPanel() {
                 messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
             }
         }, 100);
-    }, [messages, selectedChat]);
+    }, [messages]);
 
     return (
         <div>
@@ -55,11 +53,8 @@ export default function AdminPanel() {
                     <div className={`chat-list ${selectedChat !== null ? "hidden" : ""}`}>
                         <h3>Chats</h3>
                         <div className="chat-list__items">
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(chat => (
-                                <p
-                                    key={chat}
-                                    onClick={() => selectChat(chat)}
-                                    className={selectedChat === chat ? "active" : ""}>
+                            {[1, 2, 3, 4, 5].map(chat => (
+                                <p key={chat} onClick={() => setSelectedChat(chat)}>
                                     Chat {chat} {unreadMessages[chat] > 0 && <span className="unread-count">{unreadMessages[chat]}</span>}
                                 </p>
                             ))}
@@ -71,33 +66,19 @@ export default function AdminPanel() {
                         ) : (
                             <>
                                 <div className="admin-blok__header">
-                                    <h3>ООО Покупатель НФС</h3>
-                                    <RiArrowGoBackLine className="admin-blok__header-icon" onClick={() => setSelectedChat(null)} />
+                                    <h3>Chat {selectedChat}</h3>
+                                    <RiArrowGoBackLine onClick={() => setSelectedChat(null)} />
                                 </div>
                                 <div className="admin-blok__list" ref={messagesEndRef}>
-                                    {messages.map(msg => (
-                                        <div key={msg.id} className={`message ${msg.sender}`}>
-                                            {msg.text && <p>{msg.text}</p>}
-                                            {msg.file && (
-                                                msg.file.includes('image') ? <img src={msg.file} alt={msg.fileName} className='sent-image' /> :
-                                                    <a href={msg.file} target="_blank" rel="noopener noreferrer">{msg.fileName}</a>
-                                            )}
+                                    {messages.map((msg, index) => (
+                                        <div key={index} className={`message ${msg.sender}`}>
+                                            <p>{msg.text}</p>
                                         </div>
                                     ))}
                                 </div>
                                 <div className="admin-blok__input">
-                                    <label className="file-upload">
-                                        <AiOutlinePlus className='file-upload-icon' />
-                                        <input type="file" onChange={handleFileUpload} hidden />
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={input}
-                                        onChange={(e) => setInput(e.target.value)}
-                                        onKeyPress={handleKeyPress}
-                                        placeholder="Type a message..." 
-                                    />
-                                    <BsSendFill className='admin-blok__input__icon' onClick={sendMessage} />
+                                    <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type a message..." />
+                                    <BsSendFill onClick={sendMessage} />
                                 </div>
                             </>
                         )}
@@ -105,7 +86,7 @@ export default function AdminPanel() {
                 </div>
             </div>
             <div>
-                <Link to='/'><p className='admin__home'>HOME <RiArrowGoBackLine className='admin__home__icon' /></p></Link>
+                <Link to='/'><p className='admin__home'>HOME <RiArrowGoBackLine /></p></Link>
             </div>
         </div>
     );

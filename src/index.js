@@ -33,6 +33,9 @@ import './styles/news.css';
 import './styles/newsdetail.css';
 import './styles/languageswitcher.css';
 import './styles/choose.css';
+import './styles/profile.css';
+import './styles/favorites.css';
+import './styles/glava.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

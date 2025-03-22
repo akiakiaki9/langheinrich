@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { MdLocalPhone } from "react-icons/md";
@@ -12,7 +12,6 @@ export default function Login() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +23,7 @@ export default function Login() {
 
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/token/',
+                'https://macalistervadim.site/api/token/',
                 {
                     username: login,
                     password: password
@@ -39,12 +38,12 @@ export default function Login() {
             if (response.status === 200) {
                 Cookies.set('access', response.data.access, { path: '/', expires: 7 });
                 Cookies.set('refresh', response.data.refresh, { path: '/', expires: 30 });
-                navigate('/store');
             } else {
                 setError('Incorrect login or password.');
             }
 
         } catch (error) {
+            console.error(error);
             setError('There was an error sending data.');
         }
     };
