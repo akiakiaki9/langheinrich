@@ -28,9 +28,8 @@ export default function FairesDetail() {
         fetchNews();
     }, [id]);
 
-    if (loading) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Загрузка...</h2>;
+    if (loading) return <div className='loading'><div className='loader'></div></div>;
     if (error) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>{error}</h2>;
-    if (!newsItem) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Новость не найдена</h2>;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
