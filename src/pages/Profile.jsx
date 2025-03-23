@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { MdDeleteOutline } from "react-icons/md";
 import axios from 'axios';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import { IoExitOutline } from "react-icons/io5";
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -65,6 +66,12 @@ export default function Profile() {
         }
     };
 
+    const handleLogout = () => {
+        Cookies.remove("access");
+        Cookies.remove("refresh");
+        navigate("/");
+    };
+
     return (
         <div>
             <Navbar />
@@ -80,6 +87,10 @@ export default function Profile() {
                         <div className="profile-blok__section__header">
                             <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>Profile</button>
                             <button className={activeTab === 'favorites' ? 'active' : ''} onClick={() => setActiveTab('favorites')}>Favorites</button>
+                            <button onClick={handleLogout}>Log Out <IoExitOutline /></button>
+                            <div>
+                                <button onClick={handleLogout}><IoExitOutline /></button>
+                            </div>
                         </div>
                     </div>
                     <div className="profile-blok__section profile-blok__section-2">
