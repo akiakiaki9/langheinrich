@@ -8,7 +8,7 @@ export default function AdminPanel() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
-    const [unreadMessages, setUnreadMessages] = useState({});
+    const [unreadMessages] = useState({});
     const messagesEndRef = useRef(null);
     const ws = useRef(null);
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FiMessageSquare, FiX, FiCheck, FiClock, FiTrash2, FiCopy, FiCornerDownLeft } from 'react-icons/fi';
 import { IoSend } from "react-icons/io5";
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export default function Chat() {
     const [chatOpen, setChatOpen] = useState(false);
@@ -10,7 +10,7 @@ export default function Chat() {
     const [newMessage, setNewMessage] = useState('');
     const [unread, setUnread] = useState(true);
     const chatEndRef = useRef(null);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const ws = useRef(null);
 
     useEffect(() => {
@@ -23,10 +23,10 @@ export default function Chat() {
 
     useEffect(() => {
         const token = Cookies.get('access');
-        if (!token) {
-            navigate('/login');
-            return;
-        };
+        // if (!token) {
+        //     navigate('/login');
+        //     return;
+        // };
 
         ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
 
