@@ -5,20 +5,20 @@ import { GoDotFill } from "react-icons/go";
 import Footer from "../components/footer/Footer";
 import axios from "axios";
 
-export default function News() {
-    const [news, setNews] = useState([]);
+export default function Faires() {
+    const [faires, setFaires] = useState([]);
 
     useEffect(() => {
-        const loadNews = async () => {
+        const loadFaires = async () => {
             try {
-                const response = await axios.get("https://macalistervadim.site/api/news/");
-                setNews(response.data);
+                const response = await axios.get("https://macalistervadim.site/api/faire/");
+                setFaires(response.data);
             } catch (error) {
-                console.error("Ошибка загрузки новостей:", error);
+                console.error("Ошибка загрузки faires:", error);
             }
         };
 
-        loadNews();
+        loadFaires();
     }, []);
 
     const formatDate = (dateString) => {
@@ -37,21 +37,21 @@ export default function News() {
             <div className="pagename">
                 <div className="pagename-blok">
                     <div>
-                        <h1>News</h1>
+                        <h1>Faires</h1>
                     </div>
                     <div>
                         <Link to="/">
                             <p className="pagename-blok__p-1">Home</p>
                         </Link>
                         <GoDotFill className="pagename-icon" />
-                        <p className="pagename-blok__p-2">News</p>
+                        <p className="pagename-blok__p-2">Faires</p>
                     </div>
                 </div>
             </div>
             <div className="news">
                 <div className="news-blok">
-                    {news.length > 0 ? (
-                        news.map((item) => (
+                    {faires.length > 0 ? (
+                        faires.map((item) => (
                             <div
                                 className="news-blok__section"
                                 key={item.id}
@@ -60,7 +60,7 @@ export default function News() {
                                 <div className="news-blok__section__header">
                                     <p>{item.category}</p>
                                 </div>
-                                <Link to={`/news/${item.id}`}>
+                                <Link to={`/faires/${item.id}`}>
                                     <h1>{item.title}</h1>
                                 </Link>
                                 <div className="news-blok__section__footer">
@@ -70,7 +70,7 @@ export default function News() {
                             </div>
                         ))
                     ) : (
-                        <p>Загрузка новостей...</p>
+                        <div className='loading'><div className='loader'></div></div>
                     )}
                 </div>
             </div>

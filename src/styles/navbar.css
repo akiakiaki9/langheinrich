@@ -155,7 +155,7 @@
     opacity: .5;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1177px) {
     .dropdown-menu li a {
         color: var(--main-color);
     }

@@ -150,6 +150,9 @@
     .footer {
         padding: 50px 50px 20px 50px;
     }
+    .footer-blok__section-2 {
+        gap: 50px;
+    }
 }
 
 @media (max-width: 768px) {

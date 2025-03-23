@@ -10,6 +10,8 @@ import NewsDetail from "./pages/NewsDetail";
 // import LanguageChoose from "./components/LanguageChoose";
 import Profile from "./pages/Profile";
 import Glava from "./Glava";
+import Faires from "./pages/Faires";
+import FairesDetail from "./pages/FairesDetail";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/news' element={<News />} />
           <Route path='/news/:id' element={<NewsDetail />} />
+          <Route path='/faires/' element={<Faires />} />
+          <Route path='/faires/:id' element={<FairesDetail />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>

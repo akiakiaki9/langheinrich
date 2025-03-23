@@ -6,8 +6,9 @@ import Chat from '../Chat';
 import Footer from '../components/footer/Footer';
 import { CgProfile } from "react-icons/cg";
 import { Link } from 'react-router-dom';
-import { FaHeart } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 import axios from 'axios';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -67,6 +68,7 @@ export default function Profile() {
     return (
         <div>
             <Navbar />
+            <LanguageSwitcher />
             <Chat />
             <div className='profile'>
                 <div className="profile-header">
@@ -74,13 +76,13 @@ export default function Profile() {
                     <CgProfile className='profile-header__icon' />
                 </div>
                 <div className="profile-blok">
-                    <div className="profile-blok__section">
+                    <div className="profile-blok__section profile-blok__section-1">
                         <div className="profile-blok__section__header">
                             <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>Profile</button>
                             <button className={activeTab === 'favorites' ? 'active' : ''} onClick={() => setActiveTab('favorites')}>Favorites</button>
                         </div>
                     </div>
-                    <div className="profile-blok__section">
+                    <div className="profile-blok__section profile-blok__section-2">
                         {activeTab === 'profile' && (
                             <div className="profile-blok__section__container">
                                 <div className="profile-blok__section__container-part">
@@ -117,17 +119,32 @@ export default function Profile() {
                                         favorites.map((item, index) => {
                                             const productData = products.find(prod => prod.id === item.product);
                                             return (
-                                                <div key={index} className="favorites-blok__section">
-                                                    <Link to={`/store/product/${productData?.id}`}>
-                                                        <img src={item.image || '/images/logo.jpg'} alt={productData ? productData.name : 'Неизвестный товар'} />
-                                                    </Link>
-                                                    <p>{productData ? productData.name : 'Неизвестный товар'}</p>
-                                                    <FaHeart className='favorites-blok__section__icon' onClick={() => removeFavorite(item.id)} />
+                                                <div className="favorites-blok__section">
+                                                    <div className="favorites-blok__section__container" key={index}>
+                                                        <div>
+                                                            <Link to={`/store/product/${productData?.id}`}>
+                                                                <img src={productData.image || '/images/logo.jpg'} alt={productData ? productData.name : 'None'} />
+                                                            </Link>
+                                                            <div className="favorites-blok__section__container-part">
+                                                                <Link to={`/store/product/${productData?.id}`}>
+                                                                    <p className='favorites-blok__section__container-part-p1'>{productData ? productData.name : 'None'}</p>
+                                                                </Link>
+                                                                <p className='favorites-blok__section__container-part-p2'>
+                                                                    {Number(productData ? productData.price : 'None').toLocaleString('ru-RU')}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="favorites-blok__section__container-footer">
+                                                            <MdDeleteOutline className='favorites-blok__section__icon' onClick={() => removeFavorite(item.id)} />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             );
                                         })
                                     ) : (
-                                        <p>No favorites found.</p>
+                                        <div className='favorites-none'>
+                                            <p>No favorites found.</p>
+                                        </div>
                                     )}
                                 </div>
                             </div>

@@ -26,6 +26,14 @@
     display: flex;
 }
 
+.profile-blok__section-1 {
+    border-right: 1px solid #cecece;
+}
+
+.profile-blok__section-2 {
+    width: 100%;
+}
+
 .profile-blok__section__header {
     display: flex;
     flex-direction: column;
@@ -34,8 +42,6 @@
 .profile-blok__section__header button {
     width: 200px;
     padding: 5px 10px;
-    color: #fff;
-    background-color: var(--main-color);
     cursor: pointer;
     transition: .5s;
     border: none;
@@ -58,6 +64,7 @@
 
 .profile-blok__section__container {
     padding: 20px;
+    min-height: 50vh;
 }
 
 @media (max-width: 1300px) {
@@ -69,6 +76,13 @@
 @media (max-width: 768px) {
     .profile {
         padding: 30px 20px;
+    }
+    .profile-header h1 {
+        font-size: 160%;
+    }
+    .profile-header__icon {
+        width: 20px;
+        height: 20px;
     }
     .profile-blok {
         display: flex;

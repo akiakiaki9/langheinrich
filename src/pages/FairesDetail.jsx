@@ -6,7 +6,7 @@ import Footer from "../components/footer/Footer";
 import { GoDotFill } from "react-icons/go";
 import { MdFormatQuote } from "react-icons/md";
 
-export default function NewsDetail() {
+export default function FairesDetail() {
     const { id } = useParams();
     const [newsItem, setNewsItem] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export default function NewsDetail() {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await axios.get(`https://macalistervadim.site/api/news/${id}`);
+                const response = await axios.get(`https://macalistervadim.site/api/faire/${id}`);
                 setNewsItem(response.data);
             } catch (error) {
                 setError("Ошибка загрузки новости.");
@@ -28,8 +28,9 @@ export default function NewsDetail() {
         fetchNews();
     }, [id]);
 
-    if (loading) return <div className='loading'><div className='loader'></div></div>;
+    if (loading) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Загрузка...</h2>;
     if (error) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>{error}</h2>;
+    if (!newsItem) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Новость не найдена</h2>;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
