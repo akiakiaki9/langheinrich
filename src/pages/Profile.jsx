@@ -73,8 +73,6 @@ export default function Profile() {
         navigate("/");
     };
 
-    if (!chatId) return null;
-
     return (
         <div>
             <Navbar />

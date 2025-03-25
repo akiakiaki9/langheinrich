@@ -96,8 +96,6 @@ export default function DetailComp() {
         }
     };
 
-    if (!chatId) return null;
-
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
     }
