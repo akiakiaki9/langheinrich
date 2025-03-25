@@ -13,10 +13,11 @@ export default function Footer() {
                 </div>
                 <div className="footer-blok__section-2">
                     <div className="footer-blok__section-2-part">
-                        <p className='footer-blok__section-2-part__p-1'>Links</p>
-                        <Link to='/store'><p className='footer-blok__section-2-part__p-2'>Store</p></Link>
-                        <Link to='/contacts'><p className='footer-blok__section-2-part__p-2'>Contacts</p></Link>
-                        <Link to='/login'><p className='footer-blok__section-2-part__p-2'>Login</p></Link>
+                        <p className='footer-blok__section-2-part__p-1'>Company</p>
+                        <Link to='/history'><p className='footer-blok__section-2-part__p-2'>History</p></Link>
+                        <Link to='/team'><p className='footer-blok__section-2-part__p-2'>Team</p></Link>
+                        <Link to='/future'><p className='footer-blok__section-2-part__p-2'>Future</p></Link>
+                        <Link to='/quality'><p className='footer-blok__section-2-part__p-2'>Quality</p></Link>
                     </div>
                     <div className="footer-blok__section-2-part">
                         <p className='footer-blok__section-2-part__p-1'>News</p>
