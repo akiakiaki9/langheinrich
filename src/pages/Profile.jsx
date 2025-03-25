@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Navbar from '../Navbar';
-import Chat from '../Chat';
 import Footer from '../components/footer/Footer';
 import { CgProfile } from "react-icons/cg";
 import { Link } from 'react-router-dom';
@@ -10,12 +9,14 @@ import { MdDeleteOutline } from "react-icons/md";
 import axios from 'axios';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import { IoExitOutline } from "react-icons/io5";
+import { MdOutlineChat } from "react-icons/md";
 
 export default function Profile() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('profile');
     const [favorites, setFavorites] = useState([]);
     const [products, setProducts] = useState([]);
+    const chatId = Cookies.get('chatId');
 
     useEffect(() => {
         const token = Cookies.get('access');
@@ -72,11 +73,17 @@ export default function Profile() {
         navigate("/");
     };
 
+    if (!chatId) return null;
+
     return (
         <div>
             <Navbar />
             <LanguageSwitcher />
-            <Chat />
+            <Link to={`/chat?chatId=${chatId}`}>
+                <div className='openchat'>
+                    <MdOutlineChat className='openchat__icon' />
+                </div>
+            </Link>
             <div className='profile'>
                 <div className="profile-header">
                     <h1>Your Profile</h1>

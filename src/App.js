@@ -32,7 +32,7 @@ function App() {
           <Route path='/faires/' element={<Faires />} />
           <Route path='/faires/:id' element={<FairesDetail />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path="/chat/:chatId" element={<Chat />} />
+          <Route path='/chat' element={<Chat />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </BrowserRouter>

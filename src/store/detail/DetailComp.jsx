@@ -13,6 +13,7 @@ export default function DetailComp() {
     const [similarProducts, setSimilarProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFavorite, setIsFavorite] = useState(false);
+    const chatId = Cookies.get('chatId');
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -43,7 +44,7 @@ export default function DetailComp() {
             const token = Cookies.get('access');
             if (!token) return;
 
-            const response = await axios.get('https://macalistervadim.site/api/favorites/', {
+            const response = await axios.get('https://macalistervadim.site/api/favorites/', {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -75,33 +76,27 @@ export default function DetailComp() {
         }
     };
 
-    const handleOrder = async () => {
-        if (!product) return;
-
+    const handleOrder = async (productId) => {
         try {
-            const token = Cookies.get('access');
-            if (!token) {
-                alert('Вы не авторизованы');
-                return;
-            }
+            const response = await axios.post(`https://macalistervadim.site/api/products/${productId}/chat/`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${Cookies.get('access')}`
+                }
+            });
 
-            // Создаем или получаем чат
-            const response = await axios.post(
-                `https://macalistervadim.site/api/products/${product.id}/chat/`,
-                {},
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            const chatId = response.data.chat_id;
-            if (chatId) {
-                // Открываем чат через WebSocket
-                window.location.href = `/chat/${chatId}`;
+            if (response.status === 200) {
+                const chatId = response.data.chat_id;
+                Cookies.set('chatId', chatId);
+                window.location.href = `/chat?chatId=${chatId}`;
+            } else {
+                console.error('Failed to create chat');
             }
         } catch (error) {
-            console.error('Ошибка при создании чата:', error);
+            console.error('Error:', error);
         }
     };
 
+    if (!chatId) return null;
 
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
@@ -112,7 +107,7 @@ export default function DetailComp() {
             {product ? (
                 <div>
                     <div className="chat-icon">
-                        <Link to='/chat'><FiMessageSquare /></Link>
+                        <Link to={`/chat?chatId=${chatId}`}><FiMessageSquare /></Link>
                     </div>
                     <div className="navigator">
                         <div className="navigator-blok">
@@ -141,7 +136,7 @@ export default function DetailComp() {
                                         </p>
                                     </div>
                                     <div className="detail-blok__section-2__header">
-                                        <button className="detail-blok__section-2__header__button-1" onClick={handleOrder}>
+                                        <button className="detail-blok__section-2__header__button-1" onClick={() => handleOrder(product.id)}>
                                             Order
                                         </button>
                                         <button

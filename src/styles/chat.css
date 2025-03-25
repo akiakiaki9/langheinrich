@@ -1,4 +1,4 @@
-.chat-icon {
+.openchat {
     position: fixed;
     bottom: 70px;
     right: 20px;
@@ -17,7 +17,7 @@
     transition: 0.3s ease;
 }
 
-.chat-icon:hover {
+.openchat:hover {
     opacity: .7;
 }
 
