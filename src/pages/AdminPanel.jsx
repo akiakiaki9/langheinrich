@@ -15,23 +15,23 @@ export default function AdminPanel() {
     useEffect(() => {
         const token = Cookies.get("access");
         if (!token) {
-            window.location.href = '/login'
+            window.location.href = '/login';
             return;
         }
-
+    
         ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
-
+    
         ws.current.onopen = () => {
             console.log("WebSocket подключен");
             ws.current.send(JSON.stringify({ action: "get_chats" }));
         };
-
+    
         ws.current.onmessage = (event) => {
             console.log("Получены данные от WebSocket:", event.data);
             try {
                 const data = JSON.parse(event.data);
                 console.log("WebSocket данные:", data);
-        
+    
                 if (data.chats) {
                     setChats(data.chats);
                 } else if (data.type === "message" && selectedChat?.id === data.chat_id) {
@@ -41,12 +41,12 @@ export default function AdminPanel() {
                 console.error("Ошибка при обработке WebSocket-сообщения:", error);
             }
         };
-
+    
         ws.current.onerror = (error) => console.error("Ошибка WebSocket:", error);
         ws.current.onclose = () => console.log("WebSocket отключен");
-
+    
         return () => ws.current?.close();
-    }, []);
+    }, [selectedChat?.id]);    
 
     const sendMessage = () => {
         if (!input.trim() || !ws.current || !selectedChat) return;
