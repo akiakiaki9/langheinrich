@@ -23,6 +23,7 @@ export default function Footer() {
                         <p className='footer-blok__section-2-part__p-1'>News</p>
                         <Link to='/news'><p className='footer-blok__section-2-part__p-2'>News</p></Link>
                         <Link to='/faires'><p className='footer-blok__section-2-part__p-2'>Faires</p></Link>
+                        <Link to='/adminpanel'><p className='footer-blok__section-2-part__p-2'>Admin Panel</p></Link>
                     </div>
                     <div className="footer-blok__section-2-part">
                         <div className="footer-blok__section-2-part__p-1">Partners</div>

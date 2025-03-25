@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiClock, FiTrash2, FiCopy } from 'react-icons/fi';
+import { FiTrash2, FiCopy } from 'react-icons/fi';
 import { IoSend } from "react-icons/io5";
 import { Link, useSearchParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { IoBackspaceOutline } from "react-icons/io5";
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
@@ -26,9 +27,12 @@ export default function Chat() {
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
         ws.current.onmessage = (event) => {
+            console.log('📩 Пришли данные из WebSocket:', event.data); // Проверяем, что вообще приходит
+        
             try {
                 const data = JSON.parse(event.data);
-
+                console.log('📩 Распарсенные данные:', data); // Смотрим, что получилось после парсинга
+        
                 if (data.history) {
                     // Загрузка истории сообщений
                     const formattedMessages = data.history.map(msg => ({
@@ -37,16 +41,20 @@ export default function Chat() {
                         sender: msg.author === "Administrator" ? "admin" : "user",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5)
                     }));
+        
+                    console.log('📜 История сообщений:', formattedMessages); // Проверяем, сформировался ли массив
                     setMessages(formattedMessages);
                 } else {
                     // Обработка нового сообщения
-                    setMessages(prev => [...prev, { 
-                        id: Date.now(), 
-                        text: data.text, 
-                        sender: 'user', 
-                        time: new Date().toLocaleTimeString().slice(0, 5) 
+                    console.log('📩 Новое сообщение:', data);
+        
+                    setMessages(prev => [...prev, {
+                        id: Date.now(),
+                        text: data.text,
+                        sender: 'user',
+                        time: new Date().toLocaleTimeString().slice(0, 5)
                     }]);
-
+        
                     if (data.product_id) {
                         setProductId(data.product_id);
                         setProductName(data.product_name || 'Неизвестный товар');
@@ -55,7 +63,7 @@ export default function Chat() {
             } catch (error) {
                 console.error('❌ Ошибка парсинга WebSocket данных:', error);
             }
-        };
+        };        
 
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
@@ -96,45 +104,50 @@ export default function Chat() {
     }
 
     return (
-        <div className="chat">
-            <div className="chat-header">
-                <h3>Чат с админом</h3>
+        <div className="chat-main">
+            <div className="chat-home">
+                <Link to='/home'><IoBackspaceOutline className='chat-home__icon' /></Link>
             </div>
-
-            {productId && productName && (
-                <div className="chat-product-link">
-                    <Link to={`/store/product/${productId}`}>
-                        <p className="chat-product-name">{productName}</p>
-                    </Link>
+            <div className="chat">
+                <div className="chat-header">
+                    <h3>Чат с админом</h3>
                 </div>
-            )}
 
-            <div className="chat-blok">
-                {messages.map((msg) => (
-                    <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                        <p>{msg.text}</p>
-                        <div className="chat-info">
-                            <span><FiClock /> {msg.time}</span>
-                            <FiCopy onClick={() => copyMessage(msg.text)} />
-                            <FiTrash2 onClick={() => deleteMessage(msg.id)} />
-                        </div>
+                {productId && productName && (
+                    <div className="chat-product-link">
+                        <Link to={`/store/product/${productId}`}>
+                            <p className="chat-product-name">{productName}</p>
+                        </Link>
                     </div>
-                ))}
-                <div ref={chatEndRef}></div>
-            </div>
+                )}
 
-            <div className="chat-footer">
-                <form onSubmit={sendMessage}>
-                    <input
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Enter message..."
-                    />
-                    <button type="submit">
-                        <IoSend className="chat-footer__icon" />
-                    </button>
-                </form>
+                <div className="chat-blok">
+                    {messages.map((msg) => (
+                        <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                            <p>{msg.text}</p>
+                            <div className="chat-info">
+                                <span>{msg.time}</span>
+                                <FiCopy onClick={() => copyMessage(msg.text)} />
+                                <FiTrash2 onClick={() => deleteMessage(msg.id)} />
+                            </div>
+                        </div>
+                    ))}
+                    <div ref={chatEndRef}></div>
+                </div>
+
+                <div className="chat-footer">
+                    <form onSubmit={sendMessage}>
+                        <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Enter message..."
+                        />
+                        <button type="submit">
+                            <IoSend className="chat-footer__icon" />
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );
