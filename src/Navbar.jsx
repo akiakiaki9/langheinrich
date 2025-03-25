@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FiPhoneCall, FiMenu, FiX } from "react-icons/fi";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Navbar() {
     const location = useLocation();
@@ -10,6 +11,7 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [categories, setCategories] = useState([]);
     const isMobile = window.innerWidth <= 768;
 
     const navRef = useRef(null);
@@ -46,6 +48,19 @@ export default function Navbar() {
         setDropdownOpen((prev) => (prev === menu ? null : menu));
     };
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('https://macalistervadim.site/api/categories');
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Ошибка загрузки категорий:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     return (
         <nav className={`navbar ${visible ? "visible" : "hidden"}`} ref={navRef}>
             <div className="navbar-blok">
@@ -61,7 +76,9 @@ export default function Navbar() {
                         {[
                             { name: "news", label: "News", links: ["/news", "/faires"] },
                             { name: "company", label: "Company", links: ["/history", "/team", "/future", "/quality"] },
-                            { name: "products", label: "Products", links: ["/tabellinen", "/bedlinen", "/towels"] },
+                            {
+                                name: "products", label: "Products", links: categories.map(category => ({ name: category.name, link: `/store?category=${category.id}` }))
+                            },
                             { name: "customers", label: "Customers", links: ["/laundries", "/hotels", "/airliner", "/cruiseliner", "/railway"] },
                             { name: "services", label: "Services", links: ["/customer-hotline", "/after-sale-service"] },
                             { name: "sustainability", label: "Sustainability", links: ["/certifications", "/future-plans", "/csr"] },
@@ -75,14 +92,14 @@ export default function Navbar() {
                             >
                                 <span style={{ color: activePage.includes(name) ? "var(--orange-color)" : "" }}>{label}</span>
                                 <ul className={`dropdown-menu ${dropdownOpen === name ? "show" : ""}`}>
-                                    {links.map((link, index) => (
+                                    {links.map((linkItem, index) => (
                                         <li key={index}>
                                             <Link
-                                                to={link}
-                                                style={{ color: activePage === link ? "var(--orange-color)" : "" }}
+                                                to={typeof linkItem === "string" ? linkItem : linkItem.link}
+                                                style={{ color: activePage === (typeof linkItem === "string" ? linkItem : linkItem.link) ? "var(--orange-color)" : "" }}
                                                 onClick={() => setMenuOpen(false)}
                                             >
-                                                {link.split("/")[1].charAt(0).toUpperCase() + link.split("/")[1].slice(1)}
+                                                {typeof linkItem === "string" ? (linkItem.split("/")[1].charAt(0).toUpperCase() + linkItem.split("/")[1].slice(1)) : linkItem.name}
                                             </Link>
                                         </li>
                                     ))}

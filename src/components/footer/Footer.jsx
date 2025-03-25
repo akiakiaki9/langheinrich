@@ -8,7 +8,7 @@ export default function Footer() {
         <div className='footer'>
             <div className="footer-blok">
                 <div className="footer-blok__section-1">
-                    <Link to='/'><img src="/images/logo.jpg" alt="Langheinrich Logo" /></Link>
+                    <Link to='/home'><img src="/images/logo.jpg" alt="Langheinrich Logo" /></Link>
                     <p>Langheinrich – is an experienced manufacturer and supplier of from Germany.</p>
                 </div>
                 <div className="footer-blok__section-2">

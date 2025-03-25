@@ -70,7 +70,7 @@ export default function News() {
                             </div>
                         ))
                     ) : (
-                        <p>Загрузка новостей...</p>
+                        <div className='loading'><div className='loader'></div></div>
                     )}
                 </div>
             </div>

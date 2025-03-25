@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { IoIosPricetags } from "react-icons/io";
 import { FaHeart } from 'react-icons/fa';
+import { FiMessageSquare } from 'react-icons/fi';
 
 export default function DetailComp() {
     const { id } = useParams();
@@ -74,6 +75,34 @@ export default function DetailComp() {
         }
     };
 
+    const handleOrder = async () => {
+        if (!product) return;
+
+        try {
+            const token = Cookies.get('access');
+            if (!token) {
+                alert('Вы не авторизованы');
+                return;
+            }
+
+            // Создаем или получаем чат
+            const response = await axios.post(
+                `https://macalistervadim.site/api/products/${product.id}/chat/`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            const chatId = response.data.chat_id;
+            if (chatId) {
+                // Открываем чат через WebSocket
+                window.location.href = `/chat/${chatId}`;
+            }
+        } catch (error) {
+            console.error('Ошибка при создании чата:', error);
+        }
+    };
+
+
     if (loading) {
         return <div className='loading'><div className='loader'></div></div>;
     }
@@ -82,6 +111,9 @@ export default function DetailComp() {
         <div>
             {product ? (
                 <div>
+                    <div className="chat-icon">
+                        <Link to='/chat'><FiMessageSquare /></Link>
+                    </div>
                     <div className="navigator">
                         <div className="navigator-blok">
                             <Link to='/store'>Main</Link>
@@ -109,7 +141,7 @@ export default function DetailComp() {
                                         </p>
                                     </div>
                                     <div className="detail-blok__section-2__header">
-                                        <button className="detail-blok__section-2__header__button-1">
+                                        <button className="detail-blok__section-2__header__button-1" onClick={handleOrder}>
                                             Order
                                         </button>
                                         <button

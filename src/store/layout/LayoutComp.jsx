@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { GrCatalog } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
 import axios from 'axios'
@@ -10,7 +10,9 @@ export default function Store() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const selectedCategory = queryParams.get("category");
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export default function Store() {
 
     const filteredProducts = products.filter(product => {
         return (
-            (!selectedCategory || product.category === selectedCategory) &&
+            (!selectedCategory || String(product.category) === String(selectedCategory)) &&
             product.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
     });
@@ -67,20 +69,16 @@ export default function Store() {
                             <CiSearch className='store-blok__section-1__icon' />
                         </div>
                         <div className="store-blok__section-1-footer">
-                            <button
-                                className={!selectedCategory ? "active" : ""}
-                                onClick={() => setSelectedCategory(null)}
-                            >
+                            <Link to="/store" className={!selectedCategory ? "active" : ""}>
                                 Alls
-                            </button>
+                            </Link>
                             {categories.map(category => (
-                                <button
-                                    key={category.id}
-                                    className={selectedCategory === category.id ? "active" : ""}
-                                    onClick={(e) => setSelectedCategory(category.id)}
+                                <Link
+                                    to={`/store?category=${category.id}`}
+                                    className={selectedCategory === String(category.id) ? "active" : ""}
                                 >
                                     {category.name}
-                                </button>
+                                </Link>
                             ))}
                         </div>
                         <div className="store-blok__section-1-part"></div>

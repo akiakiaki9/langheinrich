@@ -1,21 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiMessageSquare, FiX, FiCheck, FiClock, FiTrash2, FiCopy, FiCornerDownLeft } from 'react-icons/fi';
+import { FiClock, FiTrash2, FiCopy, FiCornerDownLeft } from 'react-icons/fi';
 import { IoSend } from "react-icons/io5";
 import Cookies from 'js-cookie';
-// import { useNavigate } from 'react-router-dom';
 
 export default function Chat() {
-    const [chatOpen, setChatOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [unread, setUnread] = useState(true);
     const chatEndRef = useRef(null);
-    // const navigate = useNavigate();
     const ws = useRef(null);
-
-    useEffect(() => {
-        if (chatOpen) setUnread(false);
-    }, [chatOpen]);
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -23,17 +15,10 @@ export default function Chat() {
 
     useEffect(() => {
         const token = Cookies.get('access');
-        // if (!token) {
-        //     navigate('/login');
-        //     return;
-        // };
 
         ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
 
-        ws.current.onopen = () => {
-            console.log('✅ WebSocket подключен');
-        };
-
+        ws.current.onopen = () => console.log('✅ WebSocket подключен');
         ws.current.onmessage = (event) => {
             console.log('📩 Новое сообщение:', event.data);
             try {
@@ -44,29 +29,15 @@ export default function Chat() {
             }
         };
 
-        ws.current.onclose = (event) => {
-            console.warn('❌ WebSocket отключен:', event.reason);
-        };
+        ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
+        ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
 
-        ws.current.onerror = (error) => {
-            console.error('⚠️ Ошибка WebSocket:', error);
-        };
-
-        return () => {
-            if (ws.current) {
-                ws.current.close();
-            }
-        };
+        return () => ws.current?.close();
     }, []);
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (!newMessage.trim()) return;
-
-        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
-            console.error('🚫 WebSocket не подключен. Сообщение не отправлено.');
-            return;
-        }
+        if (!newMessage.trim() || !ws.current || ws.current.readyState !== WebSocket.OPEN) return;
 
         const messageData = {
             text: newMessage,
@@ -79,51 +50,43 @@ export default function Chat() {
         setNewMessage('');
     };
 
-    const deleteMessage = (id) => {
-        setMessages(messages.filter(msg => msg.id !== id));
-    };
-
+    const deleteMessage = (id) => setMessages(messages.filter(msg => msg.id !== id));
     const copyMessage = (text) => {
         navigator.clipboard.writeText(text);
         alert('Скопировано!');
     };
 
     return (
-        <div>
-            <div className="chat-icon" onClick={() => setChatOpen(!chatOpen)}>
-                <FiMessageSquare size={30} />
-                {unread && <span className="chat-notification">1</span>}
+        <div className="chat">
+            <div className="chat-header">
+                <h3>Administration</h3>
             </div>
-
-            {chatOpen && (
-                <div className={`chat ${chatOpen ? 'open' : ''}`}>
-                    <div className="chat-header">
-                        <h3>Administration</h3>
-                        <FiX onClick={() => setChatOpen(false)} size={25} />
+            <div className="chat-blok">
+                {messages.map((msg, index) => (
+                    <div key={index} className={`chat-message ${msg.sender}`}>
+                        <p>{msg.text}</p>
+                        <div className="chat-info">
+                            <span><FiClock /> {msg.time}</span>
+                            <FiCopy onClick={() => copyMessage(msg.text)} />
+                            <FiTrash2 onClick={() => deleteMessage(msg.id)} />
+                        </div>
+                        <div ref={chatEndRef}></div>
                     </div>
-                    <div className="chat-blok">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
-                                <p>{msg.text}</p>
-                                <div className="chat-info">
-                                    <span><FiClock /> {msg.time}</span>
-                                    <FiCornerDownLeft onClick={() => alert('Ответить')} />
-                                    <FiCopy onClick={() => copyMessage(msg.text)} />
-                                    <FiTrash2 onClick={() => deleteMessage(msg.id)} />
-                                    {msg.sender === 'me' && <FiCheck color='green' />}
-                                </div>
-                                <div ref={chatEndRef}></div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="chat-footer">
-                        <form onSubmit={sendMessage}>
-                            <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-                            <button type="submit"><IoSend className='chat-footer__icon' /></button>
-                        </form>
-                    </div>
-                </div>
-            )}
+                ))}
+            </div>
+            <div className="chat-footer">
+                <form onSubmit={sendMessage}>
+                    <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+                    <button
+                        type="submit"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") sendMessage(e);
+                        }}
+                    >
+                        <IoSend className='chat-footer__icon' />
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
