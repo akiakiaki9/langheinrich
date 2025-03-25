@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiClock, FiTrash2, FiCopy, FiCornerDownLeft } from 'react-icons/fi';
+import { FiClock, FiTrash2, FiCopy } from 'react-icons/fi';
 import { IoSend } from "react-icons/io5";
 import Cookies from 'js-cookie';
 
