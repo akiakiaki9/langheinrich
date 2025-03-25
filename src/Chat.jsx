@@ -21,7 +21,7 @@ export default function Chat() {
             return;
         }
 
-        ws.current = new WebSocket(`wss://macalistervadim.site/ws/chat/${chatId}/?token=${token}`);
+        ws.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
 
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
