@@ -13,6 +13,7 @@ import Faires from "./pages/Faires";
 import FairesDetail from "./pages/FairesDetail";
 import Chat from "./Chat";
 import AdminPanel from "./pages/AdminPanel";
+import AdminChat from "./pages/AdminChat";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/store' element={<OnlineShop />} />
           <Route path='/store/product/:id' element={<DetailMain />} />
-          <Route path='/adminpanel' element={<AdminPanel />} />
+          <Route path='/admin' element={<AdminPanel />} />
+          <Route path="/admin/chat/:chatId" element={<AdminChat />} />
           <Route path='/login' element={<Login />} />
           <Route path='/news' element={<News />} />
           <Route path='/news/:id' element={<NewsDetail />} />
