@@ -62,6 +62,9 @@ export default function AdminChat() {
         setInput("");
     };
 
+    // Находим текущий чат
+    const currentChat = chats.find((chat) => String(chat.id) === chatId);
+
     return (
         <div className="admin full-screen">
             <div className="admin-panel">
@@ -81,8 +84,8 @@ export default function AdminChat() {
                 </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
-                        <h3>Чат с {selectedChat.customer_username}</h3>
-                        <RiArrowGoBackLine onClick={() => setSelectedChat(null)} />
+                        <h3>Чат с {currentChat ? currentChat.customer_username : "Неизвестным пользователем"}</h3>
+                        <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
                     {chatId ? (
                         <div className="admin-blok__list">
