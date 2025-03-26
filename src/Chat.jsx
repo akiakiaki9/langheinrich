@@ -27,34 +27,32 @@ export default function Chat() {
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
         ws.current.onmessage = (event) => {
-            console.log('📩 Пришли данные из WebSocket:', event.data); // Проверяем, что вообще приходит
-        
+            console.log('📩 Пришли данные из WebSocket:', event.data); // Проверяем, что приходит сырые данные
+
             try {
                 const data = JSON.parse(event.data);
-                console.log('📩 Распарсенные данные:', data); // Смотрим, что получилось после парсинга
-        
+                console.log('📩 Распарсенные данные:', data); // Проверяем структуру данных
+
                 if (data.history) {
-                    // Загрузка истории сообщений
                     const formattedMessages = data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "user",
-                        time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5)
+                        time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     }));
-        
-                    console.log('📜 История сообщений:', formattedMessages); // Проверяем, сформировался ли массив
+
+                    console.log('📜 История сообщений:', formattedMessages);
                     setMessages(formattedMessages);
                 } else {
-                    // Обработка нового сообщения
                     console.log('📩 Новое сообщение:', data);
-        
+
                     setMessages(prev => [...prev, {
                         id: Date.now(),
                         text: data.text,
                         sender: 'user',
-                        time: new Date().toLocaleTimeString().slice(0, 5)
+                        time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
-        
+
                     if (data.product_id) {
                         setProductId(data.product_id);
                         setProductName(data.product_name || 'Неизвестный товар');
@@ -63,7 +61,8 @@ export default function Chat() {
             } catch (error) {
                 console.error('❌ Ошибка парсинга WebSocket данных:', error);
             }
-        };        
+        };
+
 
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
@@ -98,6 +97,11 @@ export default function Chat() {
     const copyMessage = (text) => {
         navigator.clipboard.writeText(text);
     };
+
+    console.log('🆔 chatId:', chatId);
+    if (!chatId) {
+        console.error('❌ Ошибка: chatId отсутствует!');
+    }
 
     if (!chatId) {
         return <h2>ErroR</h2>;
