@@ -51,13 +51,13 @@ export default function AdminPanel() {
 
     useEffect(() => {
         if (!selectedChat) return;
-        
-        setMessages([]); 
+    
+        setMessages([]);
         ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat]);
+    }, [selectedChat?.id]);
 
+    // Скролл в низ
     useEffect(() => {
-        // Скроллим вниз при добавлении новых сообщений
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
