@@ -50,15 +50,11 @@ export default function AdminPanel() {
     }, []);
 
     useEffect(() => {
-        if (!selectedChat) return;
+        if (!selectedChat?.id) return;
 
-        // Очищаем предыдущие сообщения перед загрузкой новых
-        setMessages([]);
-
-        // Запрашиваем историю сообщений для выбранного чата
+        setMessages([]); // Очищаем предыдущие сообщения
         ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-
-    }, [selectedChat]);
+    }, [selectedChat?.id]); // Добавляем зависимость
 
     useEffect(() => {
         // Скроллим вниз при добавлении новых сообщений
