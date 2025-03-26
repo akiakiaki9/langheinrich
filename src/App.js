@@ -3,7 +3,6 @@ import Home from "./Home";
 import OnlineShop from "./store/OnlineShop";
 import DetailMain from "./store/detail/detailmain";
 import ScrolledPage from "./ScrolledPage";
-import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
@@ -13,6 +12,7 @@ import Glava from "./Glava";
 import Faires from "./pages/Faires";
 import FairesDetail from "./pages/FairesDetail";
 import Chat from "./Chat";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (

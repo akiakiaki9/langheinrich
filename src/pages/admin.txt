@@ -4,7 +4,7 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { BsSendFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 
-export default function AdminPanel() {
+export default function AdminChats() {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
@@ -50,11 +50,11 @@ export default function AdminPanel() {
     }, []);
 
     useEffect(() => {
-        if (!selectedChat?.id) return;
-
+        if (!selectedChat) return;
+    
         setMessages([]);
         ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat?.id]);
+    }, [selectedChat?.id]); 
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
