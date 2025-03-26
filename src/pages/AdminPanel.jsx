@@ -50,11 +50,11 @@ export default function AdminPanel() {
     }, []);
 
     useEffect(() => {
-        if (!selectedChat?.id) return;
-
+        if (!selectedChat || !selectedChat.id) return;
+    
         setMessages([]);
-        ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat?.id]);
+        ws.current?.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
+    }, [selectedChat]); // добавил `selectedChat` вместо `selectedChat?.id`    
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
