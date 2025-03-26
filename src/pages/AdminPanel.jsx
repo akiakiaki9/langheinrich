@@ -15,43 +15,57 @@ export default function AdminPanel() {
     useEffect(() => {
         const token = Cookies.get("access");
         if (!token) {
-            window.location.href = '/login';
+            window.location.href = "/login";
             return;
         }
-    
+
         ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
-    
+
         ws.current.onopen = () => {
             console.log("WebSocket подключен");
             ws.current.send(JSON.stringify({ action: "get_chats" }));
         };
-    
+
         ws.current.onmessage = (event) => {
-            console.log("Получены данные от WebSocket:", event.data);
             try {
                 const data = JSON.parse(event.data);
                 console.log("WebSocket данные:", data);
-    
+
                 if (data.chats) {
                     setChats(data.chats);
                 } else if (data.type === "message" && selectedChat?.id === data.chat_id) {
                     setMessages((prev) => [...prev, data]);
+                } else if (data.type === "chat_history" && selectedChat?.id === data.chat_id) {
+                    setMessages(data.messages);
                 }
             } catch (error) {
                 console.error("Ошибка при обработке WebSocket-сообщения:", error);
             }
         };
-    
+
         ws.current.onerror = (error) => console.error("Ошибка WebSocket:", error);
         ws.current.onclose = () => console.log("WebSocket отключен");
-    
+
         return () => ws.current?.close();
-    }, [selectedChat?.id]);    
+    }, [selectedChat?.id]);
+
+    // Функция загрузки сообщений при выборе чата
+    const selectChat = (chat) => {
+        setSelectedChat(chat);
+        setMessages([]); // Очищаем предыдущие сообщения
+        ws.current.send(JSON.stringify({ action: "get_messages", chat_id: chat.id }));
+    };
 
     const sendMessage = () => {
         if (!input.trim() || !ws.current || !selectedChat) return;
 
-        const message = { action: "send_message", text: input, sender: "admin", chat_id: selectedChat.id };
+        const message = {
+            action: "send_message",
+            text: input,
+            sender: "admin",
+            chat_id: selectedChat.id
+        };
+
         ws.current.send(JSON.stringify(message));
         setMessages((prev) => [...prev, message]);
         setInput("");
@@ -65,7 +79,7 @@ export default function AdminPanel() {
                     <h3>Чаты</h3>
                     <div className="chat-list__items">
                         {chats.map((chat) => (
-                            <p key={chat.id} onClick={() => setSelectedChat(chat)}>
+                            <p key={chat.id} onClick={() => selectChat(chat)}>
                                 {chat.customer_username} - {chat.product_name || "Без продукта"}
                                 {chat.last_message && <span> ({chat.last_message})</span>}
                             </p>
