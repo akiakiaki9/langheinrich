@@ -33,10 +33,10 @@ export default function AdminPanel() {
 
                 if (data.chats) {
                     setChats(data.chats);
+                } else if (data.type === "messages" && selectedChat?.id === data.chat_id) {
+                    setMessages(data.messages); // Загружаем историю чата
                 } else if (data.type === "message" && selectedChat?.id === data.chat_id) {
-                    setMessages((prev) => [...prev, data]);
-                } else if (data.type === "chat_history" && selectedChat?.id === data.chat_id) {
-                    setMessages(data.messages);
+                    setMessages((prev) => [...prev, data]); // Добавляем новое сообщение
                 }
             } catch (error) {
                 console.error("Ошибка при обработке WebSocket-сообщения:", error);
@@ -47,13 +47,26 @@ export default function AdminPanel() {
         ws.current.onclose = () => console.log("WebSocket отключен");
 
         return () => ws.current?.close();
-    }, [selectedChat?.id]);
+    }, []);
 
-    // Функция загрузки сообщений при выборе чата
+    useEffect(() => {
+        if (!selectedChat) return;
+
+        // Очищаем предыдущие сообщения перед загрузкой новых
+        setMessages([]);
+
+        // Запрашиваем историю сообщений для выбранного чата
+        ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
+
+    }, [selectedChat]);
+
+    useEffect(() => {
+        // Скроллим вниз при добавлении новых сообщений
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
     const selectChat = (chat) => {
         setSelectedChat(chat);
-        setMessages([]); // Очищаем предыдущие сообщения
-        ws.current.send(JSON.stringify({ action: "get_messages", chat_id: chat.id }));
     };
 
     const sendMessage = () => {
@@ -97,12 +110,13 @@ export default function AdminPanel() {
                                 <h3>Чат с {selectedChat.customer_username}</h3>
                                 <RiArrowGoBackLine onClick={() => setSelectedChat(null)} />
                             </div>
-                            <div className="admin-blok__list" ref={messagesEndRef}>
+                            <div className="admin-blok__list">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`message ${msg.sender}`}>
                                         <p>{msg.text}</p>
                                     </div>
                                 ))}
+                                <div ref={messagesEndRef} />
                             </div>
                             <div className="admin-blok__input">
                                 <input
