@@ -34,9 +34,9 @@ export default function AdminPanel() {
                 if (data.chats) {
                     setChats(data.chats);
                 } else if (data.type === "messages" && selectedChat?.id === data.chat_id) {
-                    setMessages(data.messages); // Загружаем историю чата
+                    setMessages(data.messages);
                 } else if (data.type === "message" && selectedChat?.id === data.chat_id) {
-                    setMessages((prev) => [...prev, data]); // Добавляем новое сообщение
+                    setMessages((prev) => [...prev, data]);
                 }
             } catch (error) {
                 console.error("Ошибка при обработке WebSocket-сообщения:", error);
@@ -54,9 +54,8 @@ export default function AdminPanel() {
     
         setMessages([]);
         ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat?.id]);
+    }, [selectedChat?.id]); 
 
-    // Скролл в низ
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
@@ -83,7 +82,6 @@ export default function AdminPanel() {
     return (
         <div className="admin full-screen">
             <div className="admin-panel">
-                {/* Список чатов */}
                 <div className={`chat-list ${selectedChat ? "hidden" : ""}`}>
                     <h3>Чаты</h3>
                     <div className="chat-list__items">
@@ -96,7 +94,6 @@ export default function AdminPanel() {
                     </div>
                 </div>
 
-                {/* Окно сообщений */}
                 <div className={`chat-window ${selectedChat ? "active" : ""}`}>
                     {!selectedChat ? (
                         <p className="select-chat-message">Выберите чат для начала общения</p>
