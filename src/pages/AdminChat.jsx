@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { BsSendFill } from "react-icons/bs";
 import Cookies from "js-cookie";
+import { RiArrowGoBackLine } from "react-icons/ri";
 
 export default function AdminChat() {
     const { chatId } = useParams();
@@ -66,26 +67,32 @@ export default function AdminChat() {
             <div className="admin-panel">
                 <div className="chat-list">
                     <h3>Чаты</h3>
-                    {chats.map((chat) => (
-                        <p
-                            key={chat.id}
-                            onClick={() => handleSelectChat(chat)}
-                            className={chatId === String(chat.id) ? "active-chat" : ""}
-                        >
-                            {chat.customer_username} - {chat.product_name || "Без продукта"}
-                        </p>
-                    ))}
+                    <div className="chat-list__items">
+                        {chats.map((chat) => (
+                            <p
+                                key={chat.id}
+                                onClick={() => handleSelectChat(chat)}
+                                className={chatId === String(chat.id) ? "active" : ""}
+                            >
+                                {chat.customer_username} - {chat.product_name || "Без продукта"}
+                            </p>
+                        ))}
+                    </div>
                 </div>
                 <div className="chat-window">
+                    <div className="admin-blok__header">
+                        <h3>Чат с {selectedChat.customer_username}</h3>
+                        <RiArrowGoBackLine onClick={() => setSelectedChat(null)} />
+                    </div>
                     {chatId ? (
-                        <div className="chat-messages">
+                        <div className="admin-blok__list">
                             {messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.sender}`}>
                                     <p>{msg.text}</p>
                                 </div>
                             ))}
                             <div ref={messagesEndRef} />
-                            <div className="chat-input">
+                            <div className="admin-blok__input">
                                 <input
                                     type="text"
                                     value={input}
@@ -101,6 +108,11 @@ export default function AdminChat() {
                     )}
                 </div>
             </div>
+            <Link to="/">
+                <p className="admin__home">
+                    HOME <RiArrowGoBackLine />
+                </p>
+            </Link>
         </div>
     );
 };
