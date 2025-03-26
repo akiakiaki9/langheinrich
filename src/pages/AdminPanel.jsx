@@ -50,11 +50,11 @@ export default function AdminPanel() {
     }, []);
 
     useEffect(() => {
-        if (!selectedChat?.id) return;
-
-        setMessages([]); // Очищаем предыдущие сообщения
+        if (!selectedChat) return;
+        
+        setMessages([]); 
         ws.current.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat?.id]); // Добавляем зависимость
+    }, [selectedChat]);
 
     useEffect(() => {
         // Скроллим вниз при добавлении новых сообщений
