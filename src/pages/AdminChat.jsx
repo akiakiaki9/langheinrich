@@ -62,7 +62,6 @@ export default function AdminChat() {
         setInput("");
     };
 
-    // Находим текущий чат
     const currentChat = chats.find((chat) => String(chat.id) === chatId);
 
     return (
@@ -87,28 +86,24 @@ export default function AdminChat() {
                         <h3>Чат с {currentChat ? currentChat.customer_username : "Неизвестным пользователем"}</h3>
                         <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
-                    {chatId ? (
-                        <div className="admin-blok__list">
-                            {messages.map((msg, index) => (
-                                <div key={index} className={`message ${msg.sender}`}>
-                                    <p>{msg.text}</p>
-                                </div>
-                            ))}
-                            <div ref={messagesEndRef} />
-                            <div className="admin-blok__input">
-                                <input
-                                    type="text"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Введите сообщение..."
-                                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                                />
-                                <BsSendFill onClick={sendMessage} />
+                    <div className="admin-blok__list">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`message ${msg.sender}`}>
+                                <p>{msg.text}</p>
                             </div>
-                        </div>
-                    ) : (
-                        <p className="select-chat-message">Error No Chat</p>
-                    )}
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                    <div className="admin-blok__input">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Введите сообщение..."
+                            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                        />
+                        <BsSendFill onClick={sendMessage} />
+                    </div>
                 </div>
             </div>
             <Link to="/">
