@@ -53,8 +53,8 @@ export default function AdminPanel() {
                                     onClick={() => handleSelectChat(chat)}
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
-                                    <p>{chat.customer_username}</p>
-                                    <p>{chat.last_message || ""}</p>
+                                    <p className="chat-list__items-author">{chat.customer_username}</p>
+                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
                                 </div>
                             ))}
                         </div>

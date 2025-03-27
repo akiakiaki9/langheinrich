@@ -23,23 +23,32 @@
     overflow-y: auto;
 }
 
-.chat-list__items p {
+.chat-list__items div {
     padding: 10px;
     background: white;
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
     text-align: start;
     position: relative;
 }
 
-.chat-list__items p.active {
+.chat-list__items-author {
+    font-weight: 600;
+}
+
+.chat-list__items-message {
+    
+}
+
+.chat-list__items div p.active {
     background: var(--main-color);
     color: white;
 }
 
-
-.chat-list__items p .unread-count {
+.chat-list__items div p.unread-count {
     position: absolute;
     top: 5px;
     right: 5px;
