@@ -70,7 +70,7 @@ export default function Profile() {
     const handleLogout = () => {
         Cookies.remove("access");
         Cookies.remove("refresh");
-        navigate("/");
+        navigate("/home");
     };
 
     return (

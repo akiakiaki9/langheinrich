@@ -11,7 +11,7 @@ import Profile from "./pages/Profile";
 import Glava from "./Glava";
 import Faires from "./pages/Faires";
 import FairesDetail from "./pages/FairesDetail";
-import Chat from "./Chat";
+import Chat from "./pages/Chat";
 import AdminPanel from "./pages/AdminPanel";
 import AdminChat from "./pages/AdminChat";
 
