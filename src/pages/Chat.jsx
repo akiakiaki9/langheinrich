@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiTrash2, FiCopy } from 'react-icons/fi';
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoBackspaceOutline } from "react-icons/io5";
 import { Link, useSearchParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { IoBackspaceOutline } from "react-icons/io5";
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
@@ -27,31 +26,22 @@ export default function Chat() {
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
         ws.current.onmessage = (event) => {
-            console.log('📩 Пришли данные из WebSocket:', event.data); // Проверяем, что приходит сырые данные
-
             try {
                 const data = JSON.parse(event.data);
-                console.log('📩 Распарсенные данные:', data); // Проверяем структуру данных
-
                 if (data.history) {
-                    const formattedMessages = data.history.map(msg => ({
+                    setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "user",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
-                    }));
-
-                    console.log('📜 История сообщений:', formattedMessages);
-                    setMessages(formattedMessages);
+                    })));
                 } else {
-                    console.log('📩 Новое сообщение:', data);
-
                     setMessages(prev => [...prev, {
-                        id: Date.now(),
+                        id: data.message_id || Date.now(),
                         text: data.text,
                         sender: data.author === "Administrator" ? "admin" : "user",
                         time: new Date().toLocaleTimeString().slice(0, 5),
-                    }]);                    
+                    }]);
 
                     if (data.product_id) {
                         setProductId(data.product_id);
@@ -96,11 +86,6 @@ export default function Chat() {
     const copyMessage = (text) => {
         navigator.clipboard.writeText(text);
     };
-
-    console.log('🆔 chatId:', chatId);
-    if (!chatId) {
-        console.error('❌ Ошибка: chatId отсутствует!');
-    }
 
     if (!chatId) {
         return <h2>ErroR</h2>;
@@ -154,4 +139,4 @@ export default function Chat() {
             </div>
         </div>
     );
-};
+}
