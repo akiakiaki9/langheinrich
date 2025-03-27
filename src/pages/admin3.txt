@@ -1,126 +1,215 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { RiArrowGoBackLine } from "react-icons/ri";
-import { BsSendFill } from "react-icons/bs";
-import Cookies from "js-cookie";
+.full-screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
 
-export default function AdminChat() {
-    const [chats, setChats] = useState([]);
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
-    const [selectedChat, setSelectedChat] = useState(null);
-    const messagesEndRef = useRef(null);
-    const ws = useRef(null);
+.admin-panel {
+    display: flex;
+    width: 80%;
+    height: 80%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    useEffect(() => {
-        const token = Cookies.get("access");
-        if (!token) {
-            window.location.href = "/login";
-            return;
-        }
+.chat-list {
+    width: 30%;
+    background: #e0e0e0;
+    padding: 15px;
+    overflow-y: auto;
+}
 
-        ws.current = new WebSocket(wss://macalistervadim.site/ws/admin/?token=${token});
+.chat-list__items p {
+    padding: 10px;
+    background: white;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: start;
+    position: relative;
+}
 
-        ws.current.onopen = () => {
-            console.log("WebSocket подключен");
-            ws.current.send(JSON.stringify({ action: "get_chats" }));
-        };
+.chat-list__items p.active {
+    background: var(--main-color);
+    color: white;
+}
 
-        ws.current.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                console.log("WebSocket данные:", data);
 
-                if (data.chats) {
-                    setChats(data.chats);
-                } else if (data.type === "messages" && selectedChat?.id === data.chat_id) {
-                    setMessages(data.messages);
-                } else if (data.type === "message" && selectedChat?.id === data.chat_id) {
-                    setMessages((prev) => [...prev, data]);
-                }
-            } catch (error) {
-                console.error("Ошибка при обработке WebSocket-сообщения:", error);
-            }
-        };
+.chat-list__items p .unread-count {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
 
-        ws.current.onerror = (error) => console.error("Ошибка WebSocket:", error);
-        ws.current.onclose = () => console.log("WebSocket отключен");
+.chat-window {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+}
 
-        return () => ws.current?.close();
-    }, []);
+.select-chat-message {
+    text-align: center;
+    margin-top: 50%;
+    color: #888;
+}
 
-    useEffect(() => {
-        if (!selectedChat || !selectedChat.id) return;
+.admin-blok__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
-        setMessages([]);
-        ws.current?.send(JSON.stringify({ action: "get_messages", chat_id: selectedChat.id }));
-    }, [selectedChat?.id]);
+.message {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+.message.client {
+    background: #e0e0e0;
+    align-self: flex-start;
+}
 
-    const sendMessage = () => {
-        if (!input.trim() || !ws.current || !selectedChat) return;
+.message.admin {
+    background: var(--main-color);
+    color: white;
+    align-self: flex-end;
+}
 
-        const message = {
-            action: "send_message",
-            text: input,
-            sender: "admin",
-            chat_id: selectedChat.id
-        };
+.admin-blok__input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
 
-        ws.current.send(JSON.stringify(message));
-        setMessages((prev) => [...prev, message]);
-        setInput("");
-    };
+.admin-blok__input input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+}
 
-    return (
-        <div className="admin full-screen">
-            <div className="admin-panel">
-                <div className={chat-list ${selectedChat ? "hidden" : ""}}>
-                    <h3>Чаты</h3>
-                    <div className="chat-list__items">
-                        {chats.map((chat) => (
-                            <p key={chat.id} onClick={() => selectChat(chat)}>
-                                {chat.customer_username} - {chat.product_name || "Без продукта"}
-                                {chat.last_message && <span> ({chat.last_message})</span>}
-                            </p>
-                        ))}
-                    </div>
-                </div>
+.admin-blok__input__icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: .5s;
+    color: var(--main-color);
+}
 
-                <div className="chat-window">
-                    <div className="admin-blok__header">
-                        <h3>Чат с {selectedChat.customer_username}</h3>
-                        <RiArrowGoBackLine onClick={() => setSelectedChat(null)} />
-                    </div>
-                    <div className="admin-blok__list">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={message ${msg.sender}}>
-                                <p>{msg.text}</p>
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-                    <div className="admin-blok__input">
-                        <input
-                            type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Введите сообщение..."
-                            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                        />
-                        <BsSendFill onClick={sendMessage} />
-                    </div>
-                </div>
-            </div>
+.admin-blok__input__icon:hover {
+    opacity: .7;
+}
 
-            <Link to="/">
-                <p className="admin__home">
-                    HOME <RiArrowGoBackLine />
-                </p>
-            </Link>
-        </div>
-    );
-};
+.admin-blok__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 12px;
+}
+
+.admin-blok__header h3 {
+    color: var(--main-color);
+}
+
+.admin-blok__header-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: .5s;
+    color: var(--main-color);
+}
+
+.admin-blok__header-icon:hover {
+    opacity: .7;
+}
+
+.file-upload-icon {
+    width: 25px;
+    height: 25px;
+    transition: .5s;
+    cursor: pointer;
+    color: var(--main-color);
+    margin-top: 2px;
+}
+
+.file-upload-icon:hover {
+    opacity: .7;
+}
+
+.admin__home {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+    transition: .5s;
+    cursor: pointer;
+    font-family: var(--indian-font);
+    color: var(--blue-color);
+    font-weight: 700;
+    font-size: 120%;
+}
+
+.admin__home__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.admin__home:hover {
+    opacity: .7;
+}
+
+@media (max-width: 768px) {
+    .admin-panel {
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .chat-list {
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .chat-list.hidden {
+        display: none;
+    }
+
+    .chat-window {
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+    }
+
+    .chat-window.active {
+        display: flex;
+    }
+    .admin__home {
+        display: none;
+    }
+}
