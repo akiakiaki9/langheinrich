@@ -90,6 +90,8 @@
     max-width: 80%;
     word-wrap: break-word;
     font-size: 90%;
+    background: #e6e6e6;
+    color: #000
 }
 
 .chat-message.admin {
@@ -109,7 +111,7 @@
     font-size: 12px;
     gap: 8px;
     margin-top: 5px;
-    color: #666;
+    color: var(--orange-color);
 }
 
 .chat-info svg {
