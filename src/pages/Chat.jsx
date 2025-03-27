@@ -17,18 +17,24 @@ export default function Chat() {
     useEffect(() => {
         const token = Cookies.get('access');
         if (!token) {
+            console.warn("⚠️ Токен отсутствует, перенаправление на /login");
             window.location.href = '/login';
             return;
         }
 
-        ws.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
+        const wsUrl = `wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`;
+        console.log(`🔌 Подключение к WebSocket: ${wsUrl}`);
+        ws.current = new WebSocket(wsUrl);
 
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
         ws.current.onmessage = (event) => {
+            console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
+
                 if (data.history) {
+                    console.log("🔄 Получена история сообщений:", data.history);
                     setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
@@ -36,6 +42,7 @@ export default function Chat() {
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
                 } else {
+                    console.log("➕ Новое сообщение:", data);
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
                         text: data.text,
@@ -44,6 +51,7 @@ export default function Chat() {
                     }]);
 
                     if (data.product_id) {
+                        console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
                         setProductId(data.product_id);
                         setProductName(data.product_name || 'Неизвестный товар');
                     }
@@ -56,7 +64,10 @@ export default function Chat() {
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
 
-        return () => ws.current?.close();
+        return () => {
+            console.log("🔌 Отключение WebSocket...");
+            ws.current?.close();
+        };
     }, [chatId]);
 
     useEffect(() => {
@@ -65,29 +76,42 @@ export default function Chat() {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (!newMessage.trim() || !ws.current || ws.current.readyState !== WebSocket.OPEN) return;
+        if (!newMessage.trim()) {
+            console.warn("⚠️ Пустое сообщение, отправка отменена.");
+            return;
+        }
+        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+            console.warn("⚠️ WebSocket не подключен, сообщение не отправлено.");
+            return;
+        }
 
         const messageData = {
-            text: newMessage,
-            sender: 'me',
+            message: newMessage,
+            author: 'me',
             time: new Date().toLocaleTimeString().slice(0, 5),
             product_id: productId,
         };
 
+        console.log("📤 Отправка сообщения:", messageData);
         ws.current.send(JSON.stringify(messageData));
+
         setMessages(prev => [...prev, { ...messageData, id: Date.now() }]);
         setNewMessage('');
+        console.log("✅ Сообщение отправлено и добавлено в чат.");
     };
 
     const deleteMessage = (id) => {
+        console.log(`🗑 Удаление сообщения с ID: ${id}`);
         setMessages(prev => prev.filter(msg => msg.id !== id));
     };
 
     const copyMessage = (text) => {
         navigator.clipboard.writeText(text);
+        console.log(`📋 Сообщение скопировано: "${text}"`);
     };
 
     if (!chatId) {
+        console.error("❌ Ошибка: chatId отсутствует");
         return <h2>ErroR</h2>;
     }
 
@@ -139,4 +163,4 @@ export default function Chat() {
             </div>
         </div>
     );
-}
+};
