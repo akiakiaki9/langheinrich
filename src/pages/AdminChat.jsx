@@ -44,7 +44,7 @@ export default function AdminChat({ chatId }) {
         };
 
         return () => ws.current?.close();
-    }, [chatId]);
+    }, [currentChatId]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
