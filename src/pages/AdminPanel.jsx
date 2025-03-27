@@ -19,7 +19,7 @@ export default function AdminPanel() {
         const ws = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
 
         ws.onopen = () => ws.send(JSON.stringify({ action: "get_chats" }));
-        
+
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
@@ -48,13 +48,14 @@ export default function AdminPanel() {
                     ) : (
                         <div className="chat-list__items">
                             {chats.map((chat) => (
-                                <p
+                                <div
                                     key={chat.id}
                                     onClick={() => handleSelectChat(chat)}
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
-                                    {chat.customer_username} - {chat.product_name || "Без продукта"}
-                                </p>
+                                    <p>{chat.customer_username}</p>
+                                    <p>{chat.last_message || ""}</p>
+                                </div>
                             ))}
                         </div>
                     )}

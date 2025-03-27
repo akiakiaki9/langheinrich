@@ -15,8 +15,10 @@ export default function AdminChat() {
     const ws = useRef(null);
 
     useEffect(() => {
+        console.log("Инициализация WebSocket...");
         const token = Cookies.get("access");
         if (!token) {
+            console.warn("Токен не найден, редирект на /login");
             window.location.href = "/login";
             return;
         }
@@ -24,43 +26,57 @@ export default function AdminChat() {
         ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
 
         ws.current.onopen = () => {
+            console.log("WebSocket открыт, запрос чатов и сообщений...");
             ws.current.send(JSON.stringify({ action: "get_chats" }));
             ws.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
 
         ws.current.onmessage = (event) => {
+            console.log("Получены данные из WebSocket:", event.data);
             try {
                 const data = JSON.parse(event.data);
                 if (data.chats) {
+                    console.log("Обновление списка чатов...");
                     setChats(data.chats);
                 } else if (data.type === "messages") {
+                    console.log("Обновление списка сообщений...");
                     setMessages(data.messages);
                 } else if (data.type === "message" && data.chat_id === Number(chatId)) {
+                    console.log("Новое сообщение добавлено в чат...");
                     setMessages((prev) => [...prev, data]);
                 }
                 setLoading(false);
             } catch (error) {
-                console.error("Ошибка при получении данных:", error);
+                console.error("Ошибка при обработке сообщения WebSocket:", error);
                 setLoading(false);
             }
         };
 
-        return () => ws.current?.close();
+        return () => {
+            console.log("Закрытие WebSocket...");
+            ws.current?.close();
+        };
     }, [chatId]);
 
     useEffect(() => {
+        console.log("Прокрутка вниз после обновления сообщений...");
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
     const handleSelectChat = (chat) => {
+        console.log("Выбран чат:", chat);
         navigate(`/admin/chat/${chat.id}`);
         setLoading(true);
     };
 
     const sendMessage = () => {
-        if (!input.trim() || !ws.current) return;
+        if (!input.trim() || !ws.current) {
+            console.warn("Сообщение не отправлено: пустой ввод или WebSocket закрыт");
+            return;
+        }
 
         const message = { action: "send_message", message: input, author: "Administration", chat_id: chatId };
+        console.log("Отправка сообщения:", message);
         ws.current.send(JSON.stringify(message));
         setMessages((prev) => [...prev, message]);
         setInput("");
@@ -78,20 +94,21 @@ export default function AdminChat() {
                     ) : (
                         <div className="chat-list__items">
                             {chats.map((chat) => (
-                                <p
+                                <div
                                     key={chat.id}
                                     onClick={() => handleSelectChat(chat)}
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
-                                    {chat.customer_username} - {chat.product_name || "Без продукта"}
-                                </p>
+                                    <p>{chat.customer_username}</p>
+                                    <p>{chat.last_message || ""}</p>
+                                </div>
                             ))}
                         </div>
                     )}
                 </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
-                        <h3>Чат с {currentChat ? currentChat.customer_username : "Неизвестным пользователем"}</h3>
+                        <h3>Чат с {currentChat ? currentChat.customer_username : "?Undefined"}</h3>
                         <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
                     <div className="admin-blok__list">
