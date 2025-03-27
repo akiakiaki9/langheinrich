@@ -38,7 +38,7 @@ export default function Chat() {
                     setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
-                        sender: msg.author === "Administrator" ? "admin" : "user",
+                        sender: msg.author === "Administrator" ? "admin" : "me",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
                 } else {
@@ -46,7 +46,7 @@ export default function Chat() {
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
                         text: data.message,
-                        sender: data.author === "Administrator" ? "admin" : "user",
+                        sender: data.author === "Administrator" ? "admin" : "me",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
 
