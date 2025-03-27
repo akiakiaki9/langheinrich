@@ -10,6 +10,7 @@ export default function AdminChat() {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef(null);
     const ws = useRef(null);
 
@@ -37,8 +38,10 @@ export default function AdminChat() {
                 } else if (data.type === "message" && data.chat_id === Number(chatId)) {
                     setMessages((prev) => [...prev, data]);
                 }
+                setLoading(false);
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
+                setLoading(false);
             }
         };
 
@@ -51,6 +54,7 @@ export default function AdminChat() {
 
     const handleSelectChat = (chat) => {
         navigate(`/admin/chat/${chat.id}`);
+        setLoading(true);
     };
 
     const sendMessage = () => {
@@ -69,17 +73,21 @@ export default function AdminChat() {
             <div className="admin-panel">
                 <div className="chat-list">
                     <h3>Чаты</h3>
-                    <div className="chat-list__items">
-                        {chats.map((chat) => (
-                            <p
-                                key={chat.id}
-                                onClick={() => handleSelectChat(chat)}
-                                className={chatId === String(chat.id) ? "active" : ""}
-                            >
-                                {chat.customer_username} - {chat.product_name || "Без продукта"}
-                            </p>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className='loading'><div className='loader'></div></div>
+                    ) : (
+                        <div className="chat-list__items">
+                            {chats.map((chat) => (
+                                <p
+                                    key={chat.id}
+                                    onClick={() => handleSelectChat(chat)}
+                                    className={chatId === String(chat.id) ? "active" : ""}
+                                >
+                                    {chat.customer_username} - {chat.product_name || "Без продукта"}
+                                </p>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
@@ -87,11 +95,15 @@ export default function AdminChat() {
                         <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
                     <div className="admin-blok__list">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`message ${msg.sender}`}>
-                                <p>{msg.text}</p>
-                            </div>
-                        ))}
+                        {loading ? (
+                            <div className='loading'><div className='loader'></div></div>
+                        ) : (
+                            messages.map((msg, index) => (
+                                <div key={index} className={`message ${msg.sender}`}>
+                                    <p>{msg.text}</p>
+                                </div>
+                            ))
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
                     <div className="admin-blok__input">
@@ -101,6 +113,7 @@ export default function AdminChat() {
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Введите сообщение..."
                             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                            disabled={loading}
                         />
                         <BsSendFill onClick={sendMessage} />
                     </div>
