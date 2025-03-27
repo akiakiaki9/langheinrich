@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiTrash2, FiCopy } from 'react-icons/fi';
+import { FiCopy } from 'react-icons/fi';
 import { IoSend, IoBackspaceOutline } from "react-icons/io5";
 import { Link, useSearchParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
