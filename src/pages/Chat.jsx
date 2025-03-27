@@ -49,9 +49,9 @@ export default function Chat() {
                     setMessages(prev => [...prev, {
                         id: Date.now(),
                         text: data.text,
-                        sender: 'user',
+                        sender: data.author === "Administrator" ? "admin" : "user",
                         time: new Date().toLocaleTimeString().slice(0, 5),
-                    }]);
+                    }]);                    
 
                     if (data.product_id) {
                         setProductId(data.product_id);
