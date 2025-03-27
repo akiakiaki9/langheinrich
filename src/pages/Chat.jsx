@@ -100,16 +100,6 @@ export default function Chat() {
         console.log("✅ Сообщение отправлено и добавлено в чат.");
     };
 
-    const deleteMessage = (id, sender) => {
-        if (sender === "admin") {
-            console.warn("⚠️ Нельзя удалить сообщение админа.");
-            return;
-        }
-
-        console.log(`🗑 Удаление сообщения с ID: ${id}`);
-        setMessages(prev => prev.filter(msg => msg.id !== id));
-    };
-
     const copyMessage = (text) => {
         navigator.clipboard.writeText(text);
         console.log(`📋 Сообщение скопировано: "${text}"`);
@@ -145,9 +135,6 @@ export default function Chat() {
                             <div className="chat-info">
                                 <span>{msg.time}</span>
                                 <FiCopy onClick={() => copyMessage(msg.text)} />
-                                {msg.sender !== "admin" && (
-                                    <FiTrash2 onClick={() => deleteMessage(msg.id, msg.sender)} />
-                                )}
                             </div>
                         </div>
                     ))}
