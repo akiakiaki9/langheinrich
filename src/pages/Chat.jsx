@@ -28,48 +28,38 @@ export default function Chat() {
 
         ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
-        useEffect(() => {
-            ws.current.onmessage = (event) => {
-                console.log("📩 Получено сообщение:", event.data);
-                try {
-                    const data = JSON.parse(event.data);
-        
-                    if (data.history) {
-                        console.log("🔄 Получена история сообщений:", data.history);
-                        setMessages(data.history.map(msg => ({
-                            id: msg.message_id,
-                            text: msg.content,
-                            sender: msg.author === "Administrator" ? "admin" : "me",
-                            time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
-                        })));
-                    } else {
-                        console.log("➕ Новое сообщение:", data);
-        
-                        setMessages(prev => {
-                            const isDuplicate = prev.some(msg => msg.id === data.message_id);
-                            if (isDuplicate) {
-                                console.warn("⚠️ Дубликат сообщения, пропуск.");
-                                return prev;
-                            }
-                            return [...prev, {
-                                id: data.message_id || Date.now(),
-                                text: data.message,
-                                sender: data.author === "Administrator" ? "admin" : "me",
-                                time: new Date().toLocaleTimeString().slice(0, 5),
-                            }];
-                        });
-        
-                        if (data.product_id) {
-                            console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
-                            setProductId(data.product_id);
-                            setProductName(data.product_name || 'Неизвестный товар');
-                        }
+        ws.current.onmessage = (event) => {
+            console.log("📩 Получено сообщение:", event.data);
+            try {
+                const data = JSON.parse(event.data);
+
+                if (data.history) {
+                    console.log("🔄 Получена история сообщений:", data.history);
+                    setMessages(data.history.map(msg => ({
+                        id: msg.message_id,
+                        text: msg.content,
+                        sender: msg.author === "Administrator" ? "admin" : "me",
+                        time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
+                    })));
+                } else {
+                    console.log("➕ Новое сообщение:", data);
+                    setMessages(prev => [...prev, {
+                        id: data.message_id || Date.now(),
+                        text: data.message,
+                        sender: data.author === "Administrator" ? "admin" : "me",
+                        time: new Date().toLocaleTimeString().slice(0, 5),
+                    }]);
+
+                    if (data.product_id) {
+                        console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
+                        setProductId(data.product_id);
+                        setProductName(data.product_name || 'Неизвестный товар');
                     }
-                } catch (error) {
-                    console.error('❌ Ошибка парсинга WebSocket данных:', error);
                 }
-            };
-        }, []);        
+            } catch (error) {
+                console.error('❌ Ошибка парсинга WebSocket данных:', error);
+            }
+        };
 
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
