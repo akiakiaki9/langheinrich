@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { RiArrowGoBackLine } from "react-icons/ri";
+import AdminChat from "./AdminChat";
 
 export default function AdminPanel() {
     const [chats, setChats] = useState([]);
@@ -52,7 +53,7 @@ export default function AdminPanel() {
                     </div>
                 </div>
                 <div className="chat-window">
-                    <p className="select-chat-message">Выберите чат для начала общения</p>
+                    {chatId ? <AdminChat chatId={chatId} /> : <p className="select-chat-message">Выберите чат для начала общения</p>}
                 </div>
             </div>
             <Link to="/">

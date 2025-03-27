@@ -4,8 +4,9 @@ import { BsSendFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 import { RiArrowGoBackLine } from "react-icons/ri";
 
-export default function AdminChat() {
-    const { chatId } = useParams();
+export default function AdminChat({ chatId }) {
+    const { chatId: paramChatId } = useParams();
+    const currentChatId = chatId || paramChatId;
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -20,7 +21,7 @@ export default function AdminChat() {
             return;
         }
 
-        ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
+        ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${currentChatId}`);
 
         ws.current.onopen = () => {
             ws.current.send(JSON.stringify({ action: "get_chats" }));
@@ -49,10 +50,6 @@ export default function AdminChat() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    const handleSelectChat = (chat) => {
-        navigate(`/admin/chat/${chat.id}`);
-    };
-
     const sendMessage = () => {
         if (!input.trim() || !ws.current) return;
 
@@ -67,20 +64,6 @@ export default function AdminChat() {
     return (
         <div className="admin full-screen">
             <div className="admin-panel">
-                <div className="chat-list">
-                    <h3>Чаты</h3>
-                    <div className="chat-list__items">
-                        {chats.map((chat) => (
-                            <p
-                                key={chat.id}
-                                onClick={() => handleSelectChat(chat)}
-                                className={chatId === String(chat.id) ? "active" : ""}
-                            >
-                                {chat.customer_username} - {chat.product_name || "Без продукта"}
-                            </p>
-                        ))}
-                    </div>
-                </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
                         <h3>Чат с {currentChat ? currentChat.customer_username : "Неизвестным пользователем"}</h3>
