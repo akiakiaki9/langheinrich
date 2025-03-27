@@ -45,7 +45,7 @@ export default function Chat() {
                     console.log("➕ Новое сообщение:", data);
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
-                        text: data.text,
+                        text: data.message,
                         sender: data.author === "Administrator" ? "admin" : "user",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
