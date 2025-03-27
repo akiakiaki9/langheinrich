@@ -38,9 +38,9 @@ export default function AdminChat() {
                 if (data.chats) {
                     console.log("Обновление списка чатов...");
                     setChats(data.chats);
-                } else if (data.type === "messages") {
-                    console.log("Обновление списка сообщений...");
-                    setMessages(data.messages);
+                } else if (data.history) {
+                    console.log("Обновление истории чата...");
+                    setMessages(data.history);
                 } else if (data.type === "message" && data.chat_id === Number(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
                     setMessages((prev) => [...prev, data]);
@@ -99,8 +99,8 @@ export default function AdminChat() {
                                     onClick={() => handleSelectChat(chat)}
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
-                                    <p>{chat.customer_username}</p>
-                                    <p>{chat.last_message || ""}</p>
+                                    <p className="chat-list__items-author">{chat.customer_username}</p>
+                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
                                 </div>
                             ))}
                         </div>
