@@ -50,53 +50,53 @@ export default function AdminChat() {
 
     useEffect(() => {
         if (!chatId) return;
-    
+
         const token = Cookies.get("access");
         if (!token) {
             window.location.href = "/login";
             return;
         }
-    
+
         console.log(`Инициализация WebSocket для сообщений чата ${chatId}...`);
         wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
-    
+
         wsMessages.current.onopen = () => {
             console.log(`WebSocket открыт. Запрашиваем историю сообщений...`);
             wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
-    
+
         wsMessages.current.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
                 console.log("Получены данные WebSocket:", data);
-    
+
                 if (data.history) {
                     console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
                 } else if (data.type === "chat_message" && data.chat_id === Number(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
-                    setMessages((prev) => [...prev, { 
-                        content: data.message, 
-                        author: data.author, 
-                        time: new Date(data.timestamp).toLocaleTimeString() 
+                    setMessages((prev) => [...prev, {
+                        content: data.message,
+                        author: data.author,
+                        time: new Date(data.timestamp).toLocaleTimeString()
                     }]);
-                }                
-    
+                }
+
                 setLoading(false);
             } catch (error) {
                 console.error("Ошибка при обработке сообщений:", error);
                 setLoading(false);
             }
         };
-    
+
         wsMessages.current.onerror = (error) => {
             console.error("Ошибка WebSocket:", error);
         };
-    
+
         wsMessages.current.onclose = () => {
             console.log("WebSocket соединение закрыто.");
         };
-    
+
         return () => {
             console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
             wsMessages.current?.close();
@@ -114,12 +114,12 @@ export default function AdminChat() {
 
     const sendMessage = () => {
         if (!input.trim()) return;
-    
+
         if (!wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
             console.error("WebSocket закрыт. Сообщение не отправлено.");
             return;
         }
-    
+
         const message = {
             action: "send_message",
             message: input,
@@ -132,9 +132,9 @@ export default function AdminChat() {
                 month: "short"
             }).replace(",", "")
         };
-    
+
         console.log("Отправляем сообщение:", message);
-    
+
         wsMessages.current.send(JSON.stringify(message));
         setInput("");
     };
@@ -174,8 +174,8 @@ export default function AdminChat() {
                         ) : (
                             messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
-                                    <p>{msg.message || msg.content}</p>
-                                    <p className="chat-blok__time">{msg.time}</p>
+                                    <p>{msg.message ?? msg.content ?? "[Пустое сообщение]"}</p>
+                                    <p className="chat-blok__time">{msg.time || "Нет времени"}</p>
                                 </div>
                             ))
                         )}
