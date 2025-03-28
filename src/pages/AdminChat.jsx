@@ -34,7 +34,7 @@ export default function AdminChat() {
             console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
-
+        
                 if (data.history) {
                     console.log("🔄 Получена история сообщений:", data.history);
                     setMessages(data.history.map(msg => ({
@@ -43,6 +43,9 @@ export default function AdminChat() {
                         sender: msg.author === "Administrator" ? "admin" : "me",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
+                    if (data.customer_username) {
+                        setCurrentChat({ customer_username: data.customer_username });
+                    }
                     setLoading(false);
                 } else {
                     console.log("➕ Новое сообщение:", data);
@@ -52,7 +55,11 @@ export default function AdminChat() {
                         sender: data.author === "Administrator" ? "admin" : "me",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
-
+        
+                    if (data.customer_username) {
+                        setCurrentChat({ customer_username: data.customer_username });
+                    }
+        
                     if (data.product_id) {
                         console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
                         setProductId(data.product_id);
@@ -62,7 +69,7 @@ export default function AdminChat() {
             } catch (error) {
                 console.error('❌ Ошибка парсинга WebSocket данных:', error);
             }
-        };
+        };        
 
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
