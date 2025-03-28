@@ -73,10 +73,14 @@ export default function AdminChat() {
                 if (data.history) {
                     console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
-                } else if (data.type === "message" && data.chat_id === Number(chatId)) {
+                } else if (data.type === "chat_message" && data.chat_id === Number(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
-                    setMessages((prev) => [...prev, data]);
-                }
+                    setMessages((prev) => [...prev, { 
+                        content: data.message, 
+                        author: data.author, 
+                        time: new Date(data.timestamp).toLocaleTimeString() 
+                    }]);
+                }                
     
                 setLoading(false);
             } catch (error) {
