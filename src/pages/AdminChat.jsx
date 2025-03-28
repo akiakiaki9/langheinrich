@@ -69,25 +69,30 @@ export default function AdminChat() {
             try {
                 const data = JSON.parse(event.data);
                 console.log("Получены данные WebSocket:", data);
-
+        
                 if (data.history) {
                     console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
                 } else if (data.type === "chat_message" && data.chat_id === Number(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
-                    setMessages((prev) => [...prev, {
-                        content: data.message,
-                        author: data.author === "Administrator" ? "Administration" : data.author, 
-                        time: new Date(data.timestamp).toLocaleTimeString()
-                    }]);
+                    setMessages((prev) => [
+                        ...prev,
+                        {
+                            message_id: data.message_id,
+                            content: data.message, // Используем `content`, как в `history`
+                            author: data.author === "Administrator" ? "Administration" : data.author,
+                            timestamp: data.timestamp,
+                        },
+                    ]);
                 }                
-
+        
                 setLoading(false);
             } catch (error) {
                 console.error("Ошибка при обработке сообщений:", error);
                 setLoading(false);
             }
         };
+        
 
         wsMessages.current.onerror = (error) => {
             console.error("Ошибка WebSocket:", error);
