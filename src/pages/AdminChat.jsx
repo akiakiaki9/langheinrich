@@ -98,7 +98,16 @@ export default function AdminChat() {
             wsMessages.current?.close();
         };
     }, [chatId]);
-    
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleSelectChat = (chat) => {
+        navigate(`/admin/chat/${chat.id}`);
+        setLoading(true);
+    };
+
     const sendMessage = () => {
         if (!input.trim()) return;
     
@@ -123,39 +132,6 @@ export default function AdminChat() {
         console.log("Отправляем сообщение:", message);
     
         wsMessages.current.send(JSON.stringify(message));
-        setInput("");
-    };    
-
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
-    const handleSelectChat = (chat) => {
-        navigate(`/admin/chat/${chat.id}`);
-        setLoading(true);
-    };
-
-    const sendMessage = () => {
-        if (!input.trim() || !wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
-            console.error("WebSocket закрыт. Сообщение не отправлено.");
-            return;
-        }
-
-        const message = {
-            action: "send_message",
-            text: input,
-            author: "Administration",
-            chat_id: chatId,
-            time: new Date().toLocaleString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                day: "2-digit",
-                month: "short"  
-            }).replace(",", "")
-        };
-
-        wsMessages.current.send(JSON.stringify(message));
-        setMessages((prev) => [...prev, message]);
         setInput("");
     };
 
