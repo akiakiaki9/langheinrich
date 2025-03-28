@@ -132,7 +132,7 @@ export default function Chat() {
                             {messages.map((msg) => (
                                 <div key={msg.id} className={`chat-message ${msg.sender}`}>
                                     <p>{msg.text}</p>
-                                    {msg.time}
+                                    <p className="chat-blok__time">{msg.time}</p>
                                 </div>
                             ))}
                             <div ref={chatEndRef}></div>

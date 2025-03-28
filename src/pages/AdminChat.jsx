@@ -157,7 +157,7 @@ export default function AdminChat() {
                             messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
                                     <p>{msg.content}</p>
-                                    {msg.time}
+                                    <p className="chat-blok__time">{msg.time}</p>
                                 </div>
                             ))
                         )}
