@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { BsSendFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 import { RiArrowGoBackLine } from "react-icons/ri";
+import { FiCopy } from "react-icons/fi";
 
 export default function AdminChat() {
     const { chatId } = useParams();
