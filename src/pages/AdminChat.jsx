@@ -23,7 +23,7 @@ export default function AdminChat() {
             return;
         }
 
-        ws.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
+        ws.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
 
         ws.current.onopen = () => {
             console.log("WebSocket открыт, запрос чатов и сообщений...");
@@ -116,7 +116,7 @@ export default function AdminChat() {
                             <div className='loading'><div className='loader'></div></div>
                         ) : (
                             messages.map((msg, index) => (
-                                <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "user"}`}>
+                                <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
                                     <p>{msg.text}</p>
                                 </div>
                             ))
