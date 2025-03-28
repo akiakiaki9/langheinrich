@@ -166,10 +166,7 @@ export default function AdminChat() {
                             messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
                                     <p>{msg.content}</p>
-                                    <div className="chat-info">
-                                        <span>{msg.time}</span>
-                                        <FiCopy onClick={() => copyMessage(msg.text)} />
-                                    </div>
+                                    {msg.time}
                                 </div>
                             ))
                         )}

@@ -138,10 +138,7 @@ export default function Chat() {
                             {messages.map((msg) => (
                                 <div key={msg.id} className={`chat-message ${msg.sender}`}>
                                     <p>{msg.text}</p>
-                                    <div className="chat-info">
-                                        <span>{msg.time}</span>
-                                        <FiCopy onClick={() => copyMessage(msg.text)} />
-                                    </div>
+                                    {msg.time}
                                 </div>
                             ))}
                             <div ref={chatEndRef}></div>
