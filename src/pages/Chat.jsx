@@ -123,7 +123,7 @@ export default function Chat() {
                 </div>
 
                 {loading ? (
-                    <div className="loading">Загрузка...</div>
+                    <div className='loading'><div className='loader'></div></div>
                 ) : (
                     <>
                         {productId && productName && (
