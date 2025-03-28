@@ -118,7 +118,7 @@ export default function AdminChat() {
     
         const message = {
             action: "send_message",
-            text: input,
+            content: input,
             author: "Administration",
             chat_id: chatId,
             time: new Date().toLocaleString("en-GB", {
