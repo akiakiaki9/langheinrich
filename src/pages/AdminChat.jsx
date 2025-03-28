@@ -99,14 +99,22 @@ export default function AdminChat() {
     };
 
     const sendMessage = () => {
-        if (!input.trim() || !wsMessages.current) return;
+        if (!input.trim() || !wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
+            console.error("WebSocket закрыт. Сообщение не отправлено.");
+            return;
+        }
 
         const message = {
             action: "send_message",
             text: input,
             author: "Administration",
             chat_id: chatId,
-            time: new Date().toLocaleTimeString()
+            time: new Date().toLocaleString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "short"
+            }).replace(",", "")
         };
 
         wsMessages.current.send(JSON.stringify(message));
