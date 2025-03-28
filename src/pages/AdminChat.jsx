@@ -100,11 +100,26 @@ export default function AdminChat() {
     const sendMessage = () => {
         if (!input.trim() || !wsMessages.current) return;
 
-        const message = { action: "send_message", message: input, author: "Administration", chat_id: chatId };
+        const message = {
+            action: "send_message",
+            text: input,
+            author: "Administration",
+            chat_id: chatId,
+            time: new Date().toLocaleTimeString()
+        };
+
         wsMessages.current.send(JSON.stringify(message));
         setMessages((prev) => [...prev, message]);
         setInput("");
     };
+
+    const copyMessage = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => alert("Сообщение скопировано!"))
+            .catch(() => alert("Ошибка копирования!"));
+    };
+
+
 
     const currentChat = chats.find((chat) => String(chat.id) === chatId);
 
@@ -142,6 +157,10 @@ export default function AdminChat() {
                             messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
                                     <p>{msg.content}</p>
+                                    <div className="chat-info">
+                                        <span>{msg.time}</span>
+                                        <FiCopy onClick={() => copyMessage(msg.text)} />
+                                    </div>
                                 </div>
                             ))
                         )}
