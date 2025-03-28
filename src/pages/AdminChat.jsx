@@ -9,6 +9,8 @@ export default function AdminChat() {
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [productId, setProductId] = useState(null);
+    const [productName, setProductName] = useState('');
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef(null);
@@ -65,42 +67,42 @@ export default function AdminChat() {
             wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
 
-        wsMessages.current.onmessage = (event) => {
+        ws.current.onmessage = (event) => {
+            console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
-                console.log("Получены данные WebSocket:", data);
-        
+
                 if (data.history) {
-                    console.log(`Получена история сообщений для чата ${chatId}`, data.history);
-                    setMessages(data.history);
-                } else if (data.type === "chat_message" && String(data.chat_id) === String(chatId)) {
-                    console.log("Новое сообщение добавлено в чат...");
-        
-                    setMessages((prev) => [
-                        ...prev,
-                        {
-                            message_id: data.message_id,
-                            text: data.message,
-                            author: data.author === "Administrator" ? "Administration" : data.author,
-                            timestamp: new Date(data.timestamp).toLocaleTimeString(),
-                        },
-                    ]);
+                    console.log("🔄 Получена история сообщений:", data.history);
+                    setMessages(data.history.map(msg => ({
+                        id: msg.message_id,
+                        text: msg.content,
+                        sender: msg.author === "Administrator" ? "admin" : "me",
+                        time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
+                    })));
+                    setLoading(false);
+                } else {
+                    console.log("➕ Новое сообщение:", data);
+                    setMessages(prev => [...prev, {
+                        id: data.message_id || Date.now(),
+                        text: data.message,
+                        sender: data.author === "Administrator" ? "admin" : "me",
+                        time: new Date().toLocaleTimeString().slice(0, 5),
+                    }]);
+
+                    if (data.product_id) {
+                        console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
+                        setProductId(data.product_id);
+                        setProductName(data.product_name || 'Неизвестный товар');
+                    }
                 }
-                
-                setLoading(false);
             } catch (error) {
-                console.error("Ошибка при обработке сообщений:", error);
-                setLoading(false);
+                console.error('❌ Ошибка парсинга WebSocket данных:', error);
             }
-        };        
-
-        wsMessages.current.onerror = (error) => {
-            console.error("Ошибка WebSocket:", error);
         };
 
-        wsMessages.current.onclose = () => {
-            console.log("WebSocket соединение закрыто.");
-        };
+        wsMessages.current.onerror = (error) => { console.error("Ошибка WebSocket:", error) };
+        wsMessages.current.onclose = () => { console.log("WebSocket соединение закрыто.") };
 
         return () => {
             console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
@@ -117,31 +119,35 @@ export default function AdminChat() {
         setLoading(true);
     };
 
-    const sendMessage = () => {
-        if (!input.trim()) return;
-
-        if (!wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
-            console.error("WebSocket закрыт. Сообщение не отправлено.");
+    const sendMessage = (e) => {
+        e.preventDefault();
+        if (!newMessage.trim()) {
+            console.warn("⚠️ Пустое сообщение, отправка отменена.");
+            return;
+        }
+        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+            console.warn("⚠️ WebSocket не подключен, сообщение не отправлено.");
             return;
         }
 
-        const message = {
-            action: "send_message",
-            message: input,
-            author: "Administration",
-            chat_id: chatId,
+        const messageData = {
+            message: newMessage,
+            author: 'me',
             time: new Date().toLocaleString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
                 day: "2-digit",
                 month: "short"
-            }).replace(",", "")
+            }).replace(",", ""),
+            product_id: productId,
         };
 
-        console.log("Отправляем сообщение:", message);
+        console.log("📤 Отправка сообщения:", messageData);
+        ws.current.send(JSON.stringify(messageData));
 
-        wsMessages.current.send(JSON.stringify(message));
-        setInput("");
+        setMessages(prev => [...prev, { ...messageData, id: Date.now() }]);
+        setNewMessage('');
+        console.log("✅ Сообщение отправлено и добавлено в чат.");
     };
 
     const currentChat = chats.find((chat) => String(chat.id) === chatId);
@@ -177,12 +183,24 @@ export default function AdminChat() {
                         {loading ? (
                             <div className='loading'><div className='loader'></div></div>
                         ) : (
-                            messages.map((msg) => (
-                                <div key={msg.message_id} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
-                                    <p>{msg.content ?? "[Пустое сообщение]"}</p>
-                                    <p className="chat-blok__time">{msg.timestamp || "Нет времени"}</p>
+                            <div>
+                                {productId && productName && (
+                                    <div className="chat-product-link">
+                                        <Link to={`/store/product/${productId}`}>
+                                            <p className="chat-product-name">{productName}</p>
+                                        </Link>
+                                    </div>
+                                )}
+
+                                <div className="chat-blok">
+                                    {messages.map((msg) => (
+                                        <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                                            <p>{msg.text}</p>
+                                            <p className="chat-blok__time">{msg.time}</p>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))
+                            </div>
                         )}
                         <div ref={messagesEndRef} />
                     </div>
