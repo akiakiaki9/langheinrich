@@ -1,74 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { BsSendFill } from "react-icons/bs";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { RiArrowGoBackLine } from "react-icons/ri";
+import { IoSend } from "react-icons/io5";
 
 export default function AdminChat() {
+    const [currentChat, setCurrentChat] = useState(null);
     const { chatId } = useParams();
-    const navigate = useNavigate();
-    const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [productId, setProductId] = useState(null);
     const [productName, setProductName] = useState('');
-    const [input, setInput] = useState("");
     const [loading, setLoading] = useState(true);
-    const messagesEndRef = useRef(null);
-    const wsChats = useRef(null);
-    const wsMessages = useRef(null);
+    const chatEndRef = useRef(null);
+    const ws = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = Cookies.get("access");
+        const token = Cookies.get('access');
         if (!token) {
-            window.location.href = "/login";
+            console.warn("⚠️ Токен отсутствует, перенаправление на /login");
+            window.location.href = '/login';
             return;
         }
 
-        console.log("Инициализация WebSocket для списка чатов...");
-        wsChats.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
+        const wsUrl = `wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`;
+        console.log(`🔌 Подключение к WebSocket: ${wsUrl}`);
+        ws.current = new WebSocket(wsUrl);
 
-        wsChats.current.onopen = () => {
-            console.log("WebSocket для чатов открыт, запрос списка чатов...");
-            wsChats.current.send(JSON.stringify({ action: "get_chats" }));
-        };
+        ws.current.onopen = () => console.log('✅ WebSocket подключен');
 
-        wsChats.current.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.chats) {
-                    console.log("Получен список чатов", data.chats);
-                    setChats(data.chats);
-                }
-            } catch (error) {
-                console.error("Ошибка при обработке чатов:", error);
-            }
-        };
-
-        return () => {
-            console.log("Закрытие WebSocket для списка чатов...");
-            wsChats.current?.close();
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!chatId) return;
-
-        const token = Cookies.get("access");
-        if (!token) {
-            window.location.href = "/login";
-            return;
-        }
-
-        console.log(`Инициализация WebSocket для сообщений чата ${chatId}...`);
-        wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
-
-        wsMessages.current.onopen = () => {
-            console.log(`WebSocket открыт. Запрашиваем историю сообщений...`);
-            wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
-        };
-
-        wsMessages.current.onmessage = (event) => {
+        ws.current.onmessage = (event) => {
             console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
@@ -102,37 +64,32 @@ export default function AdminChat() {
             }
         };
 
-        wsMessages.current.onerror = (error) => { console.error("Ошибка WebSocket:", error) };
-        wsMessages.current.onclose = () => { console.log("WebSocket соединение закрыто.") };
+        ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
+        ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
 
         return () => {
-            console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
-            wsMessages.current?.close();
+            console.log("🔌 Отключение WebSocket...");
+            ws.current?.close();
         };
     }, [chatId]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
-
-    const handleSelectChat = (chat) => {
-        navigate(`/admin/chat/${chat.id}`);
-        setLoading(true);
-    };
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (!input.trim()) {
+        if (!newMessage.trim()) {
             console.warn("⚠️ Пустое сообщение, отправка отменена.");
             return;
         }
-        if (!wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
+        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
             console.warn("⚠️ WebSocket не подключен, сообщение не отправлено.");
             return;
         }
-    
+
         const messageData = {
-            message: input,
+            message: newMessage,
             author: 'Administration',
             time: new Date().toLocaleString("en-GB", {
                 hour: "2-digit",
@@ -142,40 +99,23 @@ export default function AdminChat() {
             }).replace(",", ""),
             product_id: productId,
         };
-    
+
         console.log("📤 Отправка сообщения:", messageData);
-        wsMessages.current.send(JSON.stringify(messageData));
-    
+        ws.current.send(JSON.stringify(messageData));
+
         setMessages(prev => [...prev, { ...messageData, id: Date.now() }]);
-        setInput('');
+        setNewMessage('');
         console.log("✅ Сообщение отправлено и добавлено в чат.");
     };
-    
 
-    const currentChat = chats.find((chat) => String(chat.id) === chatId);
+    if (!chatId) {
+        console.error("❌ Ошибка: chatId отсутствует");
+        return <h2>ErroR</h2>;
+    }
 
     return (
         <div className="admin full-screen">
             <div className="admin-panel">
-                <div className="chat-list">
-                    <h3>Чаты</h3>
-                    {loading ? (
-                        <div className='loading'><div className='loader'></div></div>
-                    ) : (
-                        <div className="chat-list__items">
-                            {chats.map((chat) => (
-                                <div
-                                    key={chat.id}
-                                    onClick={() => handleSelectChat(chat)}
-                                    className={chatId === String(chat.id) ? "active" : ""}
-                                >
-                                    <p className="chat-list__items-author">{chat.customer_username}</p>
-                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
                         <h3>Чат с {currentChat ? currentChat.customer_username : "?Undefined"}</h3>
@@ -194,36 +134,32 @@ export default function AdminChat() {
                                     </div>
                                 )}
 
-                                <div className="chat-blok">
-                                    {messages.map((msg) => (
-                                        <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                                            <p>{msg.text}</p>
-                                            <p className="chat-blok__time">{msg.time}</p>
-                                        </div>
-                                    ))}
-                                </div>
+                                {messages.map((msg) => (
+                                    <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                                        <p>{msg.text}</p>
+                                        <p className="chat-blok__time">{msg.time}</p>
+                                    </div>
+                                ))}
+                                <div ref={chatEndRef}></div>
                             </div>
                         )}
-                        <div ref={messagesEndRef} />
                     </div>
                     <div className="admin-blok__input">
-                        <input
-                            type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Введите сообщение..."
-                            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                            disabled={loading}
-                        />
-                        <BsSendFill onClick={sendMessage} />
+                        <form onSubmit={sendMessage}>
+                            <input
+                                type="text"
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                placeholder="Enter message..."
+                            />
+                            <button type="submit">
+                                <IoSend className="chat-footer__icon" />
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <Link to="/">
-                <p className="admin__home">
-                    HOME <RiArrowGoBackLine />
-                </p>
-            </Link>
+            <Link to="/"><p className="admin__home">HOME <RiArrowGoBackLine /></p></Link>
         </div>
     );
 };
