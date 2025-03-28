@@ -9,6 +9,7 @@ export default function AdminChat() {
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
     const [productId, setProductId] = useState(null);
     const [productName, setProductName] = useState('');
     const [input, setInput] = useState("");
