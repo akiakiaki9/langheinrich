@@ -50,24 +50,26 @@ export default function AdminChat() {
 
     useEffect(() => {
         if (!chatId) return;
-
+    
         const token = Cookies.get("access");
         if (!token) {
             window.location.href = "/login";
             return;
         }
-
+    
         console.log(`Инициализация WebSocket для сообщений чата ${chatId}...`);
         wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
-
+    
         wsMessages.current.onopen = () => {
-            console.log(`WebSocket для сообщений открыт, загрузка истории чата ${chatId}...`);
+            console.log(`WebSocket открыт. Запрашиваем историю сообщений...`);
             wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
-
+    
         wsMessages.current.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                console.log("Получены данные WebSocket:", data);
+    
                 if (data.history) {
                     console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
@@ -75,18 +77,54 @@ export default function AdminChat() {
                     console.log("Новое сообщение добавлено в чат...");
                     setMessages((prev) => [...prev, data]);
                 }
+    
                 setLoading(false);
             } catch (error) {
                 console.error("Ошибка при обработке сообщений:", error);
                 setLoading(false);
             }
         };
-
+    
+        wsMessages.current.onerror = (error) => {
+            console.error("Ошибка WebSocket:", error);
+        };
+    
+        wsMessages.current.onclose = () => {
+            console.log("WebSocket соединение закрыто.");
+        };
+    
         return () => {
             console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
             wsMessages.current?.close();
         };
     }, [chatId]);
+    
+    const sendMessage = () => {
+        if (!input.trim()) return;
+    
+        if (!wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
+            console.error("WebSocket закрыт. Сообщение не отправлено.");
+            return;
+        }
+    
+        const message = {
+            action: "send_message",
+            text: input,
+            author: "Administration",
+            chat_id: chatId,
+            time: new Date().toLocaleString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "short"
+            }).replace(",", "")
+        };
+    
+        console.log("Отправляем сообщение:", message);
+    
+        wsMessages.current.send(JSON.stringify(message));
+        setInput("");
+    };    
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
