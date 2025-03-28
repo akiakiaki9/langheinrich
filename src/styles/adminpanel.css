@@ -46,6 +46,7 @@
 .chat-blok__time {
     font-size: 80%;
     margin-top: 5px;
+    color: var(--orange-color);
 }
 
 .chat-list__items div p.active {
