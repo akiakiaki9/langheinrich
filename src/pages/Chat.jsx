@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiCopy } from 'react-icons/fi';
 import { IoSend, IoBackspaceOutline } from "react-icons/io5";
 import { Link, useSearchParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -100,11 +99,6 @@ export default function Chat() {
         setMessages(prev => [...prev, { ...messageData, id: Date.now() }]);
         setNewMessage('');
         console.log("✅ Сообщение отправлено и добавлено в чат.");
-    };
-
-    const copyMessage = (text) => {
-        navigator.clipboard.writeText(text);
-        console.log(`📋 Сообщение скопировано: "${text}"`);
     };
 
     if (!chatId) {
