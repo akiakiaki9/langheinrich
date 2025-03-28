@@ -122,18 +122,18 @@ export default function AdminChat() {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (!newMessage.trim()) {
+        if (!input.trim()) {
             console.warn("⚠️ Пустое сообщение, отправка отменена.");
             return;
         }
-        if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+        if (!wsMessages.current || wsMessages.current.readyState !== WebSocket.OPEN) {
             console.warn("⚠️ WebSocket не подключен, сообщение не отправлено.");
             return;
         }
-
+    
         const messageData = {
-            message: newMessage,
-            author: 'me',
+            message: input,
+            author: 'Administration',
             time: new Date().toLocaleString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -142,14 +142,15 @@ export default function AdminChat() {
             }).replace(",", ""),
             product_id: productId,
         };
-
+    
         console.log("📤 Отправка сообщения:", messageData);
-        ws.current.send(JSON.stringify(messageData));
-
+        wsMessages.current.send(JSON.stringify(messageData));
+    
         setMessages(prev => [...prev, { ...messageData, id: Date.now() }]);
-        setNewMessage('');
+        setInput('');
         console.log("✅ Сообщение отправлено и добавлено в чат.");
     };
+    
 
     const currentChat = chats.find((chat) => String(chat.id) === chatId);
 
