@@ -73,26 +73,26 @@ export default function AdminChat() {
                 if (data.history) {
                     console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
-                } else if (data.type === "chat_message" && data.chat_id === Number(chatId)) {
+                } else if (data.type === "chat_message" && String(data.chat_id) === String(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
+        
                     setMessages((prev) => [
                         ...prev,
                         {
                             message_id: data.message_id,
-                            content: data.message, // Используем `content`, как в `history`
+                            content: data.message, // Делаем так, чтобы текст был в `content`
                             author: data.author === "Administrator" ? "Administration" : data.author,
-                            timestamp: data.timestamp,
+                            timestamp: new Date(data.timestamp).toLocaleTimeString(), // Приводим к удобному формату
                         },
                     ]);
-                }                
-        
+                }
+                
                 setLoading(false);
             } catch (error) {
                 console.error("Ошибка при обработке сообщений:", error);
                 setLoading(false);
             }
-        };
-        
+        };        
 
         wsMessages.current.onerror = (error) => {
             console.error("Ошибка WebSocket:", error);
@@ -179,8 +179,8 @@ export default function AdminChat() {
                         ) : (
                             messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
-                                    <p>{msg.message ?? msg.content ?? "[Пустое сообщение]"}</p>
-                                    <p className="chat-blok__time">{msg.time || "Нет времени"}</p>
+                                    <p>{msg.content ?? "[Пустое сообщение]"}</p>
+                                    <p className="chat-blok__time">{msg.timestamp || "Нет времени"}</p>
                                 </div>
                             ))
                         )}
