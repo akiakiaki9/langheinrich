@@ -80,9 +80,9 @@ export default function AdminChat() {
                         ...prev,
                         {
                             message_id: data.message_id,
-                            text: data.message, // Делаем так, чтобы текст был в `content`
+                            text: data.message,
                             author: data.author === "Administrator" ? "Administration" : data.author,
-                            timestamp: new Date(data.timestamp).toLocaleTimeString(), // Приводим к удобному формату
+                            timestamp: new Date(data.timestamp).toLocaleTimeString(),
                         },
                     ]);
                 }
@@ -177,8 +177,8 @@ export default function AdminChat() {
                         {loading ? (
                             <div className='loading'><div className='loader'></div></div>
                         ) : (
-                            messages.map((msg, index) => (
-                                <div key={index} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
+                            messages.map((msg) => (
+                                <div key={msg.message_id} className={`message ${msg.author === "Administration" ? "admin" : "client"}`}>
                                     <p>{msg.content ?? "[Пустое сообщение]"}</p>
                                     <p className="chat-blok__time">{msg.timestamp || "Нет времени"}</p>
                                 </div>
