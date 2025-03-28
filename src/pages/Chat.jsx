@@ -9,6 +9,7 @@ export default function Chat() {
     const [newMessage, setNewMessage] = useState('');
     const [productId, setProductId] = useState(null);
     const [productName, setProductName] = useState('');
+    const [loading, setLoading] = useState(true);
     const chatEndRef = useRef(null);
     const ws = useRef(null);
     const [searchParams] = useSearchParams();
@@ -41,6 +42,7 @@ export default function Chat() {
                         sender: msg.author === "Administrator" ? "admin" : "me",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
+                    setLoading(false);
                 } else {
                     console.log("➕ Новое сообщение:", data);
                     setMessages(prev => [...prev, {
@@ -120,26 +122,32 @@ export default function Chat() {
                     <h3>Чат с админом</h3>
                 </div>
 
-                {productId && productName && (
-                    <div className="chat-product-link">
-                        <Link to={`/store/product/${productId}`}>
-                            <p className="chat-product-name">{productName}</p>
-                        </Link>
-                    </div>
-                )}
-
-                <div className="chat-blok">
-                    {messages.map((msg) => (
-                        <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                            <p>{msg.text}</p>
-                            <div className="chat-info">
-                                <span>{msg.time}</span>
-                                <FiCopy onClick={() => copyMessage(msg.text)} />
+                {loading ? (
+                    <div className="loading">Загрузка...</div>
+                ) : (
+                    <>
+                        {productId && productName && (
+                            <div className="chat-product-link">
+                                <Link to={`/store/product/${productId}`}>
+                                    <p className="chat-product-name">{productName}</p>
+                                </Link>
                             </div>
+                        )}
+
+                        <div className="chat-blok">
+                            {messages.map((msg) => (
+                                <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                                    <p>{msg.text}</p>
+                                    <div className="chat-info">
+                                        <span>{msg.time}</span>
+                                        <FiCopy onClick={() => copyMessage(msg.text)} />
+                                    </div>
+                                </div>
+                            ))}
+                            <div ref={chatEndRef}></div>
                         </div>
-                    ))}
-                    <div ref={chatEndRef}></div>
-                </div>
+                    </>
+                )}
 
                 <div className="chat-footer">
                     <form onSubmit={sendMessage}>

@@ -51,21 +51,21 @@ export default function AdminChat() {
 
     useEffect(() => {
         if (!chatId) return;
-    
+
         const token = Cookies.get("access");
         if (!token) {
             window.location.href = "/login";
             return;
         }
-    
+
         console.log(`Инициализация WebSocket для сообщений чата ${chatId}...`);
         wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
-    
+
         wsMessages.current.onopen = () => {
             console.log(`WebSocket для сообщений открыт, загрузка истории чата ${chatId}...`);
             wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
-    
+
         wsMessages.current.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
@@ -82,26 +82,12 @@ export default function AdminChat() {
                 setLoading(false);
             }
         };
-    
-        wsMessages.current.onclose = (event) => {
-            console.warn(`WebSocket сообщений закрыт. Код: ${event.code}, Причина: ${event.reason}`);
-            setTimeout(() => {
-                console.log("Переподключение WebSocket для сообщений...");
-                wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
-            }, 2000);
-        };
-    
-        wsMessages.current.onerror = (error) => {
-            console.error("Ошибка WebSocket сообщений:", error);
-            wsMessages.current.close();
-        };
-    
+
         return () => {
             console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
             wsMessages.current?.close();
         };
     }, [chatId]);
-    
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
