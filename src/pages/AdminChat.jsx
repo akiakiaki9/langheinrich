@@ -77,10 +77,10 @@ export default function AdminChat() {
                     console.log("Новое сообщение добавлено в чат...");
                     setMessages((prev) => [...prev, {
                         content: data.message,
-                        author: data.author,
+                        author: data.author === "Administrator" ? "Administration" : data.author, 
                         time: new Date(data.timestamp).toLocaleTimeString()
                     }]);
-                }
+                }                
 
                 setLoading(false);
             } catch (error) {
