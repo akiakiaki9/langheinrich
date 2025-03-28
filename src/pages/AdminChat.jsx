@@ -80,7 +80,7 @@ export default function AdminChat() {
                         ...prev,
                         {
                             message_id: data.message_id,
-                            content: data.message, // Делаем так, чтобы текст был в `content`
+                            text: data.message, // Делаем так, чтобы текст был в `content`
                             author: data.author === "Administrator" ? "Administration" : data.author,
                             timestamp: new Date(data.timestamp).toLocaleTimeString(), // Приводим к удобному формату
                         },
