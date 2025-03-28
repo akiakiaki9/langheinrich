@@ -68,7 +68,7 @@ export default function AdminChat() {
             wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
         };
 
-        ws.current.onmessage = (event) => {
+        wsMessages.current.onmessage = (event) => {
             console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
