@@ -89,7 +89,12 @@ export default function Chat() {
         const messageData = {
             message: newMessage,
             author: 'me',
-            time: new Date().toLocaleTimeString().slice(0, 5),
+            time: new Date().toLocaleString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "short"
+            }).replace(",", ""),
             product_id: productId,
         };
 
