@@ -12,34 +12,64 @@ export default function AdminChat() {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef(null);
-    const ws = useRef(null);
+    const wsChats = useRef(null);
+    const wsMessages = useRef(null);
 
     useEffect(() => {
-        console.log("Инициализация WebSocket...");
         const token = Cookies.get("access");
         if (!token) {
-            console.warn("Токен не найден, редирект на /login");
             window.location.href = "/login";
             return;
         }
 
-        ws.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
+        console.log("Инициализация WebSocket для списка чатов...");
+        wsChats.current = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
 
-        ws.current.onopen = () => {
-            console.log("WebSocket открыт, запрос чатов и сообщений...");
-            ws.current.send(JSON.stringify({ action: "get_chats" }));
-            ws.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
+        wsChats.current.onopen = () => {
+            console.log("WebSocket для чатов открыт, запрос списка чатов...");
+            wsChats.current.send(JSON.stringify({ action: "get_chats" }));
         };
 
-        ws.current.onmessage = (event) => {
-            console.log("Получены данные из WebSocket:", event.data);
+        wsChats.current.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
                 if (data.chats) {
-                    console.log("Обновление списка чатов...");
+                    console.log("Получен список чатов", data.chats);
                     setChats(data.chats);
-                } else if (data.history) {
-                    console.log("Обновление истории чата...");
+                }
+            } catch (error) {
+                console.error("Ошибка при обработке чатов:", error);
+            }
+        };
+
+        return () => {
+            console.log("Закрытие WebSocket для списка чатов...");
+            wsChats.current?.close();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!chatId) return;
+
+        const token = Cookies.get("access");
+        if (!token) {
+            window.location.href = "/login";
+            return;
+        }
+
+        console.log(`Инициализация WebSocket для сообщений чата ${chatId}...`);
+        wsMessages.current = new WebSocket(`wss://macalistervadim.site/ws/chat/room/${chatId}/?token=${token}`);
+
+        wsMessages.current.onopen = () => {
+            console.log(`WebSocket для сообщений открыт, загрузка истории чата ${chatId}...`);
+            wsMessages.current.send(JSON.stringify({ action: "get_messages", chat_id: chatId }));
+        };
+
+        wsMessages.current.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.history) {
+                    console.log(`Получена история сообщений для чата ${chatId}`, data.history);
                     setMessages(data.history);
                 } else if (data.type === "message" && data.chat_id === Number(chatId)) {
                     console.log("Новое сообщение добавлено в чат...");
@@ -47,37 +77,31 @@ export default function AdminChat() {
                 }
                 setLoading(false);
             } catch (error) {
-                console.error("Ошибка при обработке сообщения WebSocket:", error);
+                console.error("Ошибка при обработке сообщений:", error);
                 setLoading(false);
             }
         };
 
         return () => {
-            console.log("Закрытие WebSocket...");
-            ws.current?.close();
+            console.log(`Закрытие WebSocket для сообщений чата ${chatId}...`);
+            wsMessages.current?.close();
         };
     }, [chatId]);
 
     useEffect(() => {
-        console.log("Прокрутка вниз после обновления сообщений...");
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
     const handleSelectChat = (chat) => {
-        console.log("Выбран чат:", chat);
         navigate(`/admin/chat/${chat.id}`);
         setLoading(true);
     };
 
     const sendMessage = () => {
-        if (!input.trim() || !ws.current) {
-            console.warn("Сообщение не отправлено: пустой ввод или WebSocket закрыт");
-            return;
-        }
+        if (!input.trim() || !wsMessages.current) return;
 
         const message = { action: "send_message", message: input, author: "Administration", chat_id: chatId };
-        console.log("Отправка сообщения:", message);
-        ws.current.send(JSON.stringify(message));
+        wsMessages.current.send(JSON.stringify(message));
         setMessages((prev) => [...prev, message]);
         setInput("");
     };
