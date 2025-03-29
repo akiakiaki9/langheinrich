@@ -70,7 +70,7 @@ export default function AdminChat() {
                     setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
-                        sender: msg.author === "Administrator" ? "admin" : "client",
+                        author: msg.author === "Administrator" ? "admin" : "client",
                         timestamp: new Date(msg.timestamp).toLocaleString("en-GB", {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -88,7 +88,7 @@ export default function AdminChat() {
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
                         text: data.message,
-                        sender: data.author === "Administrator" ? "admin" : "client",
+                        author: data.author === "Administrator" ? "admin" : "client",
                         timestamp: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
 
@@ -201,7 +201,7 @@ export default function AdminChat() {
 
                                 <div className="chat-message__main">
                                     {messages.map((msg) => (
-                                        <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                                        <div key={msg.id} className={`chat-message ${msg.author}`}>
                                             <div>
                                                 <p>{msg.text}</p>
                                                 <p className="chat-blok__time">{msg.timestamp}</p>

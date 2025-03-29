@@ -117,7 +117,7 @@
 .message.client {
     background: var(--main-color);
     color: #fff;
-    align-self: flex-end;
+    align-self: flex-start;
 }
 .message.admin {
     background: var(--main-color);
