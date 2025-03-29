@@ -171,7 +171,7 @@ export default function AdminChat() {
         <div className="admin full-screen">
             <div className="admin-panel">
                 <div className="chat-list">
-                    <h3>Чаты</h3>
+                    <h3>Chats</h3>
                     {loading ? (
                         <div className='loading'><div className='loader'></div></div>
                     ) : (
@@ -193,7 +193,7 @@ export default function AdminChat() {
                 </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
-                        <h3>Чат с {currentChat?.customer_username || "Неизвестный пользователь"}</h3>
+                        <h3>Chat with {currentChat?.customer_username || "?"}</h3>
                         <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
                     <div className="admin-blok__list">
@@ -238,7 +238,7 @@ export default function AdminChat() {
                     </div>
                 </div>
             </div>
-            <Link to="/"><p className="admin__home">HOME <RiArrowGoBackLine /></p></Link>
+            <Link to="/home"><p className="admin__home">HOME <RiArrowGoBackLine /></p></Link>
         </div>
     );
 };

@@ -80,6 +80,15 @@
 .profile-blok__section__container {
     padding: 20px;
     min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-blok__section__container-part {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
 }
 
 .profile-blok__section__header div {
