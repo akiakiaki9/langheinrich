@@ -75,8 +75,9 @@ export default function AdminChat() {
                             hour: "2-digit",
                             minute: "2-digit",
                             day: "2-digit",
-                            month: "short"
-                        }).replace(",", "")                        
+                            month: "short",
+                            hour12: false, // 24-часовой формат
+                        }).replace(",", "")                     
                     })));
                     if (data.customer_username) {
                         setCurrentChat({ customer_username: data.customer_username });
@@ -137,9 +138,9 @@ export default function AdminChat() {
                 hour: "2-digit",
                 minute: "2-digit",
                 day: "2-digit",
-                month: "short"
-            }).replace(",", "")
-            ,
+                month: "short",
+                hour12: false, // 24-часовой формат
+            }).replace(",", ""),
             product_id: productId,
         };
 
