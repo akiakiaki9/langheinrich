@@ -89,7 +89,7 @@
     display: flex;
     justify-content: start;
     gap: 10px;
-}
+} 
 
 .profile-blok__section__header div {
     display: none;
@@ -140,5 +140,11 @@
         display: block;
         background-color: red;
         color: #fff;
+    }
+    .profile-blok__section__container-part__class h2 {
+        font-size: 120%;
+    }
+    .profile-blok__section__container-part__class p {
+        font-size: 85%;
     }
 }
