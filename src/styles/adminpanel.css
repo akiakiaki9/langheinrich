@@ -102,6 +102,11 @@
     align-self: flex-start;
 }
 
+.message.client {
+    background: var(--main-color);
+    color: #fff;
+    align-self: flex-end;
+}
 .message.admin {
     background: var(--main-color);
     color: #fff;
