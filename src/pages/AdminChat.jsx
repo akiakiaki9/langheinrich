@@ -18,6 +18,16 @@ export default function AdminChat() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (chatId && chats.length > 0) {
+            const selectedChat = chats.find(chat => String(chat.id) === String(chatId));
+            if (selectedChat) {
+                setCurrentChat(selectedChat);
+            }
+        }
+    }, [chatId, chats]);
+
+
+    useEffect(() => {
         const token = Cookies.get("access");
         if (!token) {
             window.location.href = "/login";
@@ -77,7 +87,7 @@ export default function AdminChat() {
                             day: "2-digit",
                             month: "short",
                             hour12: false, // 24-часовой формат
-                        }).replace(",", "")                     
+                        }).replace(",", "")
                     })));
                     if (data.customer_username) {
                         setCurrentChat({ customer_username: data.customer_username });
@@ -183,7 +193,7 @@ export default function AdminChat() {
                 </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
-                        <h3>Чат с {currentChat ? currentChat.customer_username : "?Undefined"}</h3>
+                        <h3>Чат с {currentChat?.customer_username || "Неизвестный пользователь"}</h3>
                         <RiArrowGoBackLine onClick={() => navigate("/admin")} />
                     </div>
                     <div className="admin-blok__list">
