@@ -82,7 +82,7 @@ export default function AdminChat() {
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
                         text: data.message,
-                        sender: data.author === "Administrator" ? "admin" : "me",
+                        sender: data.author === "Administrator" ? "admin" : "client",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
 
