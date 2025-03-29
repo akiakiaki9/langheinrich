@@ -13,7 +13,7 @@ export default function LayoutMain() {
                         <h1>Store</h1>
                     </div>
                     <div>
-                        <Link to='/'><p className='pagename-blok__p-1'>Home</p></Link>
+                        <Link to='/home'><p className='pagename-blok__p-1'>Home</p></Link>
                         <GoDotFill className='pagename-icon' />
                         <p className='pagename-blok__p-2'>Store</p>
                     </div>

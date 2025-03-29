@@ -40,7 +40,7 @@ export default function Faires() {
                         <h1>Faires</h1>
                     </div>
                     <div>
-                        <Link to="/">
+                        <Link to="/home">
                             <p className="pagename-blok__p-1">Home</p>
                         </Link>
                         <GoDotFill className="pagename-icon" />

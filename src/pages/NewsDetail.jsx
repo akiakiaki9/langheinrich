@@ -49,7 +49,7 @@ export default function NewsDetail() {
                         <h1>News</h1>
                     </div>
                     <div>
-                        <Link to="/"><p className="pagename-blok__p-1">Home</p></Link>
+                        <Link to="/home"><p className="pagename-blok__p-1">Home</p></Link>
                         <GoDotFill className="pagename-icon" />
                         <Link to="/news" className="pagename-blok__p-2">News</Link>
                         <GoDotFill className="pagename-icon" />

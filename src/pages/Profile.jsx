@@ -103,7 +103,7 @@ export default function Profile() {
                             <div className="profile-blok__section__container">
                                 <div className="profile-blok__section__container-part">
                                     <div className="profile-blok__section__container-part__class">
-                                        <h2>Login</h2>
+                                        <h2>Login:</h2>
                                     </div>
                                     <div className="profile-blok__section__container-part__class">
                                         <p>admin</p>
@@ -111,7 +111,7 @@ export default function Profile() {
                                 </div>
                                 <div className="profile-blok__section__container-part">
                                     <div className="profile-blok__section__container-part__class">
-                                        <h2>Full Name</h2>
+                                        <h2>Full Name:</h2>
                                     </div>
                                     <div className="profile-blok__section__container-part__class">
                                         <p>Tillayev Akbar</p>
@@ -119,7 +119,7 @@ export default function Profile() {
                                 </div>
                                 <div className="profile-blok__section__container-part">
                                     <div className="profile-blok__section__container-part__class">
-                                        <h2>Email address</h2>
+                                        <h2>Email address:</h2>
                                     </div>
                                     <div className="profile-blok__section__container-part__class">
                                         <p>admin@gmail.com</p>
