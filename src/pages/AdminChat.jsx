@@ -194,8 +194,10 @@ export default function AdminChat() {
 
                                 {messages.map((msg) => (
                                     <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                                        <p>{msg.text}</p>
-                                        <p className="chat-blok__time">{msg.time}</p>
+                                        <div>
+                                            <p>{msg.text}</p>
+                                            <p className="chat-blok__time">{msg.time}</p>
+                                        </div>
                                     </div>
                                 ))}
                                 <div ref={chatEndRef}></div>
