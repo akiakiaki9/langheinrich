@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 import VideoBg from '../components/Videobg';
 
 export default function Login() {
-
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -81,11 +80,9 @@ export default function Login() {
                                     required
                                 />
                             </div>
+                            {error && <p className="error-message">{error}</p>}
                             <div className="login-form__section">
                                 <button type="submit">SUBMIT</button>
-                            </div>
-                            <div className="login-form__section">
-                                {error && <p className="error-message">{error}</p>}
                             </div>
                             <div className="login-form__absolute-1">
                                 <div>
