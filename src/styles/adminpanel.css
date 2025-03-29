@@ -92,6 +92,12 @@
     gap: 10px;
 }
 
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .message {
     max-width: 60%;
     padding: 10px;
