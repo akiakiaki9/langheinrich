@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { RiArrowGoBackLine } from "react-icons/ri";
-import { IoSend } from "react-icons/io5";
+import { BsSendFill } from "react-icons/bs";
 
 export default function AdminChat() {
     const [chats, setChats] = useState([]);
@@ -209,7 +209,7 @@ export default function AdminChat() {
                                 placeholder="Enter message..."
                             />
                             <button type="submit">
-                                <IoSend className="chat-footer__icon" />
+                                <BsSendFill className="admin-blok__input__icon" />
                             </button>
                         </form>
                     </div>

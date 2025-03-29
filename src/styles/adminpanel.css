@@ -115,12 +115,17 @@
     border-top: 1px solid #ccc;
 }
 
-.admin-blok__input input {
+.admin-blok__input input form {
     flex: 1;
     padding: 8px;
     border: none;
     border-radius: 4px;
     outline: none;
+}
+
+.admin-blok__input input form button {
+    background: none;
+    border: none;
 }
 
 .admin-blok__input__icon {
