@@ -71,7 +71,7 @@ export default function AdminChat() {
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "client",
-                        time: new Date().toLocaleString("en-GB", {
+                        timestamp: new Date().toLocaleString("en-GB", {
                             hour: "2-digit",
                             minute: "2-digit",
                             day: "2-digit",
@@ -88,7 +88,7 @@ export default function AdminChat() {
                         id: data.message_id || Date.now(),
                         text: data.message,
                         sender: data.author === "Administrator" ? "admin" : "client",
-                        time: new Date().toLocaleTimeString().slice(0, 5),
+                        timestamp: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
 
                     if (data.customer_username) {
@@ -133,7 +133,7 @@ export default function AdminChat() {
         const messageData = {
             message: newMessage,
             author: 'Administrator',
-            time: new Date().toLocaleString("en-GB", {
+            timestamp: new Date().toLocaleString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
                 day: "2-digit",
@@ -202,7 +202,7 @@ export default function AdminChat() {
                                         <div key={msg.id} className={`chat-message ${msg.sender}`}>
                                             <div>
                                                 <p>{msg.text}</p>
-                                                <p className="chat-blok__time">{msg.time}</p>
+                                                <p className="chat-blok__time">{msg.timestamp}</p>
                                             </div>
                                         </div>
                                     ))}
