@@ -70,7 +70,7 @@ export default function AdminChat() {
                     setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
-                        sender: msg.author === "Administrator" ? "admin" : "me",
+                        sender: msg.author === "Administrator" ? "admin" : "client",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
                     if (data.customer_username) {
@@ -127,7 +127,7 @@ export default function AdminChat() {
 
         const messageData = {
             message: newMessage,
-            author: 'Administration',
+            author: 'Administrator',
             time: new Date().toLocaleString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
