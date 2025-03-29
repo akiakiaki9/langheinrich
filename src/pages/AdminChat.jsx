@@ -70,7 +70,7 @@ export default function AdminChat() {
                     setMessages(data.history.map(msg => ({
                         id: msg.message_id,
                         text: msg.content,
-                        sender: msg.author === "Administrator" ? "admin" : "client",
+                        sender: msg.author === "Administrator" ? "admin" : "",
                         time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
                     })));
                     if (data.customer_username) {
@@ -82,7 +82,7 @@ export default function AdminChat() {
                     setMessages(prev => [...prev, {
                         id: data.message_id || Date.now(),
                         text: data.message,
-                        sender: data.author === "Administrator" ? "admin" : "client",
+                        sender: data.author === "Administrator" ? "admin" : "",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
 
@@ -166,7 +166,9 @@ export default function AdminChat() {
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
                                     <p className="chat-list__items-author">{chat.customer_username}</p>
-                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
+                                    <p className="chat-list__items-message">
+                                        {chat.last_message ? (chat.last_message.length > 5 ? chat.last_message.slice(0, 5) + "..." : chat.last_message) : ""}
+                                    </p>
                                 </div>
                             ))}
                         </div>

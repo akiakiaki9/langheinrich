@@ -54,7 +54,9 @@ export default function AdminPanel() {
                                     className={chatId === String(chat.id) ? "active" : ""}
                                 >
                                     <p className="chat-list__items-author">{chat.customer_username}</p>
-                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
+                                    <p className="chat-list__items-message">
+                                        {chat.last_message ? (chat.last_message.length > 5 ? chat.last_message.slice(0, 5) + "..." : chat.last_message) : ""}
+                                    </p>
                                 </div>
                             ))}
                         </div>

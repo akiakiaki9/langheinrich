@@ -40,7 +40,8 @@
 }
 
 .chat-list__items-message {
-    
+    font-size: 90%;
+    background-color: #e0e0e0;
 }
 
 .chat-blok__time {
@@ -101,7 +102,7 @@
     align-self: flex-start;
 }
 
-.message.client {
+.message.admin {
     background: var(--main-color);
     color: #fff;
     align-self: flex-end;
