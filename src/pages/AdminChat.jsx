@@ -71,7 +71,12 @@ export default function AdminChat() {
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "client",
-                        time: new Date(msg.timestamp).toLocaleTimeString().slice(0, 5),
+                        time: new Date().toLocaleString("en-GB", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            day: "2-digit",
+                            month: "short"
+                        }).replace(",", "")
                     })));
                     if (data.customer_username) {
                         setCurrentChat({ customer_username: data.customer_username });
