@@ -71,7 +71,7 @@ export default function AdminChat() {
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "client",
-                        timestamp: new Date(timestamp).toLocaleString("en-GB", {
+                        timestamp: new Date(msg.timestamp).toLocaleString("en-GB", {
                             hour: "2-digit",
                             minute: "2-digit",
                             day: "2-digit",
