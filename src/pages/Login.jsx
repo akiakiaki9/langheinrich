@@ -80,10 +80,10 @@ export default function Login() {
                                     required
                                 />
                             </div>
-                            {error && <p className="error-message">{error}</p>}
                             <div className="login-form__section">
                                 <button type="submit">SUBMIT</button>
                             </div>
+                            {error && <p className="error-message">{error}</p>}
                             <div className="login-form__absolute-1">
                                 <div>
                                     <FaHome className='login-form__absolute__icon' />
