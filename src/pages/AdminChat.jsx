@@ -5,6 +5,7 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 
 export default function AdminChat() {
+    const [chats, setChats] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const { chatId } = useParams();
     const [messages, setMessages] = useState([]);
@@ -15,6 +16,35 @@ export default function AdminChat() {
     const chatEndRef = useRef(null);
     const ws = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = Cookies.get("access");
+        if (!token) {
+            window.location.href = "/login";
+            return;
+        }
+
+        const ws = new WebSocket(`wss://macalistervadim.site/ws/admin/?token=${token}`);
+
+        ws.onopen = () => ws.send(JSON.stringify({ action: "get_chats" }));
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.chats) setChats(data.chats);
+            } catch (error) {
+                console.error("Ошибка при получении чатов:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        return () => ws.close();
+    }, []);
+
+    const handleSelectChat = (chat) => {
+        navigate(`/admin/chat/${chat.id}`);
+    };
 
     useEffect(() => {
         const token = Cookies.get('access');
@@ -34,7 +64,7 @@ export default function AdminChat() {
             console.log("📩 Получено сообщение:", event.data);
             try {
                 const data = JSON.parse(event.data);
-        
+
                 if (data.history) {
                     console.log("🔄 Получена история сообщений:", data.history);
                     setMessages(data.history.map(msg => ({
@@ -55,11 +85,11 @@ export default function AdminChat() {
                         sender: data.author === "Administrator" ? "admin" : "me",
                         time: new Date().toLocaleTimeString().slice(0, 5),
                     }]);
-        
+
                     if (data.customer_username) {
                         setCurrentChat({ customer_username: data.customer_username });
                     }
-        
+
                     if (data.product_id) {
                         console.log(`📦 Продукт в чате: ${data.product_name} (ID: ${data.product_id})`);
                         setProductId(data.product_id);
@@ -69,7 +99,7 @@ export default function AdminChat() {
             } catch (error) {
                 console.error('❌ Ошибка парсинга WebSocket данных:', error);
             }
-        };        
+        };
 
         ws.current.onclose = (event) => console.warn('❌ WebSocket отключен:', event.reason);
         ws.current.onerror = (error) => console.error('⚠️ Ошибка WebSocket:', error);
@@ -123,6 +153,25 @@ export default function AdminChat() {
     return (
         <div className="admin full-screen">
             <div className="admin-panel">
+                <div className="chat-list">
+                    <h3>Чаты</h3>
+                    {loading ? (
+                        <div className='loading'><div className='loader'></div></div>
+                    ) : (
+                        <div className="chat-list__items">
+                            {chats.map((chat) => (
+                                <div
+                                    key={chat.id}
+                                    onClick={() => handleSelectChat(chat)}
+                                    className={chatId === String(chat.id) ? "active" : ""}
+                                >
+                                    <p className="chat-list__items-author">{chat.customer_username}</p>
+                                    <p className="chat-list__items-message">{chat.last_message || ""}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <div className="chat-window">
                     <div className="admin-blok__header">
                         <h3>Чат с {currentChat ? currentChat.customer_username : "?Undefined"}</h3>
