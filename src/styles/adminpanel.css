@@ -109,13 +109,13 @@
     align-self: flex-end;
 }
 
-.admin-blok__input {
+.admin-blok__input form {
     display: flex;
     padding: 10px;
     border-top: 1px solid #ccc;
 }
 
-.admin-blok__input input form {
+.admin-blok__input form input {
     flex: 1;
     padding: 8px;
     border: none;
