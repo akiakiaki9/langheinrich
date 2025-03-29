@@ -71,12 +71,12 @@ export default function AdminChat() {
                         id: msg.message_id,
                         text: msg.content,
                         sender: msg.author === "Administrator" ? "admin" : "client",
-                        timestamp: new Date().toLocaleString("en-GB", {
+                        timestamp: new Date(data.history.timestamp).toLocaleString("en-GB", {
                             hour: "2-digit",
                             minute: "2-digit",
                             day: "2-digit",
                             month: "short"
-                        }).replace(",", "")
+                        }).replace(",", "")                        
                     })));
                     if (data.customer_username) {
                         setCurrentChat({ customer_username: data.customer_username });
@@ -138,7 +138,8 @@ export default function AdminChat() {
                 minute: "2-digit",
                 day: "2-digit",
                 month: "short"
-            }).replace(",", ""),
+            }).replace(",", "")
+            ,
             product_id: productId,
         };
 
