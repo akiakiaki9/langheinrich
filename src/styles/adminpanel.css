@@ -97,14 +97,11 @@
     border-radius: 10px;
     word-wrap: break-word;
     display: inline-block;
-}
-
-.message.client {
     background: #e0e0e0;
     align-self: flex-start;
 }
 
-.message.admin {
+.message.client {
     background: var(--main-color);
     color: #fff;
     align-self: flex-end;
